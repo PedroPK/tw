@@ -134,9 +134,7 @@ public class ConverterCaseTest {
 	
 	@Test(expected=FourTimesRepetitionException.class)
 	public void test_IIII_ConvertionRomanToArabic() {
-		int response = convertRomanToArabic( "IIII" );
-		
-		//assertEquals(, response);
+		convertRomanToArabic( "IIII" );
 	}
 	
 	/**
@@ -594,12 +592,36 @@ public class ConverterCaseTest {
 	 * glob glob Silver is 34 Credits
 	 */
 	@Test
-	public void testGetOriginalMultiplierGlobBlogSilverIs34Credits() {
+	public void testGetOriginalMultiplierGlobGlogSilverIs34Credits() {
 		Converter converter = new Converter();
 		String response = 
 			converter.getSentenceOriginalMultiplier("glob glob Silver is 34 Credits");
 		
 		assertEquals("glob glob", response);
+	}
+	
+	/**
+	 * glob prok Gold is 57800 Credits
+	 */
+	@Test
+	public void testGetOriginalMultiplierGlobProkGoldIs57800Credits() {
+		Converter converter = new Converter();
+		String response = 
+			converter.getSentenceOriginalMultiplier("glob prok Gold is 57800 Credits");
+		
+		assertEquals("glob prok", response);
+	}
+	
+	/**
+	 * pish pish Iron is 3910 Credits
+	 */
+	@Test
+	public void testGetOriginalMultiplierPishPishIronIs3910Credits() {
+		Converter converter = new Converter();
+		String response = 
+			converter.getSentenceOriginalMultiplier("pish pish Iron is 3910 Credits");
+		
+		assertEquals("pish pish", response);
 	}
 	
 }

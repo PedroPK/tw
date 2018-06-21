@@ -2,7 +2,6 @@ package com.tw.math;
 
 import static com.tw.utils.Utils.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -360,55 +359,6 @@ public class Converter {
 					)
 			) {
 				response = true;
-			}
-		}
-		
-		return response;
-	}
-	
-	/**
-	 * This method is responsible for evaluate if a Roman number is Starting 
-	 * with a smaller symbol, instead of a greater one, in order to do a proper subtraction
-	 * 
-	 * "I" can be subtracted from "V" and "X" only. 
-	 * "X" can be subtracted from "L" and "C" only. 
-	 * "C" can be subtracted from "D" and "M" only. 
-	 * "V", "L", and "D" can never be subtracted.
-	 * 
-	 * @param pRoman
-	 * @return
-	 */
-	private static boolean isValidDecrescentOrder(String pRoman) {
-		boolean response = true;
-		
-		/* "index = 1" make this iteration to start in the Second character
-		 * This validation only makes sense if the pRoman has more then 1 character
-		 */
-		for ( int index = 1; index < pRoman.length(); index = index + 1 ) {
-			int previousValue	= getValue(pRoman, index - 1	);
-			int actualValue		= getValue(pRoman, index		);
-			
-			char previousCharacter = pRoman.charAt(index - 1);
-			char actualCharacter = pRoman.charAt(index);
-			
-			if ( previousValue < actualValue ) {
-				
-				if ( index == 1 ) {
-					response = false;
-					break;
-				}
-				
-				if ( index - 1 > 0 ) {
-					// If we  are here at least at 3th character
-					
-					previousValue	= getValue(pRoman, index - 2 );
-					actualValue		= getValue(pRoman, index - 1 );
-					
-					if ( previousValue < actualValue ) {
-						response = false;
-						break;
-					}
-				}
 			}
 		}
 		
