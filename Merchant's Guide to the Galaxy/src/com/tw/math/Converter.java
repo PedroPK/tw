@@ -194,6 +194,154 @@ public class Converter {
 		return response;
 	}
 	
+	/**
+	 * Example of Valid Sentences
+	 * 		how much is pish tegj glob glob ?
+	 * 		how many Credits is glob prok Silver ?
+	 * 		how many Credits is glob prok Gold ?
+	 * 		how many Credits is glob prok Iron ?
+	 * 
+	 * @param		pReadLine
+	 * 
+	 * @return		boolean		Indicates if the 	pReadLine	is a Valid Sentence
+	 * 
+	 * TODO Implement this Method
+	 */
+	public boolean isHowMuchSentenceValid(String pReadLine) {
+		boolean response = false;
+		
+		List<String> terms = split(pReadLine);
+		if (	terms.get(0).equalsIgnoreCase(HOW)						&&
+				(
+					(
+						terms.get(1).equalsIgnoreCase(MUCH)		&&
+						terms.get(2).equalsIgnoreCase(IS)
+					) 													||
+					(
+						terms.get(1).equalsIgnoreCase(MANY)		&&
+						terms.get(2).equalsIgnoreCase(CREDITS)	&&
+						terms.get(3).equalsIgnoreCase(IS)
+					)
+				)															&&
+				terms.get(terms.size() - 1).equalsIgnoreCase(QUESTION_MARK)
+		) {
+			boolean hasVariable = false;
+			
+			int finalMultipliersIndex = 0;
+			int variableIndex = -1;
+			if (
+				terms.get(1).equalsIgnoreCase(MUCH)	&&
+				terms.get(2).equalsIgnoreCase(IS)
+			) {
+				// From now on, only have Multipliers
+				finalMultipliersIndex = terms.size() - 2;
+			} else if (
+				terms.get(1).equalsIgnoreCase(MANY)		&&
+				terms.get(2).equalsIgnoreCase(CREDITS)	&&
+				terms.get(3).equalsIgnoreCase(IS)
+			) {
+				// Here we should have Multiplier(s) and a Variable
+				finalMultipliersIndex = terms.size() - 3;
+				variableIndex = terms.size() - 2;
+			}
+			List<String> multipliers = new ArrayList<String>();
+			for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
+				multipliers.add(terms.get(index));
+			}
+			
+			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(multipliers);
+			if (
+					areAllOriginalMultipliersValid	&&
+					(
+						!hasVariable	||
+						(	
+							hasVariable			&&
+							variableIndex > 0	
+							// TODO Complete this with Variable checking &&
+						)
+					)
+			) {
+				response = true;
+			}
+		}
+		
+		return response;
+	}
+	
+	/**
+	 * Example of Valid Sentences
+	 * 		how much is pish tegj glob glob ?
+	 * 		how many Credits is glob prok Silver ?
+	 * 		how many Credits is glob prok Gold ?
+	 * 		how many Credits is glob prok Iron ?
+	 * 
+	 * @param		pReadLine
+	 * 
+	 * @return		boolean		Indicates if the 	pReadLine	is a Valid Sentence
+	 * 
+	 * TODO Implement this method
+	 */
+	public boolean isHowManySentenceValid(String pReadLine) {
+		boolean response = false;
+		
+		List<String> terms = split(pReadLine);
+		if (	terms.get(0).equalsIgnoreCase(HOW)						&&
+				(
+					(
+						terms.get(1).equalsIgnoreCase(MUCH)		&&
+						terms.get(2).equalsIgnoreCase(IS)
+					) 													||
+					(
+						terms.get(1).equalsIgnoreCase(MANY)		&&
+						terms.get(2).equalsIgnoreCase(CREDITS)	&&
+						terms.get(3).equalsIgnoreCase(IS)
+					)
+				)															&&
+				terms.get(terms.size() - 1).equalsIgnoreCase(QUESTION_MARK)
+		) {
+			boolean hasVariable = false;
+			
+			int finalMultipliersIndex = 0;
+			int variableIndex = -1;
+			if (
+				terms.get(1).equalsIgnoreCase(MUCH)	&&
+				terms.get(2).equalsIgnoreCase(IS)
+			) {
+				// From now on, only have Multipliers
+				finalMultipliersIndex = terms.size() - 2;
+			} else if (
+				terms.get(1).equalsIgnoreCase(MANY)		&&
+				terms.get(2).equalsIgnoreCase(CREDITS)	&&
+				terms.get(3).equalsIgnoreCase(IS)
+			) {
+				// Here we should have Multiplier(s) and a Variable
+				finalMultipliersIndex = terms.size() - 3;
+				variableIndex = terms.size() - 2;
+			}
+			List<String> multipliers = new ArrayList<String>();
+			for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
+				multipliers.add(terms.get(index));
+			}
+			
+			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(multipliers);
+			if (
+					areAllOriginalMultipliersValid	&&
+					(
+						!hasVariable	||
+						(	
+							hasVariable			&&
+							variableIndex > 0	
+							// TODO Complete this with Variable checking &&
+						)
+					)
+			) {
+				response = true;
+			}
+		}
+		
+		return response;
+	}
+	
 	// TODO Test this
 	public String evaluateHowMuchManySentence(String pReadLine) {
 		String response = null;
