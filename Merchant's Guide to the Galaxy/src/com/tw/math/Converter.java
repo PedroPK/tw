@@ -72,15 +72,15 @@ public class Converter {
 	public static final char M = 'M';
 	
 	private Map<String, Character>	aUnitMap;
-	private Map<String, Integer>	aVariableMap;
+	private Map<String, Double>	aVariableMap;
 	
 	public Converter() {
 		instanciateUnitMapping();
 		instanciateValuationMapping();
 	}
 	
-	public int getVariableValue(String pVariableName) {
-		int response = Integer.MIN_VALUE;
+	public double getVariableValue(String pVariableName) {
+		double response = Integer.MIN_VALUE;
 		
 		response = this.aVariableMap.get(pVariableName);
 		
@@ -96,7 +96,7 @@ public class Converter {
 			String variable		= getVariableName(pReadLine);
 			int value			= getAttributedValue(pReadLine);
 			
-			int variableValue = value / multiplier;
+			double variableValue = value / multiplier;
 			
 			this.aVariableMap.put(variable, variableValue);
 		}
@@ -343,7 +343,7 @@ public class Converter {
 	}
 	
 	private void instanciateValuationMapping() {
-		this.aVariableMap = new HashMap<String, Integer>();
+		this.aVariableMap = new HashMap<String, Double>();
 	}
 	
 	public char getMapping(String pVariable) {

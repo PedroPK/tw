@@ -908,9 +908,9 @@ public class ConverterCaseTest {
 	@Test
 	public void testEvaluateAttributionSentence_globGlobSilverIs34Credits() {
 		this.aConverter.addValuation("glob glob Silver is 34 Credits");
-		int value = this.aConverter.getVariableValue("Silver");
+		double value = this.aConverter.getVariableValue("Silver");
 		
-		assertEquals(17, value);
+		assertEquals(17, value, 0.01);
 	}
 	
 	/**
@@ -924,9 +924,9 @@ public class ConverterCaseTest {
 	@Test
 	public void testEvaluateAttributionSentence_globProkGoldIs57800Credits() {
 		this.aConverter.addValuation("glob prok Gold is 57800 Credits");
-		int value = this.aConverter.getVariableValue("Gold");
+		double value = this.aConverter.getVariableValue("Gold");
 		
-		assertEquals(14450, value);
+		assertEquals(14450, value, 0.01);
 	}
 	
 	/**
@@ -940,9 +940,9 @@ public class ConverterCaseTest {
 	@Test
 	public void testEvaluateAttributionSentence_pishPishIronIs3910Credits() {
 		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
-		int value = this.aConverter.getVariableValue("Iron");
+		double value = this.aConverter.getVariableValue("Iron");
 		
-		assertEquals(196, value);
+		assertEquals(195, value, 0.01);
 	}
 	
 	/**
