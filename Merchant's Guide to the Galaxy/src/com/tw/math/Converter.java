@@ -79,6 +79,18 @@ public class Converter {
 		instanciateValuationMapping();
 	}
 	
+	/**
+	 * Main method, that reads a How Much/Many sentence, process it, and gives a response;
+	 * 
+	 * @param pVariableName
+	 * @return
+	 */
+	public String processHowSentence(String pVariableName) {
+		String response = null;
+		
+		return response;
+	}
+	
 	public double getVariableValue(String pVariableName) {
 		double response = Integer.MIN_VALUE;
 		
@@ -87,9 +99,7 @@ public class Converter {
 		return response;
 	}
 	
-	// TODO Complete this implementation
 	public void addValuation(String pReadLine) {
-		//int response = Integer.MIN_VALUE;
 		if ( this.isValuationSentence(pReadLine) ) {
 			String romanMultiplier = this.convertOriginalMultiplierToRoman(pReadLine);
 			int multiplier		= convertRomanToArabic(romanMultiplier);
@@ -100,8 +110,6 @@ public class Converter {
 			
 			this.aVariableMap.put(variable, variableValue);
 		}
-		
-		//return response;
 	}
 	
 	/**
