@@ -2,7 +2,9 @@ package com.tw.math;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -54,6 +56,8 @@ import static com.tw.math.Converter.*;
  */
 @FixMethodOrder(MethodSorters.JVM)
 public class ConverterCaseTest {
+	
+	Converter aConverter;
 	
 	@Test(expected=EmptyRomanException.class)
 	public void testNullConvertionRomanToArabic() {
@@ -593,9 +597,8 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierGlobGlogSilverIs34Credits() {
-		Converter converter = new Converter();
 		String response = 
-			converter.getSentenceOriginalMultiplier("glob glob Silver is 34 Credits");
+			aConverter.getSentenceOriginalMultiplier("glob glob Silver is 34 Credits");
 		
 		assertEquals("glob glob", response);
 	}
@@ -605,9 +608,8 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierGlobProkGoldIs57800Credits() {
-		Converter converter = new Converter();
 		String response = 
-			converter.getSentenceOriginalMultiplier("glob prok Gold is 57800 Credits");
+			aConverter.getSentenceOriginalMultiplier("glob prok Gold is 57800 Credits");
 		
 		assertEquals("glob prok", response);
 	}
@@ -617,11 +619,68 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierPishPishIronIs3910Credits() {
-		Converter converter = new Converter();
 		String response = 
-			converter.getSentenceOriginalMultiplier("pish pish Iron is 3910 Credits");
+			this.aConverter.getSentenceOriginalMultiplier("pish pish Iron is 3910 Credits");
 		
 		assertEquals("pish pish", response);
+	}
+	
+	@Before
+	public void prepareConverter() {
+		this.aConverter = new Converter();
+		aConverter.addMapping("glob is I");
+		aConverter.addMapping("prok is V");
+		aConverter.addMapping("pish is X");
+		aConverter.addMapping("tegj is L");
+	}
+	
+	/**
+	 * glob glob Silver is 34 Credits
+	 */
+	@Test
+	public void testGetOriginalMultiplierTermsGlobGlobSilverIs34Credits() {
+		String originalMultiplier = Converter.getOriginalMultiplierTerms("glob glob Silver is 34 Credits");
+		
+		assertEquals("glob glob", originalMultiplier);
+	}
+	
+	/**
+	 * glob prok Gold is 57800 Credits
+	 */
+	@Test
+	public void testGetOriginalMultiplierTermsGlobProkGoldIs57800Credits() {
+		String originalMultiplier = Converter.getOriginalMultiplierTerms("glob prok Gold is 57800 Credits");
+		
+		assertEquals("glob prok", originalMultiplier);
+	}
+	
+	/**
+	 * pish pish Iron is 3910 Credits
+	 */
+	@Test
+	public void testGetOriginalMultiplierTermsPishPishIronIs3910Credits() {
+		String originalMultiplier = Converter.getOriginalMultiplierTerms("pish pish Iron is 3910 Credits");
+		
+		assertEquals("pish pish", originalMultiplier);
+	}
+	
+	/**
+	 * 	glob glob Silver is 34 Credits
+	 * 	glob prok Gold is 57800 Credits
+	 * 	pish pish Iron is 3910 Credits
+	 */
+	@Ignore
+	@Test
+	public void testAreAllOriginalMultipliersValid() {
+		boolean response = this.aConverter.areAllOriginalMultipliersValid("glob glob Silver is 34 Credits");
+		
+		assertTrue(response);
+	}
+	
+	@Ignore
+	@Test
+	public void testConvertionOriginalMultiplierToRoman() {
+		
 	}
 	
 }

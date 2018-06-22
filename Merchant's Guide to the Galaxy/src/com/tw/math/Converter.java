@@ -78,19 +78,66 @@ public class Converter {
 		
 	}
 	
+	public String convertOriginalMultiplierToRoman(String pReadLine) {
+		String response = null;
+		
+		if ( this.isValuationSentence(pReadLine) ) {
+			response = getOriginalMultiplierTerms(pReadLine);
+			
+			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(response);
+			
+			if ( areAllOriginalMultipliersValid ) {
+				
+			}
+			
+		}
+		
+		return response;
+	}
+	
+	public boolean areAllOriginalMultipliersValid(String pResponse) {
+		String variableName = getVariableName(pResponse);
+		List<String> originalMultiplierTerms = split(pResponse, variableName);
+		
+		boolean areAllOriginalMultipliersValid = 
+			areAllOriginalMultipliersValid(originalMultiplierTerms);
+		return areAllOriginalMultipliersValid;
+	}
+	
+	public boolean areAllOriginalMultipliersValid(List<String> pOriginalMultiplierTerms) {
+		boolean areAllOriginalMultipliersValid = true;
+		for ( String actualMultiplier : pOriginalMultiplierTerms ) {
+			
+			if ( !this.aUnitMapping.containsKey(actualMultiplier) ) {
+				areAllOriginalMultipliersValid = false;
+			}
+		}
+		return areAllOriginalMultipliersValid;
+	}
+	
 	public String getSentenceOriginalMultiplier(String pReadLine) {
 		String response = null;
 		
 		if ( this.isValuationSentence(pReadLine) ) {
-			List<String> sentenceTerms = getSentenceTerms(pReadLine);
-			
-			String variableTerm	= getVariableName(sentenceTerms);
-			
-			sentenceTerms = split(pReadLine, " " + variableTerm);
-			response = sentenceTerms.get(0);
+			response = getOriginalMultiplierTerms(pReadLine);
 		}
 		
 		return response;
+	}
+	
+	public static String getOriginalMultiplierTerms(String pReadLine) {
+		String variableTerm = getVariableName(pReadLine);
+		
+		List<String> sentenceTerms = split(pReadLine, " " + variableTerm);
+		String response = sentenceTerms.get(0);
+		return response;
+	}
+	
+	private static String getVariableName(String pReadLine) {
+		List<String> sentenceTerms = getSentenceTerms(pReadLine);
+		
+		String variableTerm	= getVariableName(sentenceTerms);
+		return variableTerm;
 	}
 	/**
 	 * Example sentences:
@@ -132,8 +179,8 @@ public class Converter {
 		
 		return isMappingSentence;
 	}
-
-	private String getVariableName(List<String> pSentenceTerms) {
+	
+	private static String getVariableName(List<String> pSentenceTerms) {
 		return pSentenceTerms.get( pSentenceTerms.size() - 4 );
 	}
 	
@@ -203,7 +250,7 @@ public class Converter {
 		return romanValues;
 	}
 	
-	private List<String> getSentenceTerms(String pReadLine) {
+	private static List<String> getSentenceTerms(String pReadLine) {
 		return split(pReadLine, " ");
 	}
 	
