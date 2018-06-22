@@ -52,12 +52,20 @@ import static com.tw.math.Converter.*;
  * Therefore, 1903 = MCMIII.
  * 
  * @author pedroc.f.santos
- *
  */
 @FixMethodOrder(MethodSorters.JVM)
 public class ConverterCaseTest {
 	
 	Converter aConverter;
+	
+	@Before
+	public void prepareConverter() {
+		this.aConverter = new Converter();
+		aConverter.addMapping("glob is I");
+		aConverter.addMapping("prok is V");
+		aConverter.addMapping("pish is X");
+		aConverter.addMapping("tegj is L");
+	}
 	
 	@Test(expected=EmptyRomanException.class)
 	public void testNullConvertionRomanToArabic() {
@@ -625,15 +633,6 @@ public class ConverterCaseTest {
 		assertEquals("pish pish", response);
 	}
 	
-	@Before
-	public void prepareConverter() {
-		this.aConverter = new Converter();
-		aConverter.addMapping("glob is I");
-		aConverter.addMapping("prok is V");
-		aConverter.addMapping("pish is X");
-		aConverter.addMapping("tegj is L");
-	}
-	
 	/**
 	 * glob glob Silver is 34 Credits
 	 */
@@ -747,6 +746,100 @@ public class ConverterCaseTest {
 		String romanMultiplier = this.aConverter.convertOriginalMultiplierToRoman("pish pish Iron is 3910 Credits");
 		
 		assertEquals("XX", romanMultiplier);
+	}
+	
+	/** 
+	 * how much is pish tegj glob glob ?
+	 * how many Credits is glob prok Silver ?
+	 * how many Credits is glob prok Gold ?
+	 * how many Credits is glob prok Iron ?
+	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 */
+	@Test
+	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlobQuestionMark() {
+		boolean response = this.aConverter.isHowMuchManySentenceValid("how much is pish tegj glob glob ?");
+		
+		assertTrue(response);
+	}
+	
+	/** 
+	 * how much is pish tegj glob glob ?
+	 * how many Credits is glob prok Silver ?
+	 * how many Credits is glob prok Gold ?
+	 * how many Credits is glob prok Iron ?
+	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 */
+	@Test
+	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlobExclamationMark() {
+		boolean response = this.aConverter.isHowMuchManySentenceValid("how much is pish tegj glob glob !");
+		
+		assertFalse(response);
+	}
+	
+	/** 
+	 * how much is pish tegj glob glob ?
+	 * how many Credits is glob prok Silver ?
+	 * how many Credits is glob prok Gold ?
+	 * how many Credits is glob prok Iron ?
+	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 */
+	@Test
+	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlob() {
+		boolean response = this.aConverter.isHowMuchManySentenceValid("how much is pish tegj glob glob");
+		
+		assertFalse(response);
+	}
+	
+	/** 
+	 * how much is pish tegj glob glob ?
+	 * how many Credits is glob prok Silver ?
+	 * how many Credits is glob prok Gold ?
+	 * how many Credits is glob prok Iron ?
+	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 */
+	@Test
+	public void testIsHowMuchManySentenceValid_HowMuchCreditsPishTegjGlobGlobQuestionMark() {
+		boolean response = this.aConverter.isHowMuchManySentenceValid("how much Credits pish tegj glob glob ?");
+		
+		assertFalse(response);
+	}
+	
+	/** 
+	 * how much is pish tegj glob glob ?
+	 * how many Credits is glob prok Silver ?
+	 * how many Credits is glob prok Gold ?
+	 * how many Credits is glob prok Iron ?
+	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 */
+	@Test
+	public void testIsHowMuchManySentenceValid_HowManyCreditsIsPishTegjGlobGlobQuestionMark() {
+		boolean response = this.aConverter.isHowMuchManySentenceValid("how many Credits is pish tegj glob glob ?");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * glob is I
+	 * prok is V
+	 * pish is X
+	 * tegj is L
+	 * 
+	 * glob glob Silver is 34 Credits
+	 * glob prok Gold is 57800 Credits
+	 * pish pish Iron is 3910 Credits
+	 * 
+	 * how much is pish tegj glob glob ?
+	 * glob prok Silver is 68 Credits
+	 * glob prok Gold is 57800 Credits
+	 * glob prok Iron is 782 Credits
+	 * I have no idea what you are talking about
+	 */
+	@Ignore
+	@Test
+	public void testEvaluation_PishTeajGlobGlob() {
+		String response = this.aConverter.evaluateHowMuchManySentence("how much is pish tegj glob glob ?");
+		
+		assertEquals("pish tegj glob glob is 42", response);
 	}
 	
 }

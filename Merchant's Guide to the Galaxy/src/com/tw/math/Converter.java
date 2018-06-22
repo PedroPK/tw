@@ -2,6 +2,7 @@ package com.tw.math;
 
 import static com.tw.utils.Utils.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -76,6 +77,88 @@ public class Converter {
 	
 	public void addValuation(String pReadLine) {
 		
+	}
+	
+	/**
+	 * Example of Valid Sentences
+	 * 		how much is pish tegj glob glob ?
+	 * 		how many Credits is glob prok Silver ?
+	 * 		how many Credits is glob prok Gold ?
+	 * 		how many Credits is glob prok Iron ?
+	 * 
+	 * @param		pReadLine
+	 * 
+	 * @return		boolean		Indicates if the 	pReadLine	is a Valid Sentence
+	 */
+	public boolean isHowMuchManySentenceValid(String pReadLine) {
+		boolean response = false;
+		
+		List<String> terms = split(pReadLine);
+		if (	terms.get(0).equalsIgnoreCase("how")						&&
+				(
+					(
+						terms.get(1).equalsIgnoreCase("much")		&&
+						terms.get(2).equalsIgnoreCase("is")
+					) 													||
+					(
+						terms.get(1).equalsIgnoreCase("many")		&&
+						terms.get(2).equalsIgnoreCase("Credits")	&&
+						terms.get(3).equalsIgnoreCase("is")
+					)
+				)															&&
+				terms.get(terms.size() - 1).equalsIgnoreCase("?")
+		) {
+			boolean hasVariable = false;
+			
+			int finalMultipliersIndex = 0;
+			int variableIndex = -1;
+			if (
+				terms.get(1).equalsIgnoreCase("much")	&&
+				terms.get(2).equalsIgnoreCase("is")
+			) {
+				// From now on, only have Multipliers
+				finalMultipliersIndex = terms.size() - 2;
+			} else if (
+				terms.get(1).equalsIgnoreCase("many")		&&
+				terms.get(2).equalsIgnoreCase("Credits")	&&
+				terms.get(3).equalsIgnoreCase("is")
+			) {
+				// Here we should have Multiplier(s) and a Variable
+				finalMultipliersIndex = terms.size() - 3;
+				variableIndex = terms.size() - 2;
+			}
+			List<String> multipliers = new ArrayList<String>();
+			for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
+				multipliers.add(terms.get(index));
+			}
+			
+			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(multipliers);
+			if (
+					areAllOriginalMultipliersValid	&&
+					(
+						!hasVariable	||
+						(	
+							hasVariable			&&
+							variableIndex > 0	
+							// TODO &&
+						)
+					)
+			) {
+				response = true;
+			}
+		}
+		
+		return response;
+	}
+	
+	public String evaluateHowMuchManySentence(String pReadLine) {
+		String response = null;
+		
+		List<String> sentenceTerms = split(pReadLine);
+		
+		
+		
+		return response;
 	}
 	
 	public String convertOriginalMultiplierToRoman(String pReadLine) {
