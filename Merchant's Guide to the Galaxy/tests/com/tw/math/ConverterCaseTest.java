@@ -65,6 +65,10 @@ public class ConverterCaseTest {
 		aConverter.addMapping("prok is V");
 		aConverter.addMapping("pish is X");
 		aConverter.addMapping("tegj is L");
+		
+		this.aConverter.addValuation("glob glob Silver is 34 Credits");
+		this.aConverter.addValuation("glob prok Gold is 57800 Credits");
+		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
 	}
 	
 	@Test(expected=EmptyRomanException.class)
@@ -810,8 +814,9 @@ public class ConverterCaseTest {
 	 * how many Credits is glob prok Gold ?
 	 * how many Credits is glob prok Iron ?
 	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 * 
+	 * This How Many sentence does not has an Variable in it
 	 */
-	@Ignore
 	@Test
 	public void testIsHowMuchManySentenceValid_HowManyCreditsIsPishTegjGlobGlobQuestionMark() {
 		boolean response = this.aConverter.isHowMuchManySentenceValid("how many Credits is pish tegj glob glob ?");
@@ -908,6 +913,7 @@ public class ConverterCaseTest {
 	@Test
 	public void testEvaluateAttributionSentence_globGlobSilverIs34Credits() {
 		this.aConverter.addValuation("glob glob Silver is 34 Credits");
+		
 		double value = this.aConverter.getVariableValue("Silver");
 		
 		assertEquals(17, value, 0.01);
