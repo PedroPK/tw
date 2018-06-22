@@ -82,11 +82,19 @@ public class Converter {
 		String response = null;
 		
 		if ( this.isValuationSentence(pReadLine) ) {
-			response = getOriginalMultiplierTerms(pReadLine);
-			
-			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(response);
+			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(pReadLine);
 			
 			if ( areAllOriginalMultipliersValid ) {
+				List<String> originalMultipliers= 
+					split(
+						splitToGetOriginalMultiplierTerms(pReadLine)
+					);
+				StringBuffer sbMultipliers = new StringBuffer("");
+				for (String multiplier : originalMultipliers) {
+					Character romanMultiplier = this.aUnitMapping.get(multiplier);
+					sbMultipliers = sbMultipliers.append(Character.toString(romanMultiplier));
+				}
+				response = sbMultipliers.toString();
 				
 			}
 			
@@ -120,13 +128,13 @@ public class Converter {
 		String response = null;
 		
 		if ( this.isValuationSentence(pReadLine) ) {
-			response = getOriginalMultiplierTerms(pReadLine);
+			response = splitToGetOriginalMultiplierTerms(pReadLine);
 		}
 		
 		return response;
 	}
 	
-	public static String getOriginalMultiplierTerms(String pReadLine) {
+	public static String splitToGetOriginalMultiplierTerms(String pReadLine) {
 		String variableTerm = getVariableName(pReadLine);
 		
 		List<String> sentenceTerms = split(pReadLine, " " + variableTerm);

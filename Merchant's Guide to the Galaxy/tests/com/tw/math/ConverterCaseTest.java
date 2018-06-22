@@ -639,7 +639,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierTermsGlobGlobSilverIs34Credits() {
-		String originalMultiplier = Converter.getOriginalMultiplierTerms("glob glob Silver is 34 Credits");
+		String originalMultiplier = Converter.splitToGetOriginalMultiplierTerms("glob glob Silver is 34 Credits");
 		
 		assertEquals("glob glob", originalMultiplier);
 	}
@@ -649,7 +649,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierTermsGlobProkGoldIs57800Credits() {
-		String originalMultiplier = Converter.getOriginalMultiplierTerms("glob prok Gold is 57800 Credits");
+		String originalMultiplier = Converter.splitToGetOriginalMultiplierTerms("glob prok Gold is 57800 Credits");
 		
 		assertEquals("glob prok", originalMultiplier);
 	}
@@ -659,7 +659,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierTerms_PishPishIronIs3910Credits() {
-		String originalMultiplier = Converter.getOriginalMultiplierTerms("pish pish Iron is 3910 Credits");
+		String originalMultiplier = Converter.splitToGetOriginalMultiplierTerms("pish pish Iron is 3910 Credits");
 		
 		assertEquals("pish pish", originalMultiplier);
 	}
@@ -704,10 +704,21 @@ public class ConverterCaseTest {
 		assertFalse(response);
 	}
 	
-	@Ignore
+	/**
+	 * glob is I
+	 * prok is V
+	 * pish is X
+	 * tegj is L
+	 * 
+	 * glob glob Silver is 34 Credits
+	 * glob prok Gold is 57800 Credits
+	 * pish pish Iron is 3910 Credits
+	 */
 	@Test
 	public void testConvertionOriginalMultiplierToRoman() {
+		String romanMultiplier = this.aConverter.convertOriginalMultiplierToRoman("glob glob Silver is 34 Credits");
 		
+		assertEquals("II", romanMultiplier);
 	}
 	
 }
