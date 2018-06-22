@@ -868,6 +868,54 @@ public class ConverterCaseTest {
 	}
 	
 	/**
+	 * glob glob Silver is 34 Credits
+	 */
+	@Test
+	public void testGetAttributedValue_globGlobSilverIs34Credits() {
+		int attributedValue = this.aConverter.getAttributedValue("glob glob Silver is 34 Credits");
+		
+		assertEquals(34, attributedValue);
+	}
+	
+	/**
+	 * glob prok Gold is 57800 Credits
+	 */
+	@Test
+	public void testGetAttributedValue_globProkGoldIs57800Credits() {
+		int attributedValue = this.aConverter.getAttributedValue("glob prok Gold is 57800 Credits");
+		
+		assertEquals(57800, attributedValue);
+	}
+	
+	/**
+	 * pish pish Iron is 3910 Credits
+	 */
+	@Test
+	public void testGetAttributedValue_pishPishIronIs3910Credits() {
+		int attributedValue = this.aConverter.getAttributedValue("pish pish Iron is 3910 Credits");
+		
+		assertEquals(3910, attributedValue);
+	}
+	
+	/**
+	 * glob is I
+	 * prok is V
+	 * pish is X
+	 * tegj is L
+	 * 
+	 * glob glob Silver is 34 Credits
+	 * glob prok Gold is 57800 Credits
+	 * pish pish Iron is 3910 Credits
+	 * 
+	 * TODO Implement this test
+	 */
+	@Ignore
+	@Test
+	public void testEvaluateAttributionSentence() {
+		
+	}
+	
+	/**
 	 * glob is I
 	 * prok is V
 	 * pish is X

@@ -52,12 +52,16 @@ import com.tw.math.exceptions.InvalidRomanException;
  * Therefore, 1903 = MCMIII.
  * 
  * @author pedroc.f.santos
- *
  */
 public class Converter {
 	
+	private static final String QUESTION_MARK = "?";
+	private static final String MANY = "many";
+	private static final String IS = "is";
+	private static final String MUCH = "much";
+	private static final String HOW = "how";
 	private static final String CREDITS = "Credits";
-	private static final String IS_VERB = "is";
+	private static final String IS_VERB = IS;
 	
 	public static final char I = 'I';
 	public static final char V = 'V';
@@ -75,8 +79,30 @@ public class Converter {
 		instanciateValuationMapping();
 	}
 	
+	// TODO Complete this implementation
 	public void addValuation(String pReadLine) {
+		if ( this.isValuationSentence(pReadLine) ) {
+			String romanMultiplier = this.convertOriginalMultiplierToRoman(pReadLine);
+			int multiplier = convertRomanToArabic(romanMultiplier);
+		}
+	}
+	
+	/**
+	 * Example of valid sentences
+	 * 		glob glob Silver is 34 Credits
+	 * 		glob prok Gold is 57800 Credits
+	 * 		pish pish Iron is 3910 Credits
+	 */
+	public int getAttributedValue(String pReadLine) {
+		int value = Integer.MIN_VALUE;
 		
+		if ( isValuationSentence(pReadLine) ) {
+			List<String> terms = split(pReadLine);
+			
+			value = Integer.parseInt(terms.get(terms.size() -2));
+		}
+		
+		return value;
 	}
 	
 	/**
@@ -94,34 +120,34 @@ public class Converter {
 		boolean response = false;
 		
 		List<String> terms = split(pReadLine);
-		if (	terms.get(0).equalsIgnoreCase("how")						&&
+		if (	terms.get(0).equalsIgnoreCase(HOW)						&&
 				(
 					(
-						terms.get(1).equalsIgnoreCase("much")		&&
-						terms.get(2).equalsIgnoreCase("is")
+						terms.get(1).equalsIgnoreCase(MUCH)		&&
+						terms.get(2).equalsIgnoreCase(IS)
 					) 													||
 					(
-						terms.get(1).equalsIgnoreCase("many")		&&
-						terms.get(2).equalsIgnoreCase("Credits")	&&
-						terms.get(3).equalsIgnoreCase("is")
+						terms.get(1).equalsIgnoreCase(MANY)		&&
+						terms.get(2).equalsIgnoreCase(CREDITS)	&&
+						terms.get(3).equalsIgnoreCase(IS)
 					)
 				)															&&
-				terms.get(terms.size() - 1).equalsIgnoreCase("?")
+				terms.get(terms.size() - 1).equalsIgnoreCase(QUESTION_MARK)
 		) {
 			boolean hasVariable = false;
 			
 			int finalMultipliersIndex = 0;
 			int variableIndex = -1;
 			if (
-				terms.get(1).equalsIgnoreCase("much")	&&
-				terms.get(2).equalsIgnoreCase("is")
+				terms.get(1).equalsIgnoreCase(MUCH)	&&
+				terms.get(2).equalsIgnoreCase(IS)
 			) {
 				// From now on, only have Multipliers
 				finalMultipliersIndex = terms.size() - 2;
 			} else if (
-				terms.get(1).equalsIgnoreCase("many")		&&
-				terms.get(2).equalsIgnoreCase("Credits")	&&
-				terms.get(3).equalsIgnoreCase("is")
+				terms.get(1).equalsIgnoreCase(MANY)		&&
+				terms.get(2).equalsIgnoreCase(CREDITS)	&&
+				terms.get(3).equalsIgnoreCase(IS)
 			) {
 				// Here we should have Multiplier(s) and a Variable
 				finalMultipliersIndex = terms.size() - 3;
@@ -140,7 +166,7 @@ public class Converter {
 						(	
 							hasVariable			&&
 							variableIndex > 0	
-							// TODO &&
+							// TODO Complete this with Variable checking &&
 						)
 					)
 			) {
@@ -151,6 +177,7 @@ public class Converter {
 		return response;
 	}
 	
+	// TODO Test this
 	public String evaluateHowMuchManySentence(String pReadLine) {
 		String response = null;
 		
@@ -242,30 +269,32 @@ public class Converter {
 	 * @return		boolean		Indicates if the 	pReadLine	is and ValuationSentence
 	 */
 	public boolean isValuationSentence(String pReadLine) {
-		List<String> sentenceTerms = getSentenceTerms(pReadLine);
-		
 		boolean isMappingSentence = false;
 		
-		String creditTerm	= sentenceTerms.get(sentenceTerms.size() - 1 );
-		String numericTerm	= sentenceTerms.get(sentenceTerms.size() - 2 );
-		String isVerbTerm	= sentenceTerms.get(sentenceTerms.size() - 3 );
-		
-		if (	sentenceTerms != null && sentenceTerms.size() >= 5 ) {
-			if (	creditTerm.equals(CREDITS)		&&
-					isNumeric(numericTerm)			&&
-					isVerbTerm.equals(IS_VERB)		
-			) {
-				//String variableTerm	= getVariableName(sentenceTerms);
-				
-				for ( int index = sentenceTerms.size() - 5; index >= 0; index = index - 1 ) {
-					String romanianTerm	= sentenceTerms.get( index );
+		if ( isStringValid(pReadLine) ) { 
+			List<String> sentenceTerms = getSentenceTerms(pReadLine);
+			
+			String creditTerm	= sentenceTerms.get(sentenceTerms.size() - 1 );
+			String numericTerm	= sentenceTerms.get(sentenceTerms.size() - 2 );
+			String isVerbTerm	= sentenceTerms.get(sentenceTerms.size() - 3 );
+			
+			if (	sentenceTerms != null && sentenceTerms.size() >= 5 ) {
+				if (	creditTerm.equals(CREDITS)		&&
+						isNumeric(numericTerm)			&&
+						isVerbTerm.equals(IS_VERB)		
+				) {
+					//String variableTerm	= getVariableName(sentenceTerms);
 					
-					if ( !this.aUnitMapping.containsKey(romanianTerm) ) {
-						break;	// Does not have at least one of this terms, so the response should be False.
+					for ( int index = sentenceTerms.size() - 5; index >= 0; index = index - 1 ) {
+						String romanianTerm	= sentenceTerms.get( index );
+						
+						if ( !this.aUnitMapping.containsKey(romanianTerm) ) {
+							break;	// Does not have at least one of this terms, so the response should be False.
+						}
 					}
+					
+					isMappingSentence = true;
 				}
-				
-				isMappingSentence = true;
 			}
 		}
 		
