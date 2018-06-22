@@ -909,10 +909,12 @@ public class ConverterCaseTest {
 	 * 
 	 * TODO Implement this test
 	 */
-	@Ignore
 	@Test
 	public void testEvaluateAttributionSentence() {
+		this.aConverter.addValuation("glob glob Silver is 34 Credits");
+		int value = this.aConverter.getVariableValue("Silver");
 		
+		assertEquals(17, value);
 	}
 	
 	/**

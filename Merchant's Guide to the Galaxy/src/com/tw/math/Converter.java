@@ -71,20 +71,37 @@ public class Converter {
 	public static final char D = 'D';
 	public static final char M = 'M';
 	
-	private Map<String, Character>	aUnitMapping;
-	private Map<String, Integer>	aValuationMapping;
+	private Map<String, Character>	aUnitMap;
+	private Map<String, Integer>	aVariableMap;
 	
 	public Converter() {
 		instanciateUnitMapping();
 		instanciateValuationMapping();
 	}
 	
+	public int getVariableValue(String pVariableName) {
+		int response = Integer.MIN_VALUE;
+		
+		response = this.aVariableMap.get(pVariableName);
+		
+		return response;
+	}
+	
 	// TODO Complete this implementation
 	public void addValuation(String pReadLine) {
+		//int response = Integer.MIN_VALUE;
 		if ( this.isValuationSentence(pReadLine) ) {
 			String romanMultiplier = this.convertOriginalMultiplierToRoman(pReadLine);
-			int multiplier = convertRomanToArabic(romanMultiplier);
+			int multiplier		= convertRomanToArabic(romanMultiplier);
+			String variable		= getVariableName(pReadLine);
+			int value			= getAttributedValue(pReadLine);
+			
+			int variableValue = value / multiplier;
+			
+			this.aVariableMap.put(variable, variableValue);
 		}
+		
+		//return response;
 	}
 	
 	/**
@@ -201,7 +218,7 @@ public class Converter {
 					);
 				StringBuffer sbMultipliers = new StringBuffer("");
 				for (String multiplier : originalMultipliers) {
-					Character romanMultiplier = this.aUnitMapping.get(multiplier);
+					Character romanMultiplier = this.aUnitMap.get(multiplier);
 					sbMultipliers = sbMultipliers.append(Character.toString(romanMultiplier));
 				}
 				response = sbMultipliers.toString();
@@ -227,7 +244,7 @@ public class Converter {
 		boolean areAllOriginalMultipliersValid = true;
 		for ( String actualMultiplier : pOriginalMultiplierTerms ) {
 			
-			if ( !this.aUnitMapping.containsKey(actualMultiplier) ) {
+			if ( !this.aUnitMap.containsKey(actualMultiplier) ) {
 				areAllOriginalMultipliersValid = false;
 			}
 		}
@@ -288,7 +305,7 @@ public class Converter {
 					for ( int index = sentenceTerms.size() - 5; index >= 0; index = index - 1 ) {
 						String romanianTerm	= sentenceTerms.get( index );
 						
-						if ( !this.aUnitMapping.containsKey(romanianTerm) ) {
+						if ( !this.aUnitMap.containsKey(romanianTerm) ) {
 							break;	// Does not have at least one of this terms, so the response should be False.
 						}
 					}
@@ -307,13 +324,13 @@ public class Converter {
 	
 	public void addMapping(String pReadLine) {
 		if ( isMappingSentence(pReadLine) ) {
-			if ( this.aUnitMapping == null ) {
+			if ( this.aUnitMap == null ) {
 				instanciateUnitMapping();
 			}
 			
 			List<String> sentenceTerms = getSentenceTerms(pReadLine);
 			
-			this.aUnitMapping.put( 
+			this.aUnitMap.put( 
 				sentenceTerms.get(0),			//	Variable
 				//sentenceTerms.get(1)				is
 				sentenceTerms.get(2).charAt(0)	//	Roman Numeral
@@ -322,18 +339,18 @@ public class Converter {
 	}
 	
 	private void instanciateUnitMapping() {
-		this.aUnitMapping = new HashMap<String, Character>();
+		this.aUnitMap = new HashMap<String, Character>();
 	}
 	
 	private void instanciateValuationMapping() {
-		this.aValuationMapping = new HashMap<String, Integer>();
+		this.aVariableMap = new HashMap<String, Integer>();
 	}
 	
 	public char getMapping(String pVariable) {
 		char response = ' ';
 		
-		if ( isStringValid(pVariable) && this.aUnitMapping != null) {
-			response = this.aUnitMapping.get(pVariable);
+		if ( isStringValid(pVariable) && this.aUnitMap != null) {
+			response = this.aUnitMap.get(pVariable);
 		}
 		
 		return response;
