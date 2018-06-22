@@ -225,7 +225,7 @@ public class Converter {
 		return response;
 	}
 	
-	private static String getVariableName(String pReadLine) {
+	public static String getVariableName(String pReadLine) {
 		List<String> sentenceTerms = getSentenceTerms(pReadLine);
 		
 		String variableTerm	= getVariableName(sentenceTerms);

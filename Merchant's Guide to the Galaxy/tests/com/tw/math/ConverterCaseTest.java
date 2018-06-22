@@ -811,11 +811,60 @@ public class ConverterCaseTest {
 	 * how many Credits is glob prok Iron ?
 	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 */
+	@Ignore
 	@Test
 	public void testIsHowMuchManySentenceValid_HowManyCreditsIsPishTegjGlobGlobQuestionMark() {
 		boolean response = this.aConverter.isHowMuchManySentenceValid("how many Credits is pish tegj glob glob ?");
 		
 		assertFalse(response);
+	}
+	
+	/**
+	 * Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * 		glob glob Silver is 34 Credits
+	 */
+	@Test
+	public void testGetVariableFromAttributionSentence_GlobGlobSilverIs34Credits() {
+		String variable = Converter.getVariableName("glob glob Silver is 34 Credits");
+		
+		assertEquals("Silver", variable);
+	}
+	
+	/**
+	 * Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * 		glob prok Gold is 57800 Credits
+	 */
+	@Test
+	public void testGetVariableFromAttributionSentence_GlobProkGoldIs57800Credits() {
+		String variable = Converter.getVariableName("glob prok Gold is 57800 Credits");
+		
+		assertEquals("Gold", variable);
+	}
+	
+	/**
+	 * Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * 		pish pish Iron is 3910 Credits
+	 */
+	@Test
+	public void testGetVariableFromAttributionSentence_PishPishIronIs3910Credits() {
+		String variable = Converter.getVariableName("pish pish Iron is 3910 Credits");
+		
+		assertEquals("Iron", variable);
 	}
 	
 	/**
@@ -840,6 +889,23 @@ public class ConverterCaseTest {
 		String response = this.aConverter.evaluateHowMuchManySentence("how much is pish tegj glob glob ?");
 		
 		assertEquals("pish tegj glob glob is 42", response);
+	}
+	
+	/**
+	 * Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * 		glob glob Silver is 34 Credits
+	 * 		glob prok Gold is 57800 Credits
+	 * 		pish pish Iron is 3910 Credits
+	 */
+	@Ignore
+	@Test
+	public void testLoadVariableFromAttributionSentence() {
+		
 	}
 	
 }
