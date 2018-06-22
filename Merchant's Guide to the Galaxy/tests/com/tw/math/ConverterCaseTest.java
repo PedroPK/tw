@@ -658,23 +658,50 @@ public class ConverterCaseTest {
 	 * pish pish Iron is 3910 Credits
 	 */
 	@Test
-	public void testGetOriginalMultiplierTermsPishPishIronIs3910Credits() {
+	public void testGetOriginalMultiplierTerms_PishPishIronIs3910Credits() {
 		String originalMultiplier = Converter.getOriginalMultiplierTerms("pish pish Iron is 3910 Credits");
 		
 		assertEquals("pish pish", originalMultiplier);
 	}
 	
 	/**
-	 * 	glob glob Silver is 34 Credits
-	 * 	glob prok Gold is 57800 Credits
-	 * 	pish pish Iron is 3910 Credits
+	 * glob prok Gold is 57800 Credits
 	 */
-	@Ignore
 	@Test
-	public void testAreAllOriginalMultipliersValid() {
+	public void testAreAllOriginalMultipliersValid_GlobProkGoldIs57800Credits() {
+		boolean response = this.aConverter.areAllOriginalMultipliersValid("glob prok Gold is 57800 Credits");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * glob glob Silver is 34 Credits
+	 */
+	@Test
+	public void testAreAllOriginalMultipliersValid_GlobGlobSilverIs34Credits() {
 		boolean response = this.aConverter.areAllOriginalMultipliersValid("glob glob Silver is 34 Credits");
 		
 		assertTrue(response);
+	}
+	
+	/**
+	 * pish pish Iron is 3910 Credits
+	 */
+	@Test
+	public void testAreAllOriginalMultipliersValid_PishPishIronIs3910Credits() {
+		boolean response = this.aConverter.areAllOriginalMultipliersValid("pish pish Iron is 3910 Credits");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * pish pish Iron is 3910 Credits
+	 */
+	@Test
+	public void testAreAllOriginalMultipliersValid_PishTishIronIs3910Credits() {
+		boolean response = this.aConverter.areAllOriginalMultipliersValid("pish tish Iron is 3910 Credits");
+		
+		assertFalse(response);
 	}
 	
 	@Ignore

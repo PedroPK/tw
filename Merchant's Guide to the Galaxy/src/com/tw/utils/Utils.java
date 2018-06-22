@@ -25,4 +25,8 @@ public class Utils {
 		return Arrays.asList(pReadLine.split(separatorValue));
 	}
 	
+	public static List<String> split(String pReadLine) {
+		return split(pReadLine, " ");
+	}
+	
 }

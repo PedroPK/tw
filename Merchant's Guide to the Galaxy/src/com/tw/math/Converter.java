@@ -97,14 +97,15 @@ public class Converter {
 	
 	public boolean areAllOriginalMultipliersValid(String pResponse) {
 		String variableName = getVariableName(pResponse);
-		List<String> originalMultiplierTerms = split(pResponse, variableName);
+		List<String> multiplierAndPredicateTerms = split(pResponse, variableName);
+		List<String> multipliers = split(multiplierAndPredicateTerms.get(0));
 		
 		boolean areAllOriginalMultipliersValid = 
-			areAllOriginalMultipliersValid(originalMultiplierTerms);
+			areAllOriginalMultipliersValid(multipliers);
 		return areAllOriginalMultipliersValid;
 	}
 	
-	public boolean areAllOriginalMultipliersValid(List<String> pOriginalMultiplierTerms) {
+	private boolean areAllOriginalMultipliersValid(List<String> pOriginalMultiplierTerms) {
 		boolean areAllOriginalMultipliersValid = true;
 		for ( String actualMultiplier : pOriginalMultiplierTerms ) {
 			
