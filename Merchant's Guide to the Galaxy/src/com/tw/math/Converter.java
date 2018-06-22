@@ -138,57 +138,11 @@ public class Converter {
 		
 		List<String> terms = split(pReadLine);
 		if (	terms.get(0).equalsIgnoreCase(HOW)						&&
-				(
-					(
-						terms.get(1).equalsIgnoreCase(MUCH)		&&
-						terms.get(2).equalsIgnoreCase(IS)
-					) 													||
-					(
-						terms.get(1).equalsIgnoreCase(MANY)		&&
-						terms.get(2).equalsIgnoreCase(CREDITS)	&&
-						terms.get(3).equalsIgnoreCase(IS)
-					)
-				)															&&
 				terms.get(terms.size() - 1).equalsIgnoreCase(QUESTION_MARK)
 		) {
-			boolean hasVariable = false;
-			
-			int finalMultipliersIndex = 0;
-			int variableIndex = -1;
-			if (
-				terms.get(1).equalsIgnoreCase(MUCH)	&&
-				terms.get(2).equalsIgnoreCase(IS)
-			) {
-				// From now on, only have Multipliers
-				finalMultipliersIndex = terms.size() - 2;
-			} else if (
-				terms.get(1).equalsIgnoreCase(MANY)		&&
-				terms.get(2).equalsIgnoreCase(CREDITS)	&&
-				terms.get(3).equalsIgnoreCase(IS)
-			) {
-				// Here we should have Multiplier(s) and a Variable
-				finalMultipliersIndex = terms.size() - 3;
-				variableIndex = terms.size() - 2;
-			}
-			List<String> multipliers = new ArrayList<String>();
-			for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
-				multipliers.add(terms.get(index));
-			}
-			
-			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(multipliers);
-			if (
-					areAllOriginalMultipliersValid	&&
-					(
-						!hasVariable	||
-						(	
-							hasVariable			&&
-							variableIndex > 0	
-							// TODO Complete this with Variable checking &&
-						)
-					)
-			) {
-				response = true;
-			}
+			response = 
+				isHowMuchSentenceValid(pReadLine)	||
+				isHowManySentenceValid(pReadLine);
 		}
 		
 		return response;
@@ -210,62 +164,42 @@ public class Converter {
 	public boolean isHowMuchSentenceValid(String pReadLine) {
 		boolean response = false;
 		
-		List<String> terms = split(pReadLine);
-		if (	terms.get(0).equalsIgnoreCase(HOW)						&&
-				(
-					(
-						terms.get(1).equalsIgnoreCase(MUCH)		&&
-						terms.get(2).equalsIgnoreCase(IS)
-					) 													||
-					(
-						terms.get(1).equalsIgnoreCase(MANY)		&&
-						terms.get(2).equalsIgnoreCase(CREDITS)	&&
-						terms.get(3).equalsIgnoreCase(IS)
-					)
-				)															&&
-				terms.get(terms.size() - 1).equalsIgnoreCase(QUESTION_MARK)
+		List<String> terms		= split(pReadLine);
+		
+		if (	isEqualsHow(			terms.get(0))						&&
+				isEqualsMuch(			terms.get(1))						&&
+				isEqualsIs(				terms.get(2))						&&
+				isEqualsQuestionMark(	terms.get(terms.size() - 1))
 		) {
-			boolean hasVariable = false;
-			
-			int finalMultipliersIndex = 0;
-			int variableIndex = -1;
-			if (
-				terms.get(1).equalsIgnoreCase(MUCH)	&&
-				terms.get(2).equalsIgnoreCase(IS)
-			) {
-				// From now on, only have Multipliers
-				finalMultipliersIndex = terms.size() - 2;
-			} else if (
-				terms.get(1).equalsIgnoreCase(MANY)		&&
-				terms.get(2).equalsIgnoreCase(CREDITS)	&&
-				terms.get(3).equalsIgnoreCase(IS)
-			) {
-				// Here we should have Multiplier(s) and a Variable
-				finalMultipliersIndex = terms.size() - 3;
-				variableIndex = terms.size() - 2;
-			}
+			// From now on, only have Multipliers
+			int finalMultipliersIndex = terms.size() - 2;
 			List<String> multipliers = new ArrayList<String>();
 			for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
 				multipliers.add(terms.get(index));
 			}
 			
-			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(multipliers);
-			if (
-					areAllOriginalMultipliersValid	&&
-					(
-						!hasVariable	||
-						(	
-							hasVariable			&&
-							variableIndex > 0	
-							// TODO Complete this with Variable checking &&
-						)
-					)
-			) {
+			if (	areAllOriginalMultipliersValid(multipliers)		) {
 				response = true;
 			}
 		}
 		
 		return response;
+	}
+
+	private boolean isEqualsQuestionMark(String pString) {
+		return pString.equalsIgnoreCase(QUESTION_MARK);
+	}
+	
+	private boolean isEqualsIs(String pString) {
+		return pString.equalsIgnoreCase(IS);
+	}
+	
+	private boolean isEqualsMuch(String pString) {
+		return pString.equalsIgnoreCase(MUCH);
+	}
+	
+	private boolean isEqualsHow(String pString) {
+		return pString.equalsIgnoreCase(HOW);
 	}
 	
 	/**
@@ -285,55 +219,30 @@ public class Converter {
 		boolean response = false;
 		
 		List<String> terms = split(pReadLine);
-		if (	terms.get(0).equalsIgnoreCase(HOW)						&&
-				(
-					(
-						terms.get(1).equalsIgnoreCase(MUCH)		&&
-						terms.get(2).equalsIgnoreCase(IS)
-					) 													||
-					(
-						terms.get(1).equalsIgnoreCase(MANY)		&&
-						terms.get(2).equalsIgnoreCase(CREDITS)	&&
-						terms.get(3).equalsIgnoreCase(IS)
-					)
-				)															&&
+		if (	terms.get(0).equalsIgnoreCase(HOW)								&&
+				terms.get(1).equalsIgnoreCase(MANY)								&&
+				terms.get(2).equalsIgnoreCase(CREDITS)							&&
+				terms.get(3).equalsIgnoreCase(IS)								&&
 				terms.get(terms.size() - 1).equalsIgnoreCase(QUESTION_MARK)
 		) {
-			boolean hasVariable = false;
-			
 			int finalMultipliersIndex = 0;
 			int variableIndex = -1;
-			if (
-				terms.get(1).equalsIgnoreCase(MUCH)	&&
-				terms.get(2).equalsIgnoreCase(IS)
-			) {
-				// From now on, only have Multipliers
-				finalMultipliersIndex = terms.size() - 2;
-			} else if (
-				terms.get(1).equalsIgnoreCase(MANY)		&&
-				terms.get(2).equalsIgnoreCase(CREDITS)	&&
-				terms.get(3).equalsIgnoreCase(IS)
-			) {
-				// Here we should have Multiplier(s) and a Variable
-				finalMultipliersIndex = terms.size() - 3;
-				variableIndex = terms.size() - 2;
-			}
+			
+			// Here we should have Multiplier(s) and a Variable
+			finalMultipliersIndex = terms.size() - 3;
+			variableIndex = terms.size() - 2;
+			
 			List<String> multipliers = new ArrayList<String>();
 			for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
 				multipliers.add(terms.get(index));
 			}
 			
 			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(multipliers);
+			boolean isVariableValid = this.aVariableMap.containsKey(terms.get(variableIndex));
+			
 			if (
 					areAllOriginalMultipliersValid	&&
-					(
-						!hasVariable	||
-						(	
-							hasVariable			&&
-							variableIndex > 0	
-							// TODO Complete this with Variable checking &&
-						)
-					)
+					isVariableValid
 			) {
 				response = true;
 			}
