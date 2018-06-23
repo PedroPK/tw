@@ -61,7 +61,6 @@ public class Converter {
 	private static final String MUCH = "much";
 	private static final String HOW = "how";
 	private static final String CREDITS = "Credits";
-	private static final String IS_VERB = IS;
 	
 	public static final char I = 'I';
 	public static final char V = 'V';
@@ -82,13 +81,39 @@ public class Converter {
 	/**
 	 * Main method, that reads a How Much/Many sentence, process it, and gives a response;
 	 * 
-	 * @param pVariableName
+	 * @param pReadLine
 	 * @return
 	 */
-	public String processHowSentence(String pVariableName) {
-		String response = null;
+	public String processHowSentence(String pReadLine) {
+		StringBuffer response = new StringBuffer();
 		
-		return response;
+		if ( isHowMuchManySentenceValid(pReadLine) ) {
+			List<String> multipliers = new ArrayList<String>();
+			if ( isHowMuchSentenceValid(pReadLine) ) {
+				multipliers = getMultipliersFromHowMuchSentence(pReadLine);		//TODO
+			} else if ( isHowManySentenceValid(pReadLine) ) {
+				multipliers = getMultipliersFromHowManySentence(pReadLine);		//TODO
+			}
+			
+			// Repeating the Multipliers
+			StringBuffer sbMultipliers = new StringBuffer();
+			for (String multiplier: multipliers) {
+				sbMultipliers = sbMultipliers.append(multiplier).append(" ");
+			}
+			
+			response = response.append(sbMultipliers);
+			
+			// Put the IS verb
+			response = response.append(IS);
+			
+			// Append the Numerical Value;
+			String romanMultipliers = convertMultipliersToRoman(sbMultipliers.toString());
+			int arabibNumer = convertRomanToArabic(romanMultipliers);
+			
+			response = response.append(" ").append(arabibNumer);
+		}
+		
+		return response.toString();
 	}
 	
 	public double getVariableValue(String pVariableName) {
@@ -101,7 +126,7 @@ public class Converter {
 	
 	public void addValuation(String pReadLine) {
 		if ( this.isValuationSentence(pReadLine) ) {
-			String romanMultiplier = this.convertOriginalMultiplierToRoman(pReadLine);
+			String romanMultiplier = this.extratMultipliersAndConvertToRoman(pReadLine);
 			int multiplier		= convertRomanToArabic(romanMultiplier);
 			String variable		= getVariableName(pReadLine);
 			int value			= getAttributedValue(pReadLine);
@@ -180,11 +205,7 @@ public class Converter {
 				isEqualsQuestionMark(	terms.get(terms.size() - 1))
 		) {
 			// From now on, only have Multipliers
-			int finalMultipliersIndex = terms.size() - 2;
-			List<String> multipliers = new ArrayList<String>();
-			for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
-				multipliers.add(terms.get(index));
-			}
+			List<String> multipliers = getMultipliersFromHowMuchSentence(terms);
 			
 			if (	areAllOriginalMultipliersValid(multipliers)		) {
 				response = true;
@@ -193,7 +214,27 @@ public class Converter {
 		
 		return response;
 	}
-
+	
+	private List<String> getMultipliersFromHowMuchSentence(String pReadLine) {
+		List<String> terms		= split(pReadLine);
+		
+		int finalMultipliersIndex = terms.size() - 2;
+		List<String> multipliers = new ArrayList<String>();
+		for ( int index = 3; index <= finalMultipliersIndex; index = index + 1 ) {
+			multipliers.add(terms.get(index));
+		}
+		return multipliers;
+	}
+	
+	private List<String> getMultipliersFromHowMuchSentence(List<String> pTerms) {
+		int finalMultipliersIndex = pTerms.size() - 2;
+		List<String> multipliers = new ArrayList<String>();
+		for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
+			multipliers.add(pTerms.get(index));
+		}
+		return multipliers;
+	}
+	
 	private boolean isEqualsQuestionMark(String pString) {
 		return pString.equalsIgnoreCase(QUESTION_MARK);
 	}
@@ -233,17 +274,10 @@ public class Converter {
 				terms.get(3).equalsIgnoreCase(IS)								&&
 				terms.get(terms.size() - 1).equalsIgnoreCase(QUESTION_MARK)
 		) {
-			int finalMultipliersIndex = 0;
-			int variableIndex = -1;
-			
 			// Here we should have Multiplier(s) and a Variable
-			finalMultipliersIndex = terms.size() - 3;
-			variableIndex = terms.size() - 2;
+			int variableIndex = terms.size() - 2;
 			
-			List<String> multipliers = new ArrayList<String>();
-			for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
-				multipliers.add(terms.get(index));
-			}
+			List<String> multipliers = getMultipliersFromHowManySentence(terms);
 			
 			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(multipliers);
 			boolean isVariableValid = this.aVariableMap.containsKey(terms.get(variableIndex));
@@ -259,6 +293,26 @@ public class Converter {
 		return response;
 	}
 	
+	private List<String> getMultipliersFromHowManySentence(String pReadLine) {
+		List<String> terms		= split(pReadLine);
+		
+		int finalMultipliersIndex = terms.size() - 3;
+		List<String> multipliers = new ArrayList<String>();
+		for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
+			multipliers.add(terms.get(index));
+		}
+		return multipliers;
+	}
+	
+	private List<String> getMultipliersFromHowManySentence(List<String> pTerms) {
+		int finalMultipliersIndex = pTerms.size() - 3;
+		List<String> multipliers = new ArrayList<String>();
+		for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
+			multipliers.add(pTerms.get(index));
+		}
+		return multipliers;
+	}
+	
 	// TODO Test this
 	public String evaluateHowMuchManySentence(String pReadLine) {
 		String response = null;
@@ -270,10 +324,13 @@ public class Converter {
 		return response;
 	}
 	
-	public String convertOriginalMultiplierToRoman(String pReadLine) {
+	public String extratMultipliersAndConvertToRoman(String pReadLine) {
 		String response = null;
 		
-		if ( this.isValuationSentence(pReadLine) ) {
+		if ( 
+				isStringValid(pReadLine)
+				//this.isValuationSentence(pReadLine) 
+		) {
 			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(pReadLine);
 			
 			if ( areAllOriginalMultipliersValid ) {
@@ -290,6 +347,26 @@ public class Converter {
 				
 			}
 			
+		}
+		
+		return response;
+	}
+	
+	// TODO New Method
+	public String convertMultipliersToRoman(String pMultipliers) {
+		String response = null;
+		
+		if ( 
+				isStringValid(pMultipliers)
+		) {
+			List<String> originalMultipliers= split( pMultipliers );
+			
+			StringBuffer sbMultipliers = new StringBuffer("");
+			for (String multiplier : originalMultipliers) {
+				Character romanMultiplier = this.aUnitMap.get(multiplier);
+				sbMultipliers = sbMultipliers.append(Character.toString(romanMultiplier));
+			}
+			response = sbMultipliers.toString();
 		}
 		
 		return response;
@@ -363,7 +440,7 @@ public class Converter {
 			if (	sentenceTerms != null && sentenceTerms.size() >= 5 ) {
 				if (	creditTerm.equals(CREDITS)		&&
 						isNumeric(numericTerm)			&&
-						isVerbTerm.equals(IS_VERB)		
+						isVerbTerm.equals(IS)		
 				) {
 					//String variableTerm	= getVariableName(sentenceTerms);
 					
@@ -431,7 +508,7 @@ public class Converter {
 				
 				sentenceTerms.get(0).length() >= 0						&&
 				
-				sentenceTerms.get(1).equals(IS_VERB)					&&
+				sentenceTerms.get(1).equals(IS)						&&
 				
 				sentenceTerms.get(2).length() == 1 &&
 				romanValues.contains( sentenceTerms.get(2).charAt(0) )

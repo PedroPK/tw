@@ -717,7 +717,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testConvertionOriginalMultiplierToRoman_GlobGlobSilverIs34Credits() {
-		String romanMultiplier = this.aConverter.convertOriginalMultiplierToRoman("glob glob Silver is 34 Credits");
+		String romanMultiplier = this.aConverter.extratMultipliersAndConvertToRoman("glob glob Silver is 34 Credits");
 		
 		assertEquals("II", romanMultiplier);
 	}
@@ -732,7 +732,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testConvertionOriginalMultiplierToRoman_GlobProkGoldIs57800Credits() {
-		String romanMultiplier = this.aConverter.convertOriginalMultiplierToRoman("glob prok Gold is 57800 Credits");
+		String romanMultiplier = this.aConverter.extratMultipliersAndConvertToRoman("glob prok Gold is 57800 Credits");
 		
 		assertEquals("IV", romanMultiplier);
 	}
@@ -747,7 +747,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testConvertionOriginalMultiplierToRoman_PishPishIronIs3910Credits() {
-		String romanMultiplier = this.aConverter.convertOriginalMultiplierToRoman("pish pish Iron is 3910 Credits");
+		String romanMultiplier = this.aConverter.extratMultipliersAndConvertToRoman("pish pish Iron is 3910 Credits");
 		
 		assertEquals("XX", romanMultiplier);
 	}
