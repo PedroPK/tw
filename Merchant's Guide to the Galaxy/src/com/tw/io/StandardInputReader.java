@@ -36,16 +36,15 @@ public class StandardInputReader {
 		bf.close();
 	}
 	
-	public static void readlineFromScanner() throws IOException {
-		Scanner bf = getScanner();
-		String line = bf.nextLine();
+	public static void readlineFromScanner() {
+		Scanner scanner = getScanner();
 		
-		while ( line != null ) {
+		while ( scanner.hasNextLine() ) {
+			String line = scanner.nextLine();
 			System.out.println("Linha lida = " + line);
-			line = bf.nextLine();
 		}
 		
-		bf.close();
+		scanner.close();
 	}
 	
 	public static void main(String[] args) {
@@ -59,7 +58,7 @@ public class StandardInputReader {
 		
 		//try {
 			//bf.readLine();
-			scanner.nextLine();
+			readlineFromScanner();
 		/*} catch (IOException e) {
 			//try {
 				//bf.close();
