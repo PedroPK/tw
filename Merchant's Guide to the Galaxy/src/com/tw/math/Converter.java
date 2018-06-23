@@ -88,11 +88,19 @@ public class Converter {
 		StringBuffer response = new StringBuffer();
 		
 		if ( isHowMuchManySentenceValid(pReadLine) ) {
+			StringBuffer variable = new StringBuffer();
+			StringBuffer credits = new StringBuffer();
+			
 			List<String> multipliers = new ArrayList<String>();
 			if ( isHowMuchSentenceValid(pReadLine) ) {
-				multipliers = getMultipliersFromHowMuchSentence(pReadLine);		//TODO
+				multipliers = getMultipliersFromHowMuchSentence(pReadLine);
 			} else if ( isHowManySentenceValid(pReadLine) ) {
-				multipliers = getMultipliersFromHowManySentence(pReadLine);		//TODO
+				multipliers = getMultipliersFromHowManySentence(pReadLine);
+				
+				List<String> terms = split(pReadLine);
+				variable = variable.append(terms.get( terms.size() -2 )).append(" ");
+				
+				credits = new StringBuffer(" Credits");
 			}
 			
 			// Repeating the Multipliers
@@ -103,6 +111,10 @@ public class Converter {
 			
 			response = response.append(sbMultipliers);
 			
+			// Append Variable name, if its a How Many sentence
+			response = response.append(variable);
+					
+			
 			// Put the IS verb
 			response = response.append(IS);
 			
@@ -110,7 +122,19 @@ public class Converter {
 			String romanMultipliers = convertMultipliersToRoman(sbMultipliers.toString());
 			int arabibNumer = convertRomanToArabic(romanMultipliers);
 			
-			response = response.append(" ").append(arabibNumer);
+			int finalValue = arabibNumer;
+			
+			if (	isStringValid( variable.toString() )	) {
+				String variableString = variable.toString().trim();
+				double variableValue = this.aVariableMap.get(variableString);
+				finalValue = (int) (finalValue * variableValue);
+			}
+			
+			// Do the Math
+			response = response.append(" ").append(finalValue);
+			
+			// Append Credits, if its a How Many sentence
+			response = response.append(credits);
 		}
 		
 		return response.toString();
@@ -298,7 +322,7 @@ public class Converter {
 		
 		int finalMultipliersIndex = terms.size() - 3;
 		List<String> multipliers = new ArrayList<String>();
-		for ( int index = 4; index < finalMultipliersIndex; index = index + 1 ) {
+		for ( int index = 4; index <= finalMultipliersIndex; index = index + 1 ) {
 			multipliers.add(terms.get(index));
 		}
 		return multipliers;
