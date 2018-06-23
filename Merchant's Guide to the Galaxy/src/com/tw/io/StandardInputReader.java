@@ -31,6 +31,10 @@ public class StandardInputReader {
 		scanner.close();
 	}
 	
+	public void processInputLineRead(String pReadLine) {
+		// Here I h
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Iniciando a classe StandardInputReader");
 		
@@ -38,5 +42,5 @@ public class StandardInputReader {
 		
 		readlineFromScanner();
 	}
-
+	
 }
