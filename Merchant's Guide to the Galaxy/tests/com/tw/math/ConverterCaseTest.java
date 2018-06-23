@@ -999,13 +999,9 @@ public class ConverterCaseTest {
 	/**
 	 * Test this kind of Sentences, with the respective Answers
 	 * 		how many Credits is glob prok Gold ?
-	 * 		how many Credits is glob prok Iron ?
-	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 * 		
 	 * Test Output:
 	 * 		glob prok Gold is 57800 Credits
-	 * 		glob prok Iron is 782 Credits
-	 * 		I have no idea what you are talking about
 	 * 
 	 * TODO		Complete these Tests.
 	 */
@@ -1032,6 +1028,22 @@ public class ConverterCaseTest {
 		String answer = this.aConverter.processHowSentence("how many Credits is glob prok Iron ?");
 		
 		assertEquals("glob prok Iron is 782 Credits", answer);
+	}
+	
+	/**
+	 * Test this kind of Sentences, with the respective Answers
+	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 * 		
+	 * Test Output:
+	 * 		I have no idea what you are talking about
+	 * 
+	 * TODO		Complete these Tests.
+	 */
+	@Test
+	public void testProcessHowSentence_howMuchWoodCouldAWoodchuckChuckIfAWoodchuckCouldChuckWoodQuestionMark() {
+		String answer = this.aConverter.processHowSentence("how much wood could a woodchuck chuck if a woodchuck could chuck wood ?");
+		
+		assertEquals("I have no idea what you are talking about", answer);
 	}
 	
 	/**

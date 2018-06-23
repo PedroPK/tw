@@ -136,6 +136,8 @@ public class Converter {
 			
 			// Append Credits, if its a How Many sentence
 			response = response.append(credits);
+		} else {
+			response = new StringBuffer("I have no idea what you are talking about");
 		}
 		
 		return response.toString();
