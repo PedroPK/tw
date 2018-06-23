@@ -1,16 +1,17 @@
 package com.tw.io;
 
-import java.io.BufferedReader;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.Scanner;
 
 import org.junit.Test;
 
 public class StandardInputReaderTestCase {
 	
 	@Test
-	public void testGetBufferedReader() {
-		BufferedReader bf = StandardInputReader.getBufferedReader();
+	public void testGetScanner() {
+		Scanner scanner = StandardInputReader.getScanner();
 		
-		assertNotNull(bf);
+		assertNotNull(scanner);
 	}
 }
