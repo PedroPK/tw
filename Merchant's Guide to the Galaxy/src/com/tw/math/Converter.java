@@ -1,11 +1,12 @@
 package com.tw.math;
 
+import static com.tw.utils.Constants.*;
 import static com.tw.utils.Utils.*;
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,21 +56,6 @@ import com.tw.math.exceptions.InvalidRomanException;
  * @author pedroc.f.santos
  */
 public class Converter {
-	
-	private static final String QUESTION_MARK = "?";
-	private static final String MANY = "many";
-	private static final String IS = "is";
-	private static final String MUCH = "much";
-	private static final String HOW = "how";
-	private static final String CREDITS = "Credits";
-	
-	public static final char I = 'I';
-	public static final char V = 'V';
-	public static final char X = 'X';
-	public static final char L = 'L';
-	public static final char C = 'C';
-	public static final char D = 'D';
-	public static final char M = 'M';
 	
 	private Map<String, Character>	aUnitMap;
 	private Map<String, Double>	aVariableMap;
@@ -527,7 +513,14 @@ public class Converter {
 		return response;
 	}
 	
-	private boolean isMappingSentence(String pReadLine) {
+	/**
+	 * This method indicates if the parameter String contains a Unit to Roman Mapping Sentence
+	 * 
+	 * @param		pReadLine
+	 * 
+	 * @return		boolean		Indicantes if the	pReadLine	contais a Unit to Roman Mapping Sentence
+	 */
+	public static boolean isMappingSentence(String pReadLine) {
 		List<String> sentenceTerms = getSentenceTerms(pReadLine);
 		
 		Set<Character> romanValues = getRomanNumerals();
@@ -545,18 +538,6 @@ public class Converter {
 			isMappingSentence = true;
 		}
 		return isMappingSentence;
-	}
-	
-	private Set<Character> getRomanNumerals() {
-		Set<Character> romanValues = new HashSet<Character>();
-		romanValues.add(I);
-		romanValues.add(V);
-		romanValues.add(X);
-		romanValues.add(L);
-		romanValues.add(C);
-		romanValues.add(D);
-		romanValues.add(M);
-		return romanValues;
 	}
 	
 	private static List<String> getSentenceTerms(String pReadLine) {

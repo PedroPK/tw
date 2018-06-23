@@ -50,6 +50,33 @@ import static com.tw.math.Converter.*;
  * In the above example, 1,000 = M, 900 = CM, and 3 = III. 
  * 
  * Therefore, 1903 = MCMIII.
+ * (Source: Wikipedia http://en.wikipedia.org/wiki/Roman_numerals)
+ * 
+ * Input to your program consists of lines of text detailing your notes on the conversion between intergalactic units and roman numerals.
+ * You are expected to handle invalid queries appropriately.
+ * 
+ * Test input:
+ * 		glob is I
+ * 		prok is V
+ * 		pish is X
+ * 		tegj is L
+ * 		
+ * 		glob glob Silver is 34 Credits
+ * 		glob prok Gold is 57800 Credits
+ * 		pish pish Iron is 3910 Credits
+ * 		
+ * 		how much is pish tegj glob glob ?
+ * 		how many Credits is glob prok Silver ?
+ * 		how many Credits is glob prok Gold ?
+ * 		how many Credits is glob prok Iron ?
+ * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+ * 
+ * Test Output:
+ * 		pish tegj glob glob is 42
+ * 		glob prok Silver is 68 Credits
+ * 		glob prok Gold is 57800 Credits
+ * 		glob prok Iron is 782 Credits
+ * 		I have no idea what you are talking about
  * 
  * @author pedroc.f.santos
  */
@@ -524,6 +551,46 @@ public class ConverterCaseTest {
 	 * glob is I
 	 */
 	@Test
+	public void testIsMappingSentence_GlobIsI() {
+		boolean response = Converter.isMappingSentence("glob is I");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * glob is A
+	 */
+	@Test
+	public void testIsMappingSentence_GlobIsA() {
+		boolean response = Converter.isMappingSentence("glob is A");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * glob is V
+	 */
+	@Test
+	public void testIsMappingSentence_GlobIsV() {
+		boolean response = Converter.isMappingSentence("glob is V");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * glob are X
+	 */
+	@Test
+	public void testIsMappingSentence_GlobIsX() {
+		boolean response = Converter.isMappingSentence("glob are X");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * glob is I
+	 */
+	@Test
 	public void testMappingGlobToI() {
 		Converter converter = new Converter();
 		converter.addMapping("glob is I");
@@ -573,8 +640,6 @@ public class ConverterCaseTest {
 	 * prok is V
 	 * pish is X
 	 * tegj is L
-	 * 
-	 * glob glob Silver is 34 Credits
 	 */
 	@Test
 	public void testFullMapping() {
@@ -726,9 +791,6 @@ public class ConverterCaseTest {
 	
 	/**
 	 * glob is I
-	 * prok is V
-	 * pish is X
-	 * tegj is L
 	 * 
 	 * glob glob Silver is 34 Credits
 	 */
@@ -742,8 +804,6 @@ public class ConverterCaseTest {
 	/**
 	 * glob is I
 	 * prok is V
-	 * pish is X
-	 * tegj is L
 	 * 
 	 * glob prok Gold is 57800 Credits
 	 */
@@ -755,10 +815,7 @@ public class ConverterCaseTest {
 	}
 	
 	/**
-	 * glob is I
-	 * prok is V
 	 * pish is X
-	 * tegj is L
 	 * 
 	 * pish pish Iron is 3910 Credits
 	 */
@@ -771,10 +828,6 @@ public class ConverterCaseTest {
 	
 	/** 
 	 * how much is pish tegj glob glob ?
-	 * how many Credits is glob prok Silver ?
-	 * how many Credits is glob prok Gold ?
-	 * how many Credits is glob prok Iron ?
-	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlobQuestionMark() {
@@ -785,10 +838,6 @@ public class ConverterCaseTest {
 	
 	/** 
 	 * how much is pish tegj glob glob ?
-	 * how many Credits is glob prok Silver ?
-	 * how many Credits is glob prok Gold ?
-	 * how many Credits is glob prok Iron ?
-	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlobExclamationMark() {
@@ -799,10 +848,6 @@ public class ConverterCaseTest {
 	
 	/** 
 	 * how much is pish tegj glob glob ?
-	 * how many Credits is glob prok Silver ?
-	 * how many Credits is glob prok Gold ?
-	 * how many Credits is glob prok Iron ?
-	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlob() {
@@ -813,10 +858,6 @@ public class ConverterCaseTest {
 	
 	/** 
 	 * how much is pish tegj glob glob ?
-	 * how many Credits is glob prok Silver ?
-	 * how many Credits is glob prok Gold ?
-	 * how many Credits is glob prok Iron ?
-	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowMuchCreditsPishTegjGlobGlobQuestionMark() {
@@ -827,10 +868,6 @@ public class ConverterCaseTest {
 	
 	/** 
 	 * how much is pish tegj glob glob ?
-	 * how many Credits is glob prok Silver ?
-	 * how many Credits is glob prok Gold ?
-	 * how many Credits is glob prok Iron ?
-	 * how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 * 
 	 * This How Many sentence does not has an Variable in it
 	 */
@@ -844,9 +881,6 @@ public class ConverterCaseTest {
 	/**
 	 * Test input:
 	 * 		glob is I
-	 * 		prok is V
-	 * 		pish is X
-	 * 		tegj is L
 	 * 		
 	 * 		glob glob Silver is 34 Credits
 	 */
@@ -861,8 +895,6 @@ public class ConverterCaseTest {
 	 * Test input:
 	 * 		glob is I
 	 * 		prok is V
-	 * 		pish is X
-	 * 		tegj is L
 	 * 		
 	 * 		glob prok Gold is 57800 Credits
 	 */
@@ -875,10 +907,7 @@ public class ConverterCaseTest {
 	
 	/**
 	 * Test input:
-	 * 		glob is I
-	 * 		prok is V
 	 * 		pish is X
-	 * 		tegj is L
 	 * 		
 	 * 		pish pish Iron is 3910 Credits
 	 */
@@ -921,9 +950,6 @@ public class ConverterCaseTest {
 	
 	/**
 	 * glob is I
-	 * prok is V
-	 * pish is X
-	 * tegj is L
 	 * 
 	 * glob glob Silver is 34 Credits
 	 */
@@ -939,8 +965,6 @@ public class ConverterCaseTest {
 	/**
 	 * glob is I
 	 * prok is V
-	 * pish is X
-	 * tegj is L
 	 * 
 	 * glob prok Gold is 57800 Credits
 	 */
@@ -953,10 +977,7 @@ public class ConverterCaseTest {
 	}
 	
 	/**
-	 * glob is I
-	 * prok is V
 	 * pish is X
-	 * tegj is L
 	 * 
 	 * pish pish Iron is 3910 Credits
 	 */
@@ -1048,19 +1069,10 @@ public class ConverterCaseTest {
 	
 	/**
 	 * glob is I
-	 * prok is V
 	 * pish is X
 	 * tegj is L
 	 * 
-	 * glob glob Silver is 34 Credits
-	 * glob prok Gold is 57800 Credits
-	 * pish pish Iron is 3910 Credits
-	 * 
 	 * how much is pish tegj glob glob ?
-	 * glob prok Silver is 68 Credits
-	 * glob prok Gold is 57800 Credits
-	 * glob prok Iron is 782 Credits
-	 * I have no idea what you are talking about
 	 */
 	@Ignore
 	@Test

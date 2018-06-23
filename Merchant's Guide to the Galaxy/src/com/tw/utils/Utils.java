@@ -1,7 +1,11 @@
 package com.tw.utils;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static com.tw.utils.Constants.*;
 
 public class Utils {
 	
@@ -27,6 +31,18 @@ public class Utils {
 	
 	public static List<String> split(String pReadLine) {
 		return split(pReadLine, " ");
+	}
+	
+	public static Set<Character> getRomanNumerals() {
+		Set<Character> romanValues = new HashSet<Character>();
+		romanValues.add(I);
+		romanValues.add(V);
+		romanValues.add(X);
+		romanValues.add(L);
+		romanValues.add(C);
+		romanValues.add(D);
+		romanValues.add(M);
+		return romanValues;
 	}
 	
 }
