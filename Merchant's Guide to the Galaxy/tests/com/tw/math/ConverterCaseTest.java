@@ -71,6 +71,23 @@ public class ConverterCaseTest {
 		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
 	}
 	
+	/**
+	 * Test the Iron Valuation
+	 * Since pish is X, hence pish is 10, pish pish = 20
+	 * So, 20 Iron = 3910;
+	 * Then, 3910 / 20 = 195.5;
+	 * 
+	 * So, It should be 195.5
+	 */
+	@Test
+	public void testIronValuation() {
+		aConverter.addMapping("pish is X");
+		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
+		double ironValue = this.aConverter.getVariableValue("Iron");
+		
+		assertEquals(195.5, ironValue, 0.01);
+	}
+	
 	@Test(expected=EmptyRomanException.class)
 	public void testNullConvertionRomanToArabic() {
 		int response = convertRomanToArabic(null);
@@ -948,7 +965,7 @@ public class ConverterCaseTest {
 		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
 		double value = this.aConverter.getVariableValue("Iron");
 		
-		assertEquals(195, value, 0.01);
+		assertEquals(195.5, value, 0.01);
 	}
 	
 	/**
@@ -968,12 +985,24 @@ public class ConverterCaseTest {
 	/**
 	 * Test this kind of Sentences, with the respective Answers
 	 * 		how many Credits is glob prok Silver ?
+	 * 		
+	 * Test Output:
+	 * 		glob prok Silver is 68 Credits
+	 */
+	@Test
+	public void testProcessHowSentence_howManyCreditsIsGlobProkSilverQuestionMark() {
+		String answer = this.aConverter.processHowSentence("how many Credits is glob prok Silver ?");
+		
+		assertEquals("glob prok Silver is 68 Credits", answer);
+	}
+	
+	/**
+	 * Test this kind of Sentences, with the respective Answers
 	 * 		how many Credits is glob prok Gold ?
 	 * 		how many Credits is glob prok Iron ?
 	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 * 		
 	 * Test Output:
-	 * 		glob prok Silver is 68 Credits
 	 * 		glob prok Gold is 57800 Credits
 	 * 		glob prok Iron is 782 Credits
 	 * 		I have no idea what you are talking about
@@ -981,10 +1010,28 @@ public class ConverterCaseTest {
 	 * TODO		Complete these Tests.
 	 */
 	@Test
-	public void testProcessHowSentence_howManyCreditsIsGlobProkSilverQuestionMark() {
-		String answer = this.aConverter.processHowSentence("how many Credits is glob prok Silver ?");
+	public void testProcessHowSentence_howManyCreditsIsGlobProkGoldQuestionMark() {
+		String answer = this.aConverter.processHowSentence("how many Credits is glob prok Gold ?");
 		
-		assertEquals("glob prok Silver is 68 Credits", answer);
+		assertEquals("glob prok Gold is 57800 Credits", answer);
+	}
+	
+	/**
+	 * Test this kind of Sentences, with the respective Answers
+	 * 		how many Credits is glob prok Iron ?
+	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 * 		
+	 * Test Output:
+	 * 		glob prok Iron is 782 Credits
+	 * 		I have no idea what you are talking about
+	 * 
+	 * TODO		Complete these Tests.
+	 */
+	@Test
+	public void testProcessHowSentence_howManyCreditsIsGlobProkIronQuestionMark() {
+		String answer = this.aConverter.processHowSentence("how many Credits is glob prok Iron ?");
+		
+		assertEquals("glob prok Iron is 782 Credits", answer);
 	}
 	
 	/**

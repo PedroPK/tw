@@ -2,6 +2,7 @@ package com.tw.math;
 
 import static com.tw.utils.Utils.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -155,7 +156,9 @@ public class Converter {
 			String variable		= getVariableName(pReadLine);
 			int value			= getAttributedValue(pReadLine);
 			
-			double variableValue = value / multiplier;
+			BigDecimal dividend = new BigDecimal(value);
+			BigDecimal divisor = new BigDecimal(multiplier);
+			double variableValue = dividend.divide(divisor).doubleValue();
 			
 			this.aVariableMap.put(variable, variableValue);
 		}
