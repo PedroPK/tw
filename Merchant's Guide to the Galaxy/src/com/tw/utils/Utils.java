@@ -20,7 +20,9 @@ public class Utils {
 				Integer.parseInt(pNumericString);
 				isNumeric = true;
 			}
-		} catch ( NumberFormatException nfe ) {}
+		} catch ( NumberFormatException nfe ) {
+			// The	pNumericString is not a Valid Integer
+		}
 		
 		return isNumeric;
 	}

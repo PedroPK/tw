@@ -104,7 +104,6 @@ public class ConverterCaseTest {
 	 * 		slash splash slash tegj pish pish	pish	glob glob glob BitCoin is 1 Credit
 	 * 		M		C		M	L	X	X		X		I		I	I
 	 * 
-	 * TODO		Uncomment the last AddValuation
 	 */
 	@Before
 	public void prepareConverter() {
@@ -1120,16 +1119,29 @@ public class ConverterCaseTest {
 	}
 	
 	/**
+	 * Original Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * Extended Test input
+	 * 		splash is C
+	 * 		smash is D
+	 * 		slash is M
+	 * 		
+	 * 		slash	splash	slash	tegj	pish	pish	pish	glob	glob	glob	BitCoin is 1 Credit
+	 * 		M		C		M		L		X		X		X		I		I		I
+	 * 
 	 * Test this kind of Sentences, with the respective Answers
-	 * 		how many Credits is glob prok Iron ?
-	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 * 		how many Credits is pish pish pish prok BitCoin ?
 	 * 		
 	 * Test Output:
-	 * 		glob prok Iron is 782 Credits
-	 * 		I have no idea what you are talking about
+	 * 		pish pish pish prok BitCoin is 0.01765 Credits
+	 * 
 	 */
 	@Test
-	public void testProcessHowSentence_howManyCreditsIsPishPishPishProkBitCoinQuestionMark() {
+	public void testProcessHowSentence_howManyCreditsIsPishPishPishProkBitcoinQuestionMark() {
 		// Original Test cases
 		aConverter.addMapping("glob is I");
 		aConverter.addMapping("prok is V");

@@ -2,6 +2,7 @@ package com.tw.utils;
 
 public class Constants {
 	
+	// Sentences common terms
 	public static final String QUESTION_MARK = "?";
 	public static final String MANY = "many";
 	public static final String IS = "is";
@@ -10,6 +11,7 @@ public class Constants {
 	public static final String CREDITS = "Credits";
 	public static final String CREDIT = "Credit";
 	
+	// Roman Numbers
 	public static final char I = 'I';
 	public static final char V = 'V';
 	public static final char X = 'X';
@@ -17,5 +19,8 @@ public class Constants {
 	public static final char C = 'C';
 	public static final char D = 'D';
 	public static final char M = 'M';
+	
+	// Sentences
+	public static final String I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT = "I have no idea what you are talking about";
 	
 }

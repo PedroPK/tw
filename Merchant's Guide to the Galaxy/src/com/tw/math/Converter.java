@@ -79,11 +79,11 @@ public class Converter {
 			StringBuffer variable = new StringBuffer();
 			StringBuffer credits = new StringBuffer();
 			
-			List<String> multipliers = new ArrayList<String>();
+			List<String> multipliersList = new ArrayList<String>();
 			if ( isHowMuchSentenceValid(pReadLine) ) {
-				multipliers = getMultipliersFromHowMuchSentence(pReadLine);
+				multipliersList = getMultipliersFromHowMuchSentence(pReadLine);
 			} else if ( isHowManySentenceValid(pReadLine) ) {
-				multipliers = getMultipliersFromHowManySentence(pReadLine);
+				multipliersList = getMultipliersFromHowManySentence(pReadLine);
 				
 				List<String> terms = split(pReadLine);
 				variable = variable.append(terms.get( terms.size() -2 )).append(" ");
@@ -92,12 +92,10 @@ public class Converter {
 			}
 			
 			// Repeating the Multipliers
-			StringBuffer sbMultipliers = new StringBuffer();
-			for ( String multiplier: multipliers ) {
-				sbMultipliers = sbMultipliers.append(multiplier).append(" ");
-			}
+			StringBuffer multipliersSB = getMultipliers(multipliersList);
 			
-			response = response.append(sbMultipliers);
+			// Append Multipliers to the Response sentence
+			response = response.append(multipliersSB);
 			
 			// Append Variable name, if its a How Many sentence
 			response = response.append(variable);
@@ -106,34 +104,56 @@ public class Converter {
 			response = response.append(IS);
 			
 			// Append the Numerical Value;
-			String romanMultipliers = convertMultipliersToRoman(sbMultipliers.toString());
-			int arabibNumer = convertRomanToArabic(romanMultipliers);
-			
-			int finalValue = arabibNumer;
-			BigDecimal finalValueBigDecimal = new BigDecimal(arabibNumer);
-			
-			if (	isStringValid( variable.toString() )	) {
-				String variableString = variable.toString().trim();
-				double variableValue = this.aVariableMap.get(variableString);
-				finalValue = (int) (finalValue * variableValue);
-				finalValueBigDecimal = finalValueBigDecimal.multiply(new BigDecimal(variableValue));
-			}
-			finalValueBigDecimal = finalValueBigDecimal.setScale(5, RoundingMode.HALF_EVEN);
-			BigDecimal fraction = finalValueBigDecimal.remainder(new BigDecimal(1));
-			if ( fraction.compareTo(BigDecimal.ZERO) == 0 ) {
-				finalValueBigDecimal = finalValueBigDecimal.setScale(0, RoundingMode.HALF_EVEN);
-			}
-			
-			// Do the Math
-			response = response.append(" ").append(finalValueBigDecimal);
+			response = appendNumericalValue(response, variable, multipliersSB);
 			
 			// Append Credits, if its a How Many sentence
 			response = response.append(credits);
 		} else {
-			response = new StringBuffer("I have no idea what you are talking about");
+			response = new StringBuffer(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
 		}
 		
 		return response.toString();
+	}
+
+	private StringBuffer getMultipliers(List<String> pMultipliersList) {
+		StringBuffer multipliersSB = new StringBuffer();
+		for ( String multiplier: pMultipliersList ) {
+			multipliersSB = multipliersSB.append(multiplier).append(" ");
+		}
+		return multipliersSB;
+	}
+	
+	private StringBuffer appendNumericalValue(StringBuffer pResponse, StringBuffer pVariableName, StringBuffer pMultipliers) {
+		String romanMultipliers = convertMultipliersToRoman(pMultipliers.toString());
+		int arabicNumber = convertRomanToArabic(romanMultipliers);
+		
+		// Do the Math
+		BigDecimal finalValue = calculateFinalValue(pVariableName, arabicNumber);
+		
+		finalValue = processDecimalValues(finalValue);
+		
+		pResponse = pResponse.append(" ").append(finalValue);
+		return pResponse;
+	}
+
+	private BigDecimal calculateFinalValue(StringBuffer pVariableName, int pArabicNumer) {
+		BigDecimal finalValue = new BigDecimal(pArabicNumer);
+		
+		if (	isStringValid( pVariableName.toString() )	) {
+			String variableName = pVariableName.toString().trim();
+			double variableValue = this.aVariableMap.get(variableName);
+			finalValue = finalValue.multiply(new BigDecimal(variableValue));
+		}
+		return finalValue;
+	}
+
+	private BigDecimal processDecimalValues(BigDecimal pFinalValue) {
+		pFinalValue = pFinalValue.setScale(5, RoundingMode.HALF_EVEN);
+		BigDecimal fraction = pFinalValue.remainder(new BigDecimal(1));
+		if ( fraction.compareTo(BigDecimal.ZERO) == 0 ) {
+			pFinalValue = pFinalValue.setScale(0, RoundingMode.HALF_EVEN);
+		}
+		return pFinalValue;
 	}
 	
 	public double getVariableValue(String pVariableName) {
