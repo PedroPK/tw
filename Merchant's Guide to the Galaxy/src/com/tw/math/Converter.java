@@ -93,7 +93,7 @@ public class Converter {
 			
 			// Repeating the Multipliers
 			StringBuffer sbMultipliers = new StringBuffer();
-			for (String multiplier: multipliers) {
+			for ( String multiplier: multipliers ) {
 				sbMultipliers = sbMultipliers.append(multiplier).append(" ");
 			}
 			
@@ -101,7 +101,6 @@ public class Converter {
 			
 			// Append Variable name, if its a How Many sentence
 			response = response.append(variable);
-					
 			
 			// Put the IS verb
 			response = response.append(IS);
@@ -111,15 +110,22 @@ public class Converter {
 			int arabibNumer = convertRomanToArabic(romanMultipliers);
 			
 			int finalValue = arabibNumer;
+			BigDecimal finalValueBigDecimal = new BigDecimal(arabibNumer);
 			
 			if (	isStringValid( variable.toString() )	) {
 				String variableString = variable.toString().trim();
 				double variableValue = this.aVariableMap.get(variableString);
 				finalValue = (int) (finalValue * variableValue);
+				finalValueBigDecimal = finalValueBigDecimal.multiply(new BigDecimal(variableValue));
+			}
+			finalValueBigDecimal = finalValueBigDecimal.setScale(5, RoundingMode.HALF_EVEN);
+			BigDecimal fraction = finalValueBigDecimal.remainder(new BigDecimal(1));
+			if ( fraction.compareTo(BigDecimal.ZERO) == 0 ) {
+				finalValueBigDecimal = finalValueBigDecimal.setScale(0, RoundingMode.HALF_EVEN);
 			}
 			
 			// Do the Math
-			response = response.append(" ").append(finalValue);
+			response = response.append(" ").append(finalValueBigDecimal);
 			
 			// Append Credits, if its a How Many sentence
 			response = response.append(credits);

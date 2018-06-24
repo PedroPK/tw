@@ -463,6 +463,13 @@ public class ConverterCaseTest {
 	}
 	
 	@Test
+	public void testValidRoman_35() {
+		String response = convertArabicToRoman("35");
+		
+		assertEquals("XXXV", response);
+	}
+	
+	@Test
 	public void testValidRoman_40() {
 		String response = convertArabicToRoman("40");
 		
@@ -1088,8 +1095,6 @@ public class ConverterCaseTest {
 	 * 		
 	 * Test Output:
 	 * 		glob prok Gold is 57800 Credits
-	 * 
-	 * TODO		Complete these Tests.
 	 */
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsGlobProkGoldQuestionMark() {
@@ -1106,8 +1111,6 @@ public class ConverterCaseTest {
 	 * Test Output:
 	 * 		glob prok Iron is 782 Credits
 	 * 		I have no idea what you are talking about
-	 * 
-	 * TODO		Complete these Tests.
 	 */
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsGlobProkIronQuestionMark() {
@@ -1118,12 +1121,40 @@ public class ConverterCaseTest {
 	
 	/**
 	 * Test this kind of Sentences, with the respective Answers
+	 * 		how many Credits is glob prok Iron ?
+	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 * 		
+	 * Test Output:
+	 * 		glob prok Iron is 782 Credits
+	 * 		I have no idea what you are talking about
+	 */
+	@Test
+	public void testProcessHowSentence_howManyCreditsIsPishPishPishProkBitCoinQuestionMark() {
+		// Original Test cases
+		aConverter.addMapping("glob is I");
+		aConverter.addMapping("prok is V");
+		aConverter.addMapping("pish is X");
+		aConverter.addMapping("tegj is L");
+		
+		// Extended Test cases
+		aConverter.addMapping("splash is C");
+		aConverter.addMapping("smash is D");
+		aConverter.addMapping("slash is M");
+		
+		// Extended Test cases
+		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		
+		String answer = this.aConverter.processHowSentence("how many Credits is pish pish pish prok BitCoin ?");
+		
+		assertEquals("pish pish pish prok BitCoin is 0.01765 Credits", answer);
+	}
+	
+	/**
+	 * Test this kind of Sentences, with the respective Answers
 	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 * 		
 	 * Test Output:
 	 * 		I have no idea what you are talking about
-	 * 
-	 * TODO		Complete these Tests.
 	 */
 	@Test
 	public void testProcessHowSentence_howMuchWoodCouldAWoodchuckChuckIfAWoodchuckCouldChuckWoodQuestionMark() {
