@@ -46,17 +46,27 @@ public class StandardInputReader {
 	 * 		glob is I
 	 * 		prok is V
 	 * 		pish is X
-	 * 		tegj is L
+	 * 		
+	 * Extended Test input
+	 * 		splash is C
+	 * 		smash is D
+	 * 		slash is M
 	 * 		
 	 * 		glob glob Silver is 34 Credits
 	 * 		glob prok Gold is 57800 Credits
 	 * 		pish pish Iron is 3910 Credits
+	 * 		
+	 * 		slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit
 	 * 		
 	 * 		how much is pish tegj glob glob ?
 	 * 		how many Credits is glob prok Silver ?
 	 * 		how many Credits is glob prok Gold ?
 	 * 		how many Credits is glob prok Iron ?
 	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 * 		
+	 * 		how many Credits is pish pish pish prok BitCoin ?
+	 * 		how many Credits is pish pish pish prok Ethereum ?
+	 * 		how many Credits is Plunct Plact Zum BitCoin 
 	 * 
 	 * Test Output:
 	 * 		pish tegj glob glob is 42
@@ -64,6 +74,8 @@ public class StandardInputReader {
 	 * 		glob prok Gold is 57800 Credits
 	 * 		glob prok Iron is 782 Credits
 	 * 		I have no idea what you are talking about
+	 * 		
+	 * 		pish pish pish prok BitCoin is 0.01765 Credits
 	 * 
 	 * @param pReadLine
 	 */

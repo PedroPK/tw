@@ -62,7 +62,13 @@ public class Utils {
 	 * @return		List with the resulting Strings
 	 */
 	public static List<String> split(String pReadLine) {
-		return split(pReadLine, " ");
+		List<String> result = null;
+		
+		if ( isStringValid(pReadLine) ) {
+			result = split(pReadLine, " ");
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -90,23 +96,54 @@ public class Utils {
 	 * @return		boolean			The answer if	pBigDecimal is equals to Zero.
 	 */
 	public static boolean equalsZero(BigDecimal pBigDecimal) {
-		return pBigDecimal.compareTo(BigDecimal.ZERO) == 0;
+		boolean response = false;
+		
+		if ( pBigDecimal != null ) {
+			response = pBigDecimal.compareTo(BigDecimal.ZERO) == 0;
+		}
+		
+		return response;
 	}
 	
 	public static boolean isEqualsQuestionMark(String pString) {
-		return pString.equalsIgnoreCase(QUESTION_MARK);
+		boolean response = false;
+		
+		if ( isStringValid(pString) ) {
+			response = 
+				pString.equalsIgnoreCase(QUESTION_MARK);
+		}
+		
+		return response;
 	}
 	
 	public static boolean isEqualsIs(String pString) {
-		return pString.equalsIgnoreCase(IS);
+		boolean response = false;
+		
+		if ( isStringValid(pString) ) {
+			response = pString.equalsIgnoreCase(IS);
+		}
+		
+		return response;
 	}
 	
 	public static boolean isEqualsMuch(String pString) {
-		return pString.equalsIgnoreCase(MUCH);
+		boolean response = false;
+		
+		if ( isStringValid(pString) ) {
+			response = pString.equalsIgnoreCase(MUCH);
+		}
+		
+		return response;
 	}
 	
 	public static boolean isEqualsHow(String pString) {
-		return pString.equalsIgnoreCase(HOW);
+		boolean response = false;
+		
+		if ( isStringValid(pString) ) {
+			response = pString.equalsIgnoreCase(HOW);
+		}
+		
+		return response;
 	}
 	
 }
