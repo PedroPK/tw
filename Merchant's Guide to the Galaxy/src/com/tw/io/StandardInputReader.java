@@ -29,7 +29,7 @@ public class StandardInputReader {
 		while ( scanner.hasNextLine() ) {
 			String line = scanner.nextLine();
 			
-			System.out.println("Linha lida = " + line);
+			//System.out.println("Linha lida = " + line);
 			
 			if ( line.equalsIgnoreCase("Stop") ) {
 				break;
@@ -57,6 +57,13 @@ public class StandardInputReader {
 	 * 		how many Credits is glob prok Iron ?
 	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 * 
+	 * Test Output:
+	 * 		pish tegj glob glob is 42
+	 * 		glob prok Silver is 68 Credits
+	 * 		glob prok Gold is 57800 Credits
+	 * 		glob prok Iron is 782 Credits
+	 * 		I have no idea what you are talking about
+	 * 
 	 * @param pReadLine
 	 */
 	public void processInputLineRead(String pReadLine) {
@@ -75,19 +82,15 @@ public class StandardInputReader {
 		) {
 			if (	Converter.isMappingSentence(pReadLine)		) {
 				aConverter.addMapping(pReadLine);
-			}
-			
-			if ( aConverter.isValuationSentence(pReadLine)	) {
+			} else if ( aConverter.isValuationSentence(pReadLine)	) {
 				aConverter.addValuation(pReadLine);
-			}
-			
-			if ( aConverter.isHowMuchManySentenceValid(pReadLine) ) {
+			} else if ( aConverter.isHowMuchManySentenceValid(pReadLine) ) {
 				String response = aConverter.processHowSentence(pReadLine);
 				System.out.println(response);
 			}
+		} else {
+			System.out.println("I have no idea what you are talking about");
 		}
-		
-		
 	}
 	
 	public static void main(String[] args) {
