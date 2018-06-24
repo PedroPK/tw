@@ -261,6 +261,14 @@ public class Converter {
 		return response;
 	}
 	
+	/**
+	 * Assuming that the	pReadLine	is a How Much sentence [this test can be done by isHowMuchSentenceValid() method], 
+	 * this method are going to split it in its terms, and extract from them the multipliers (ex: glob prok pish tegj)
+	 * 
+	 * @param	pReadLine	String with a HowMuch sentence
+	 * 
+	 * @return	List containing only the multipliers of the How Much sentence
+	 */
 	private List<String> getMultipliersFromHowMuchSentence(String pReadLine) {
 		List<String> terms		= split(pReadLine);
 		
@@ -272,6 +280,13 @@ public class Converter {
 		return multipliers;
 	}
 	
+	/**
+	 * Assuming that the	pReadLine	is a How Much sentence [this test can be done by isHowMuchSentenceValid() method], 
+	 * this method are going take the terms, spliced before by the homonym overloaded method, and extract from them only the multipliers (ex: glob prok pish tegj)
+	 * 
+	 * @param		pTerms	List collection, containing all the terms from a How Much sentence
+	 * @return		List containing only the multipliers of the How Much sentence
+	 */
 	private List<String> getMultipliersFromHowMuchSentence(List<String> pTerms) {
 		int finalMultipliersIndex = pTerms.size() - 2;
 		List<String> multipliers = new ArrayList<String>();
@@ -279,22 +294,6 @@ public class Converter {
 			multipliers.add(pTerms.get(index));
 		}
 		return multipliers;
-	}
-	
-	private boolean isEqualsQuestionMark(String pString) {
-		return pString.equalsIgnoreCase(QUESTION_MARK);
-	}
-	
-	private boolean isEqualsIs(String pString) {
-		return pString.equalsIgnoreCase(IS);
-	}
-	
-	private boolean isEqualsMuch(String pString) {
-		return pString.equalsIgnoreCase(MUCH);
-	}
-	
-	private boolean isEqualsHow(String pString) {
-		return pString.equalsIgnoreCase(HOW);
 	}
 	
 	/**

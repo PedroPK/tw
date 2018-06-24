@@ -92,4 +92,21 @@ public class Utils {
 	public static boolean equalsZero(BigDecimal pBigDecimal) {
 		return pBigDecimal.compareTo(BigDecimal.ZERO) == 0;
 	}
+	
+	public static boolean isEqualsQuestionMark(String pString) {
+		return pString.equalsIgnoreCase(QUESTION_MARK);
+	}
+	
+	public static boolean isEqualsIs(String pString) {
+		return pString.equalsIgnoreCase(IS);
+	}
+	
+	public static boolean isEqualsMuch(String pString) {
+		return pString.equalsIgnoreCase(MUCH);
+	}
+	
+	public static boolean isEqualsHow(String pString) {
+		return pString.equalsIgnoreCase(HOW);
+	}
+	
 }
