@@ -68,7 +68,7 @@ package com.tw.main;
  * 		glob prok Iron is 782 Credits
  * 		I have no idea what you are talking about
  * 
- * @author pedroc.f.santos
+ * @author pedro.c.f.santos
  */
 public class MainClass {
 	
@@ -77,7 +77,7 @@ public class MainClass {
 	 * 
 	 * Fist thing that I thought was that I should be original and find the answers how to solve it by my self. It was very likely that I could look for
 	 * in the internet for a similar problem and its solution, tested by many people, with more elegant and simple implementations then I would do, 
-	 * but in my mind, you guys would want something made by me, so I did this way, knowing that probably are better ways to do the same job.
+	 * but in my mind, you guys would want something made by me, so I did this way, organically, knowing that probably there are better ways, more elegant ways, to do the same job.
 	 * 
 	 * Having said that, the second thing that I was worried about was how to do conversions between Roman numbers to Arabic Numbers.
 	 * 
@@ -85,7 +85,20 @@ public class MainClass {
 	 * executed it, saw it fail, and jump back to implement a minimal code to make the first test pass, and started creating more elaborated tests, 
 	 * keeping this cycle alive, until the moment that I feel that is enough robust to start implementing another method.
 	 * 
+	 * The third priority was how to map the Nouns (ex: glob, prok, pish, tegj, etc...) with its Roman numbers.
+	 * A subpriority was decide if its a valid mapping or not
 	 * 
+	 * The fourth priority was to process sentences that was a Variable on it, mixed with Nouns and attributing then to Arabic quantity of Credits (ex: glob glob Silver is 34 Credits)
+	 * 
+	 * Once this was done and with many Tests for many sceneries, the fifth priority was to process the How Much/Many questions, and answer then appropriately
+	 * Tests with JUnit also implemented to test this Question/Answers sentences, that was testing all previous implementations by chain reaction
+	 * 
+	 * Finally, the last thing that was how to use the Standard Input, capture the keyboard text and integrate it with all the rest of application
+	 * 
+	 * A last effort to be done is to do a great refactoring, doing a better organization, removing unecessary code, making it a little bit better.
+	 * 
+	 * An additional explanation is that, once I decided to use Tests in almost anything implemented, there are many public methods, not based in  external utility,
+	 * but its the way to do Tests with JUnit, without use a more complex frameworks or complicate then with Reflection
 	 */
 	
 }
