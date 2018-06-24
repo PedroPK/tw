@@ -2,6 +2,8 @@ package com.tw.math;
 
 import static org.junit.Assert.*;
 
+import java.util.Scanner;
+
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
@@ -85,7 +87,7 @@ import static com.tw.utils.Constants.*;
 @FixMethodOrder(MethodSorters.JVM)
 public class ConverterCaseTest {
 	
-	SentenceProcessor aConverter;
+	SentenceProcessor aSentenceProcessor;
 	
 	/**
 	 * Original Test input:
@@ -109,26 +111,26 @@ public class ConverterCaseTest {
 	 */
 	@Before
 	public void prepareConverter() {
-		this.aConverter = new SentenceProcessor();
+		this.aSentenceProcessor = new SentenceProcessor();
 		
 		// Original Test cases
-		aConverter.addMapping("glob is I");
-		aConverter.addMapping("prok is V");
-		aConverter.addMapping("pish is X");
-		aConverter.addMapping("tegj is L");
+		aSentenceProcessor.addMapping("glob is I");
+		aSentenceProcessor.addMapping("prok is V");
+		aSentenceProcessor.addMapping("pish is X");
+		aSentenceProcessor.addMapping("tegj is L");
 		
 		// Extended Test cases
-		aConverter.addMapping("splash is C");
-		aConverter.addMapping("smash is D");
-		aConverter.addMapping("slash is M");
+		aSentenceProcessor.addMapping("splash is C");
+		aSentenceProcessor.addMapping("smash is D");
+		aSentenceProcessor.addMapping("slash is M");
 		
 		// Original Test cases
-		this.aConverter.addValuation("glob glob Silver is 34 Credits");
-		this.aConverter.addValuation("glob prok Gold is 57800 Credits");
-		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
+		this.aSentenceProcessor.addValuation("glob glob Silver is 34 Credits");
+		this.aSentenceProcessor.addValuation("glob prok Gold is 57800 Credits");
+		this.aSentenceProcessor.addValuation("pish pish Iron is 3910 Credits");
 		
 		// Extended Test cases
-		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		this.aSentenceProcessor.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
 	}
 	
 	/**
@@ -152,16 +154,16 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testAddValuationSlashSplashSlashTegjPishPishPishGlobGlobGlobBitCoinIs1Credit() {
-		this.aConverter = new SentenceProcessor();
-		aConverter.addMapping("glob is I");
-		aConverter.addMapping("prok is V");
-		aConverter.addMapping("pish is X");
-		aConverter.addMapping("tegj is L");
-		aConverter.addMapping("splash is C");
-		aConverter.addMapping("smash is D");
-		aConverter.addMapping("slash is M");
+		this.aSentenceProcessor = new SentenceProcessor();
+		aSentenceProcessor.addMapping("glob is I");
+		aSentenceProcessor.addMapping("prok is V");
+		aSentenceProcessor.addMapping("pish is X");
+		aSentenceProcessor.addMapping("tegj is L");
+		aSentenceProcessor.addMapping("splash is C");
+		aSentenceProcessor.addMapping("smash is D");
+		aSentenceProcessor.addMapping("slash is M");
 		
-		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		this.aSentenceProcessor.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
 	}
 	
 	/**
@@ -174,9 +176,9 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testIronValuation() {
-		aConverter.addMapping("pish is X");
-		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
-		double ironValue = this.aConverter.getVariableValue("Iron");
+		aSentenceProcessor.addMapping("pish is X");
+		this.aSentenceProcessor.addValuation("pish pish Iron is 3910 Credits");
+		double ironValue = this.aSentenceProcessor.getVariableValue("Iron");
 		
 		assertEquals(195.5, ironValue, 0.01);
 	}
@@ -765,7 +767,7 @@ public class ConverterCaseTest {
 	@Test
 	public void testGetOriginalMultiplierGlobGlogSilverIs34Credits() {
 		String response = 
-			aConverter.getSentenceOriginalMultiplier("glob glob Silver is 34 Credits");
+			aSentenceProcessor.getSentenceOriginalMultiplier("glob glob Silver is 34 Credits");
 		
 		assertEquals("glob glob", response);
 	}
@@ -776,7 +778,7 @@ public class ConverterCaseTest {
 	@Test
 	public void testGetOriginalMultiplierGlobProkGoldIs57800Credits() {
 		String response = 
-			aConverter.getSentenceOriginalMultiplier("glob prok Gold is 57800 Credits");
+			aSentenceProcessor.getSentenceOriginalMultiplier("glob prok Gold is 57800 Credits");
 		
 		assertEquals("glob prok", response);
 	}
@@ -787,7 +789,7 @@ public class ConverterCaseTest {
 	@Test
 	public void testGetOriginalMultiplierPishPishIronIs3910Credits() {
 		String response = 
-			this.aConverter.getSentenceOriginalMultiplier("pish pish Iron is 3910 Credits");
+			this.aSentenceProcessor.getSentenceOriginalMultiplier("pish pish Iron is 3910 Credits");
 		
 		assertEquals("pish pish", response);
 	}
@@ -827,7 +829,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testAreAllOriginalMultipliersValid_GlobProkGoldIs57800Credits() {
-		boolean response = this.aConverter.areAllOriginalMultipliersValid("glob prok Gold is 57800 Credits");
+		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValid("glob prok Gold is 57800 Credits");
 		
 		assertTrue(response);
 	}
@@ -837,7 +839,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testAreAllOriginalMultipliersValid_GlobGlobSilverIs34Credits() {
-		boolean response = this.aConverter.areAllOriginalMultipliersValid("glob glob Silver is 34 Credits");
+		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValid("glob glob Silver is 34 Credits");
 		
 		assertTrue(response);
 	}
@@ -847,7 +849,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testAreAllOriginalMultipliersValid_PishPishIronIs3910Credits() {
-		boolean response = this.aConverter.areAllOriginalMultipliersValid("pish pish Iron is 3910 Credits");
+		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValid("pish pish Iron is 3910 Credits");
 		
 		assertTrue(response);
 	}
@@ -857,7 +859,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testAreAllOriginalMultipliersValid_PishTishIronIs3910Credits() {
-		boolean response = this.aConverter.areAllOriginalMultipliersValid("pish tish Iron is 3910 Credits");
+		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValid("pish tish Iron is 3910 Credits");
 		
 		assertFalse(response);
 	}
@@ -869,7 +871,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testConvertionOriginalMultiplierToRoman_GlobGlobSilverIs34Credits() {
-		String romanMultiplier = this.aConverter.extratMultipliersAndConvertToRoman("glob glob Silver is 34 Credits");
+		String romanMultiplier = this.aSentenceProcessor.extratMultipliersAndConvertToRoman("glob glob Silver is 34 Credits");
 		
 		assertEquals("II", romanMultiplier);
 	}
@@ -882,7 +884,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testConvertionOriginalMultiplierToRoman_GlobProkGoldIs57800Credits() {
-		String romanMultiplier = this.aConverter.extratMultipliersAndConvertToRoman("glob prok Gold is 57800 Credits");
+		String romanMultiplier = this.aSentenceProcessor.extratMultipliersAndConvertToRoman("glob prok Gold is 57800 Credits");
 		
 		assertEquals("IV", romanMultiplier);
 	}
@@ -894,7 +896,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testConvertionOriginalMultiplierToRoman_PishPishIronIs3910Credits() {
-		String romanMultiplier = this.aConverter.extratMultipliersAndConvertToRoman("pish pish Iron is 3910 Credits");
+		String romanMultiplier = this.aSentenceProcessor.extratMultipliersAndConvertToRoman("pish pish Iron is 3910 Credits");
 		
 		assertEquals("XX", romanMultiplier);
 	}
@@ -904,7 +906,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlobQuestionMark() {
-		boolean response = this.aConverter.isHowMuchManySentenceValid("how much is pish tegj glob glob ?");
+		boolean response = this.aSentenceProcessor.isHowMuchManySentenceValid("how much is pish tegj glob glob ?");
 		
 		assertTrue(response);
 	}
@@ -914,7 +916,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlobExclamationMark() {
-		boolean response = this.aConverter.isHowMuchManySentenceValid("how much is pish tegj glob glob !");
+		boolean response = this.aSentenceProcessor.isHowMuchManySentenceValid("how much is pish tegj glob glob !");
 		
 		assertFalse(response);
 	}
@@ -924,7 +926,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowMuchIsPishTegjGlobGlob() {
-		boolean response = this.aConverter.isHowMuchManySentenceValid("how much is pish tegj glob glob");
+		boolean response = this.aSentenceProcessor.isHowMuchManySentenceValid("how much is pish tegj glob glob");
 		
 		assertFalse(response);
 	}
@@ -934,7 +936,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowMuchCreditsPishTegjGlobGlobQuestionMark() {
-		boolean response = this.aConverter.isHowMuchManySentenceValid("how much Credits pish tegj glob glob ?");
+		boolean response = this.aSentenceProcessor.isHowMuchManySentenceValid("how much Credits pish tegj glob glob ?");
 		
 		assertFalse(response);
 	}
@@ -946,7 +948,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testIsHowMuchManySentenceValid_HowManyCreditsIsPishTegjGlobGlobQuestionMark() {
-		boolean response = this.aConverter.isHowMuchManySentenceValid("how many Credits is pish tegj glob glob ?");
+		boolean response = this.aSentenceProcessor.isHowMuchManySentenceValid("how many Credits is pish tegj glob glob ?");
 		
 		assertFalse(response);
 	}
@@ -996,7 +998,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetAttributedValue_globGlobSilverIs34Credits() {
-		int attributedValue = this.aConverter.getAttributedValue("glob glob Silver is 34 Credits");
+		int attributedValue = this.aSentenceProcessor.getAttributedValue("glob glob Silver is 34 Credits");
 		
 		assertEquals(34, attributedValue);
 	}
@@ -1006,7 +1008,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetAttributedValue_globProkGoldIs57800Credits() {
-		int attributedValue = this.aConverter.getAttributedValue("glob prok Gold is 57800 Credits");
+		int attributedValue = this.aSentenceProcessor.getAttributedValue("glob prok Gold is 57800 Credits");
 		
 		assertEquals(57800, attributedValue);
 	}
@@ -1016,7 +1018,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetAttributedValue_pishPishIronIs3910Credits() {
-		int attributedValue = this.aConverter.getAttributedValue("pish pish Iron is 3910 Credits");
+		int attributedValue = this.aSentenceProcessor.getAttributedValue("pish pish Iron is 3910 Credits");
 		
 		assertEquals(3910, attributedValue);
 	}
@@ -1028,9 +1030,9 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testEvaluateAttributionSentence_globGlobSilverIs34Credits() {
-		this.aConverter.addValuation("glob glob Silver is 34 Credits");
+		this.aSentenceProcessor.addValuation("glob glob Silver is 34 Credits");
 		
-		double value = this.aConverter.getVariableValue("Silver");
+		double value = this.aSentenceProcessor.getVariableValue("Silver");
 		
 		assertEquals(17, value, 0.01);
 	}
@@ -1043,8 +1045,8 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testEvaluateAttributionSentence_globProkGoldIs57800Credits() {
-		this.aConverter.addValuation("glob prok Gold is 57800 Credits");
-		double value = this.aConverter.getVariableValue("Gold");
+		this.aSentenceProcessor.addValuation("glob prok Gold is 57800 Credits");
+		double value = this.aSentenceProcessor.getVariableValue("Gold");
 		
 		assertEquals(14450, value, 0.01);
 	}
@@ -1056,8 +1058,8 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testEvaluateAttributionSentence_pishPishIronIs3910Credits() {
-		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
-		double value = this.aConverter.getVariableValue("Iron");
+		this.aSentenceProcessor.addValuation("pish pish Iron is 3910 Credits");
+		double value = this.aSentenceProcessor.getVariableValue("Iron");
 		
 		assertEquals(195.5, value, 0.01);
 	}
@@ -1071,7 +1073,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testProcessHowSentence_howMuchIsPishTegjGlobGlobQuestionMark() {
-		String answer = this.aConverter.processHowSentence("how much is pish tegj glob glob ?");
+		String answer = this.aSentenceProcessor.processHowSentence("how much is pish tegj glob glob ?");
 		
 		assertEquals("pish tegj glob glob is 42", answer);
 	}
@@ -1085,7 +1087,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsGlobProkSilverQuestionMark() {
-		String answer = this.aConverter.processHowSentence("how many Credits is glob prok Silver ?");
+		String answer = this.aSentenceProcessor.processHowSentence("how many Credits is glob prok Silver ?");
 		
 		assertEquals("glob prok Silver is 68 Credits", answer);
 	}
@@ -1099,7 +1101,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsGlobProkGoldQuestionMark() {
-		String answer = this.aConverter.processHowSentence("how many Credits is glob prok Gold ?");
+		String answer = this.aSentenceProcessor.processHowSentence("how many Credits is glob prok Gold ?");
 		
 		assertEquals("glob prok Gold is 57800 Credits", answer);
 	}
@@ -1115,7 +1117,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsGlobProkIronQuestionMark() {
-		String answer = this.aConverter.processHowSentence("how many Credits is glob prok Iron ?");
+		String answer = this.aSentenceProcessor.processHowSentence("how many Credits is glob prok Iron ?");
 		
 		assertEquals("glob prok Iron is 782 Credits", answer);
 	}
@@ -1144,20 +1146,20 @@ public class ConverterCaseTest {
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsPishPishPishProkBitcoinQuestionMark() {
 		// Original Test cases
-		aConverter.addMapping("glob is I");
-		aConverter.addMapping("prok is V");
-		aConverter.addMapping("pish is X");
-		aConverter.addMapping("tegj is L");
+		aSentenceProcessor.addMapping("glob is I");
+		aSentenceProcessor.addMapping("prok is V");
+		aSentenceProcessor.addMapping("pish is X");
+		aSentenceProcessor.addMapping("tegj is L");
 		
 		// Extended Test cases
-		aConverter.addMapping("splash is C");
-		aConverter.addMapping("smash is D");
-		aConverter.addMapping("slash is M");
+		aSentenceProcessor.addMapping("splash is C");
+		aSentenceProcessor.addMapping("smash is D");
+		aSentenceProcessor.addMapping("slash is M");
 		
 		// Extended Test cases
-		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		this.aSentenceProcessor.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
 		
-		String answer = this.aConverter.processHowSentence("how many Credits is pish pish pish prok BitCoin ?");
+		String answer = this.aSentenceProcessor.processHowSentence("how many Credits is pish pish pish prok BitCoin ?");
 		
 		assertEquals("pish pish pish prok BitCoin is 0.01765 Credits", answer);
 	}
@@ -1186,20 +1188,20 @@ public class ConverterCaseTest {
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsPishPishPishProkEthereumQuestionMark() {
 		// Original Test cases
-		aConverter.addMapping("glob is I");
-		aConverter.addMapping("prok is V");
-		aConverter.addMapping("pish is X");
-		aConverter.addMapping("tegj is L");
+		aSentenceProcessor.addMapping("glob is I");
+		aSentenceProcessor.addMapping("prok is V");
+		aSentenceProcessor.addMapping("pish is X");
+		aSentenceProcessor.addMapping("tegj is L");
 		
 		// Extended Test cases
-		aConverter.addMapping("splash is C");
-		aConverter.addMapping("smash is D");
-		aConverter.addMapping("slash is M");
+		aSentenceProcessor.addMapping("splash is C");
+		aSentenceProcessor.addMapping("smash is D");
+		aSentenceProcessor.addMapping("slash is M");
 		
 		// Extended Test cases
-		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		this.aSentenceProcessor.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
 		
-		String answer = this.aConverter.processHowSentence("how many Credits is pish pish pish prok Ethereum ?");
+		String answer = this.aSentenceProcessor.processHowSentence("how many Credits is pish pish pish prok Ethereum ?");
 		
 		assertEquals(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT, answer);
 	}
@@ -1228,22 +1230,66 @@ public class ConverterCaseTest {
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsPlunctPlactZumBitcoinQuestionMark() {
 		// Original Test cases
-		aConverter.addMapping("glob is I");
-		aConverter.addMapping("prok is V");
-		aConverter.addMapping("pish is X");
-		aConverter.addMapping("tegj is L");
+		aSentenceProcessor.addMapping("glob is I");
+		aSentenceProcessor.addMapping("prok is V");
+		aSentenceProcessor.addMapping("pish is X");
+		aSentenceProcessor.addMapping("tegj is L");
 		
 		// Extended Test cases
-		aConverter.addMapping("splash is C");
-		aConverter.addMapping("smash is D");
-		aConverter.addMapping("slash is M");
+		aSentenceProcessor.addMapping("splash is C");
+		aSentenceProcessor.addMapping("smash is D");
+		aSentenceProcessor.addMapping("slash is M");
 		
 		// Extended Test cases
-		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		this.aSentenceProcessor.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
 		
-		String answer = this.aConverter.processHowSentence("how many Credits is Plunct Plact Zum BitCoin ?");
+		String answer = this.aSentenceProcessor.processHowSentence("how many Credits is Plunct Plact Zum BitCoin ?");
 		
 		assertEquals(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT, answer);
+	}
+	
+	/**
+	 * Original Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * Extended Test input
+	 * 		splash is C
+	 * 		smash is D
+	 * 		slash is M
+	 * 		
+	 * 		slash	splash	slash	tegj	pish	pish	pish	glob	glob	glob	BitCoin is 1 Credit
+	 * 		M		C		M		L		X		X		X		I		I		I
+	 * 
+	 * Test this kind of Sentences, with the respective Answers
+	 * 		how many Credits is Plunct Plact Zum BitCoin ?
+	 * 		
+	 * Test Output:
+	 * 		I have no idea what you are talking about
+	 */
+	@Test
+	public void testAddValuation_withTegj_withoutPreviousMapping() {
+		this.aSentenceProcessor = new SentenceProcessor();
+		// Original Test cases
+		aSentenceProcessor.addMapping("glob is I");
+		aSentenceProcessor.addMapping("prok is V");
+		aSentenceProcessor.addMapping("pish is X");
+		//aConverter.addMapping("tegj is L");
+		
+		// Extended Test cases
+		aSentenceProcessor.addMapping("splash is C");
+		aSentenceProcessor.addMapping("smash is D");
+		aSentenceProcessor.addMapping("slash is M");
+		
+		// Originak Test cases
+		this.aSentenceProcessor.addValuation("glob glob Silver is 34 Credits");
+		this.aSentenceProcessor.addValuation("glob prok Gold is 57800 Credits");
+		this.aSentenceProcessor.addValuation("pish pish Iron is 3910 Credits");
+				
+		// Extended Test cases
+		this.aSentenceProcessor.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
 	}
 	
 	/**
@@ -1255,9 +1301,16 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testProcessHowSentence_howMuchWoodCouldAWoodchuckChuckIfAWoodchuckCouldChuckWoodQuestionMark() {
-		String answer = this.aConverter.processHowSentence("how much wood could a woodchuck chuck if a woodchuck could chuck wood ?");
+		String answer = this.aSentenceProcessor.processHowSentence("how much wood could a woodchuck chuck if a woodchuck could chuck wood ?");
 		
 		assertEquals("I have no idea what you are talking about", answer);
+	}
+	
+	@Test
+	public void testGetScanner() {
+		Scanner scanner = SentenceProcessor.getScanner();
+		
+		assertNotNull(scanner);
 	}
 	
 }
