@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import com.tw.math.Converter;
 import com.tw.sentences.SentenceProcessor;
+import static com.tw.utils.Constants.*;
+import static com.tw.utils.Utils.*;
 
 public class StandardInputReader {
 	
@@ -32,12 +34,13 @@ public class StandardInputReader {
 			
 			//System.out.println("Linha lida = " + line);
 			
-			if ( line.equalsIgnoreCase("Stop") ) {
+			if ( !isStringValid(line) || line.equalsIgnoreCase("Stop") ) {
 				break;
 			}
 			processInputLineRead(line);
 		}
 		
+		System.out.println("Bye! See you soon!");
 		scanner.close();
 	}
 	
@@ -102,13 +105,17 @@ public class StandardInputReader {
 				System.out.println(response);
 			}
 		} else {
-			System.out.println("I have no idea what you are talking about");
+			System.out.println(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
 		}
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("Iniciando a classe StandardInputReader");
-		System.out.println("Tentando ler via Scanner");
+		System.out.println("Welcome! These is a Sentence Processor of Roman numbers into Nouns and Variables, to define theys Credit values");
+		System.out.println("There are three types of valid sentence.\n");
+		System.out.println("The 1st type is the sentences that does an asignment of a Roman Number to a Noun. \nEx: Alice is I. \n");
+		System.out.println("The 2nd type is the sentences that uses the Nouns from previous sentences, introduces a new Variable, an do another asignment of a Numerical quantity of Credits. \nEx: Alice Bob is 5 Credits.\n");
+		System.out.println("The 3rd type is the sentences that does a Question, based on the Nouns and Variables from previous sentences. \nEx: How Many Credits is Alice Alce Bob ?\n");
+		System.out.println("You can start writing sentences below.");
 		
 		StandardInputReader sir = new StandardInputReader();
 		

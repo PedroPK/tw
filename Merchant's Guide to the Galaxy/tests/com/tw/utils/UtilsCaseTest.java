@@ -71,4 +71,11 @@ public class UtilsCaseTest {
 		
 		assertFalse(result);
 	}
+	
+	@Test
+	public void testEqualsQuestionMarkEmptyString() {
+		boolean result = Utils.isEqualsQuestionMark("");
+		
+		assertFalse(result);
+	}
 }
