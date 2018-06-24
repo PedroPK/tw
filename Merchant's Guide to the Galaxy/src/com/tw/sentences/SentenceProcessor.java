@@ -4,12 +4,21 @@ import static com.tw.utils.Constants.*;
 import static com.tw.utils.Utils.*;
 import static com.tw.math.Converter.*;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+
+import com.tw.math.Converter;
+import com.tw.math.exceptions.EmptyRomanException;
+import com.tw.math.exceptions.FourTimesRepetitionException;
+import com.tw.math.exceptions.InvalidArabicException;
+import com.tw.math.exceptions.InvalidRomanException;
 
 public class SentenceProcessor {
 	
@@ -362,7 +371,7 @@ public class SentenceProcessor {
 			String numericTerm	= sentenceTerms.get(sentenceTerms.size() - 2 );
 			String isVerbTerm	= sentenceTerms.get(sentenceTerms.size() - 3 );
 			
-			if (	sentenceTerms != null && sentenceTerms.size() >= 5 ) {
+			if (	sentenceTerms != null && sentenceTerms.size() >= 5		) {
 				if (	
 						(
 							creditTerm.equals(CREDITS)	||
@@ -372,16 +381,15 @@ public class SentenceProcessor {
 						isVerbTerm.equals(IS)		
 				) {
 					//String variableTerm	= getVariableName(sentenceTerms);
-					
+					isMappingSentence = true;
 					for ( int index = sentenceTerms.size() - 5; index >= 0; index = index - 1 ) {
 						String romanianTerm	= sentenceTerms.get( index );
 						
 						if ( !this.aUnitMap.containsKey(romanianTerm) ) {
+							isMappingSentence = false;
 							break;	// Does not have at least one of this terms, so the response should be False.
 						}
 					}
-					
-					isMappingSentence = true;
 				}
 			}
 		}
@@ -487,6 +495,115 @@ public class SentenceProcessor {
 	
 	private static String getVariableName(List<String> pSentenceTerms) {
 		return pSentenceTerms.get( pSentenceTerms.size() - 4 );
+	}
+	
+	public static Scanner getScanner() {
+		InputStream is = System.in;
+		InputStreamReader isr = new InputStreamReader(is);
+		Scanner scanner = new Scanner(isr);
+		
+		return scanner;
+	}
+	
+	public void readlineFromScanner() {
+		Scanner scanner = getScanner();
+		
+		while ( scanner.hasNextLine() ) {
+			String line = scanner.nextLine();
+			
+			if (
+					!isStringValid(line)	||
+					line.equalsIgnoreCase("Stop") 
+			) {
+				break;
+			}
+			processInputLineRead(line);
+		}
+		
+		System.out.println("Bye! See you soon!");
+		scanner.close();
+	}
+	
+	/**
+	 * Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		
+	 * Extended Test input
+	 * 		splash is C
+	 * 		smash is D
+	 * 		slash is M
+	 * 		
+	 * 		glob glob Silver is 34 Credits
+	 * 		glob prok Gold is 57800 Credits
+	 * 		pish pish Iron is 3910 Credits
+	 * 		
+	 * 		slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit
+	 * 		
+	 * 		how much is pish tegj glob glob ?
+	 * 		how many Credits is glob prok Silver ?
+	 * 		how many Credits is glob prok Gold ?
+	 * 		how many Credits is glob prok Iron ?
+	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
+	 * 		
+	 * 		how many Credits is pish pish pish prok BitCoin ?
+	 * 		how many Credits is pish pish pish prok Ethereum ?
+	 * 		how many Credits is Plunct Plact Zum BitCoin 
+	 * 
+	 * Test Output:
+	 * 		pish tegj glob glob is 42
+	 * 		glob prok Silver is 68 Credits
+	 * 		glob prok Gold is 57800 Credits
+	 * 		glob prok Iron is 782 Credits
+	 * 		I have no idea what you are talking about
+	 * 		
+	 * 		pish pish pish prok BitCoin is 0.01765 Credits
+	 * 
+	 * @param pReadLine
+	 */
+	public void processInputLineRead(String pReadLine) {
+		/* Here I have to receive a Sentence, and do this:
+		 * 		Define what kind of sentence it is:
+		 * 			Unit to Value attribution
+		 * 			Variable attribution
+		 * 			Question sentence
+		 * 		Call the right method do process this sentence in Converter
+		 * 		If its a Question Sentence, to Print the Response sentence
+		 */
+		try {
+			if (
+					Converter.isMappingSentence(pReadLine)				||
+					this.isValuationSentence(pReadLine)			||
+					this.isHowMuchManySentenceValid(pReadLine)
+			) {
+				if (	Converter.isMappingSentence(pReadLine)		) {
+					this.addMapping(pReadLine);
+				} else if ( this.isValuationSentence(pReadLine)	) {
+					this.addValuation(pReadLine);
+				} else if ( this.isHowMuchManySentenceValid(pReadLine) ) {
+					String response = this.processHowSentence(pReadLine);
+					System.out.println(response);
+				}
+			} else {
+				System.out.println(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
+			}
+		} catch ( EmptyRomanException | FourTimesRepetitionException | InvalidArabicException | InvalidRomanException  exception ) {
+			System.out.println(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
+		}
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("Welcome! These is a Sentence Processor of Roman numbers into Nouns and Variables, to define theys Credit values");
+		System.out.println("There are three types of valid sentence.\n");
+		System.out.println("The 1st type is the sentences that does an asignment of a Roman Number to a Noun. \nEx: Alice is I. \n");
+		System.out.println("The 2nd type is the sentences that uses the Nouns from previous sentences, introduces a new Variable, an do another asignment of a Numerical quantity of Credits. \nEx: Alice Bob is 5 Credits.\n");
+		System.out.println("The 3rd type is the sentences that does a Question, based on the Nouns and Variables from previous sentences. \nEx: How Many Credits is Alice Alce Bob ?\n");
+		System.out.println("You can start writing sentences below.");
+		
+		SentenceProcessor sir = new SentenceProcessor();
+		
+		sir.readlineFromScanner();
 	}
 	
 }
