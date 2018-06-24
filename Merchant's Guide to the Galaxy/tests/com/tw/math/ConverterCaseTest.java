@@ -2,6 +2,7 @@ package com.tw.math;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 import org.junit.Before;
@@ -1311,6 +1312,90 @@ public class ConverterCaseTest {
 		Scanner scanner = SentenceProcessor.getScanner();
 		
 		assertNotNull(scanner);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFromNull() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(null);
+		
+		assertNull(integerBigDecimal);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.0"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertTrue(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point1String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.1"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point01String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.01"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point0001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.0001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point00001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.00001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point000001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.000001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertTrue(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
 	}
 	
 }

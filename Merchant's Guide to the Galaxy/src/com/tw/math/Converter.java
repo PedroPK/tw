@@ -1,16 +1,23 @@
 package com.tw.math;
 
-import static com.tw.utils.Constants.*;
-import static com.tw.utils.Utils.*;
-import static com.tw.sentences.SentenceProcessor.*;
-
+import static com.tw.sentences.SentenceProcessor.getSentenceTerms;
+import static com.tw.utils.Constants.C;
+import static com.tw.utils.Constants.D;
+import static com.tw.utils.Constants.I;
+import static com.tw.utils.Constants.IS;
+import static com.tw.utils.Constants.L;
+import static com.tw.utils.Constants.M;
+import static com.tw.utils.Constants.ONE_BIG_DECIMAL;
+import static com.tw.utils.Constants.V;
+import static com.tw.utils.Constants.X;
+import static com.tw.utils.Utils.equalsZero;
+import static com.tw.utils.Utils.getRomanNumerals;
+import static com.tw.utils.Utils.isStringValid;
+import static com.tw.utils.Utils.split;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.tw.math.exceptions.EmptyRomanException;
@@ -59,15 +66,25 @@ import com.tw.math.exceptions.InvalidRomanException;
  */
 public class Converter {
 	
-	public Converter() {}
-	
+	/**
+	 * This method will remove the Decimal values from the		pFinalValue		if its a Integer only BigDecimal
+	 * 
+	 * @param pFinalValue
+	 * 
+	 * @return
+	 */
 	public static BigDecimal processDecimalValues(BigDecimal pFinalValue) {
-		pFinalValue = setScale5(pFinalValue);
-		BigDecimal fraction = pFinalValue.remainder(ONE_BIG_DECIMAL);
-		if ( equalsZero(fraction) ) {
-			pFinalValue = pFinalValue.setScale(0, RoundingMode.HALF_EVEN);
+		BigDecimal result = null;
+		
+		if ( pFinalValue != null ) {
+			result = setScale5(pFinalValue);
+			BigDecimal fraction = pFinalValue.remainder(ONE_BIG_DECIMAL);
+			if ( equalsZero(fraction) ) {
+				result = result.setScale(0, RoundingMode.HALF_EVEN);
+			}
 		}
-		return pFinalValue;
+		
+		return result;
 	}
 	
 	private static BigDecimal setScale5(BigDecimal pFinalValue) {
@@ -223,10 +240,6 @@ public class Converter {
 		if ( has4ConsecutiveRepetitions(pRoman) ) {
 			throw new FourTimesRepetitionException();
 		}
-		
-		/*if ( !isValidDecrescentOrder(pRoman) ) {
-			throw new InvalidRomanException(pRoman);
-		}*/
 		
 		if ( hasInvalidInternalSubtraction(pRoman) ) {
 			throw new InvalidRomanException(pRoman);
