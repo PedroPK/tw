@@ -1,5 +1,7 @@
 package com.tw.utils;
 
+import java.math.BigDecimal;
+
 public class Constants {
 	
 	// Sentences common terms
@@ -23,4 +25,6 @@ public class Constants {
 	// Sentences
 	public static final String I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT = "I have no idea what you are talking about";
 	
+	// Numbers
+	public static final BigDecimal ONE_BIG_DECIMAL = new BigDecimal(1);
 }

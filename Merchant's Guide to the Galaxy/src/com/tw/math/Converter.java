@@ -114,7 +114,7 @@ public class Converter {
 		
 		return response.toString();
 	}
-
+	
 	private StringBuffer getMultipliers(List<String> pMultipliersList) {
 		StringBuffer multipliersSB = new StringBuffer();
 		for ( String multiplier: pMultipliersList ) {
@@ -146,13 +146,18 @@ public class Converter {
 		}
 		return finalValue;
 	}
-
+	
 	private BigDecimal processDecimalValues(BigDecimal pFinalValue) {
-		pFinalValue = pFinalValue.setScale(5, RoundingMode.HALF_EVEN);
-		BigDecimal fraction = pFinalValue.remainder(new BigDecimal(1));
-		if ( fraction.compareTo(BigDecimal.ZERO) == 0 ) {
+		pFinalValue = setScale5(pFinalValue);
+		BigDecimal fraction = pFinalValue.remainder(ONE_BIG_DECIMAL);
+		if ( equalsZero(fraction) ) {
 			pFinalValue = pFinalValue.setScale(0, RoundingMode.HALF_EVEN);
 		}
+		return pFinalValue;
+	}
+	
+	private BigDecimal setScale5(BigDecimal pFinalValue) {
+		pFinalValue = pFinalValue.setScale(5, RoundingMode.HALF_EVEN);
 		return pFinalValue;
 	}
 	
@@ -234,8 +239,6 @@ public class Converter {
 	 * @param		pReadLine
 	 * 
 	 * @return		boolean		Indicates if the 	pReadLine	is a Valid Sentence
-	 * 
-	 * TODO Implement this Method
 	 */
 	public boolean isHowMuchSentenceValid(String pReadLine) {
 		boolean response = false;

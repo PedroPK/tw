@@ -13,6 +13,7 @@ import com.tw.math.exceptions.FourTimesRepetitionException;
 import com.tw.math.exceptions.InvalidRomanException;
 
 import static com.tw.math.Converter.*;
+import static com.tw.utils.Constants.*;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -1138,7 +1139,6 @@ public class ConverterCaseTest {
 	 * 		
 	 * Test Output:
 	 * 		pish pish pish prok BitCoin is 0.01765 Credits
-	 * 
 	 */
 	@Test
 	public void testProcessHowSentence_howManyCreditsIsPishPishPishProkBitcoinQuestionMark() {
@@ -1159,6 +1159,90 @@ public class ConverterCaseTest {
 		String answer = this.aConverter.processHowSentence("how many Credits is pish pish pish prok BitCoin ?");
 		
 		assertEquals("pish pish pish prok BitCoin is 0.01765 Credits", answer);
+	}
+	
+	/**
+	 * Original Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * Extended Test input
+	 * 		splash is C
+	 * 		smash is D
+	 * 		slash is M
+	 * 		
+	 * 		slash	splash	slash	tegj	pish	pish	pish	glob	glob	glob	BitCoin is 1 Credit
+	 * 		M		C		M		L		X		X		X		I		I		I
+	 * 
+	 * Test this kind of Sentences, with the respective Answers
+	 * 		how many Credits is pish pish pish prok Ethereum ?
+	 * 		
+	 * Test Output:
+	 * 		I have no idea what you are talking about
+	 */
+	@Test
+	public void testProcessHowSentence_howManyCreditsIsPishPishPishProkEthereumQuestionMark() {
+		// Original Test cases
+		aConverter.addMapping("glob is I");
+		aConverter.addMapping("prok is V");
+		aConverter.addMapping("pish is X");
+		aConverter.addMapping("tegj is L");
+		
+		// Extended Test cases
+		aConverter.addMapping("splash is C");
+		aConverter.addMapping("smash is D");
+		aConverter.addMapping("slash is M");
+		
+		// Extended Test cases
+		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		
+		String answer = this.aConverter.processHowSentence("how many Credits is pish pish pish prok Ethereum ?");
+		
+		assertEquals(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT, answer);
+	}
+	
+	/**
+	 * Original Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * Extended Test input
+	 * 		splash is C
+	 * 		smash is D
+	 * 		slash is M
+	 * 		
+	 * 		slash	splash	slash	tegj	pish	pish	pish	glob	glob	glob	BitCoin is 1 Credit
+	 * 		M		C		M		L		X		X		X		I		I		I
+	 * 
+	 * Test this kind of Sentences, with the respective Answers
+	 * 		how many Credits is Plunct Plact Zum BitCoin ?
+	 * 		
+	 * Test Output:
+	 * 		I have no idea what you are talking about
+	 */
+	@Test
+	public void testProcessHowSentence_howManyCreditsIsPlunctPlactZumBitcoinQuestionMark() {
+		// Original Test cases
+		aConverter.addMapping("glob is I");
+		aConverter.addMapping("prok is V");
+		aConverter.addMapping("pish is X");
+		aConverter.addMapping("tegj is L");
+		
+		// Extended Test cases
+		aConverter.addMapping("splash is C");
+		aConverter.addMapping("smash is D");
+		aConverter.addMapping("slash is M");
+		
+		// Extended Test cases
+		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		
+		String answer = this.aConverter.processHowSentence("how many Credits is Plunct Plact Zum BitCoin ?");
+		
+		assertEquals(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT, answer);
 	}
 	
 	/**
