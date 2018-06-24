@@ -8,6 +8,7 @@ public class Constants {
 	public static final String MUCH = "much";
 	public static final String HOW = "how";
 	public static final String CREDITS = "Credits";
+	public static final String CREDIT = "Credit";
 	
 	public static final char I = 'I';
 	public static final char V = 'V';

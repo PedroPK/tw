@@ -85,17 +85,82 @@ public class ConverterCaseTest {
 	
 	Converter aConverter;
 	
+	/**
+	 * Original Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * 		glob glob Silver is 34 Credits
+	 * 		glob prok Gold is 57800 Credits
+	 * 		pish pish Iron is 3910 Credits
+	 * 
+	 * Extended Test input
+	 * 		splash is C
+	 * 		smash is D
+	 * 		slash is M
+	 * 		
+	 * 		slash splash slash tegj pish pish	pish	glob glob glob BitCoin is 1 Credit
+	 * 		M		C		M	L	X	X		X		I		I	I
+	 * 
+	 * TODO		Uncomment the last AddValuation
+	 */
 	@Before
 	public void prepareConverter() {
 		this.aConverter = new Converter();
+		
+		// Original Test cases
 		aConverter.addMapping("glob is I");
 		aConverter.addMapping("prok is V");
 		aConverter.addMapping("pish is X");
 		aConverter.addMapping("tegj is L");
 		
+		// Extended Test cases
+		aConverter.addMapping("splash is C");
+		aConverter.addMapping("smash is D");
+		aConverter.addMapping("slash is M");
+		
+		// Original Test cases
 		this.aConverter.addValuation("glob glob Silver is 34 Credits");
 		this.aConverter.addValuation("glob prok Gold is 57800 Credits");
 		this.aConverter.addValuation("pish pish Iron is 3910 Credits");
+		
+		// Extended Test cases
+		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+	}
+	
+	/**
+	 * Original Test input:
+	 * 		glob is I
+	 * 		prok is V
+	 * 		pish is X
+	 * 		tegj is L
+	 * 		
+	 * 		glob glob Silver is 34 Credits
+	 * 		glob prok Gold is 57800 Credits
+	 * 		pish pish Iron is 3910 Credits
+	 * 		
+	 * Extended Test input
+	 * 		splash is C
+	 * 		smash is D
+	 * 		slash is M
+	 * 		
+	 * 		slash	splash	slash	tegj	pish	pish	pish	glob	glob	glob BitCoin is 1 Credit
+	 * 		M		C		M		L		X		X		X		I		I		I
+	 */
+	@Test
+	public void testAddValuationSlashSplashSlashTegjPishPishPishGlobGlobGlobBitCoinIs1Credit() {
+		this.aConverter = new Converter();
+		aConverter.addMapping("glob is I");
+		aConverter.addMapping("prok is V");
+		aConverter.addMapping("pish is X");
+		aConverter.addMapping("tegj is L");
+		aConverter.addMapping("splash is C");
+		aConverter.addMapping("smash is D");
+		aConverter.addMapping("slash is M");
+		
+		this.aConverter.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
 	}
 	
 	/**

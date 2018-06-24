@@ -5,6 +5,7 @@ import static com.tw.utils.Utils.*;
 
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -146,7 +147,8 @@ public class Converter {
 			
 			BigDecimal dividend = new BigDecimal(value);
 			BigDecimal divisor = new BigDecimal(multiplier);
-			double variableValue = dividend.divide(divisor).doubleValue();
+			BigDecimal divisionResult = dividend.divide(divisor, 10, RoundingMode.HALF_EVEN);
+			double variableValue = divisionResult.doubleValue();
 			
 			this.aVariableMap.put(variable, variableValue);
 		}
@@ -453,8 +455,12 @@ public class Converter {
 			String isVerbTerm	= sentenceTerms.get(sentenceTerms.size() - 3 );
 			
 			if (	sentenceTerms != null && sentenceTerms.size() >= 5 ) {
-				if (	creditTerm.equals(CREDITS)		&&
-						isNumeric(numericTerm)			&&
+				if (	
+						(
+							creditTerm.equals(CREDITS)	||
+							creditTerm.equals(CREDIT)
+						)									&&
+						isNumeric(numericTerm)				&&
 						isVerbTerm.equals(IS)		
 				) {
 					//String variableTerm	= getVariableName(sentenceTerms);
