@@ -71,5 +71,21 @@ package com.tw.main;
  * @author pedroc.f.santos
  */
 public class MainClass {
-
+	
+	/**
+	 * This documentation will explain the decisions that I took during this problem solving and its implementation
+	 * 
+	 * Fist thing that I thought was that I should be original and find the answers how to solve it by my self. It was very likely that I could look for
+	 * in the internet for a similar problem and its solution, tested by many people, with more elegant and simple implementations then I would do, 
+	 * but in my mind, you guys would want something made by me, so I did this way, knowing that probably are better ways to do the same job.
+	 * 
+	 * Having said that, the second thing that I was worried about was how to do conversions between Roman numbers to Arabic Numbers.
+	 * 
+	 * The best way that I know how to do this is using TDD (Test Driven Development). So, I created empty methods, jumped to implement the first test, 
+	 * executed it, saw it fail, and jump back to implement a minimal code to make the first test pass, and started creating more elaborated tests, 
+	 * keeping this cycle alive, until the moment that I feel that is enough robust to start implementing another method.
+	 * 
+	 * 
+	 */
+	
 }
