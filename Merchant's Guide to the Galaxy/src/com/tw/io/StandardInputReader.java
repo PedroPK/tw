@@ -5,13 +5,14 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 import com.tw.math.Converter;
+import com.tw.sentences.SentenceProcessor;
 
 public class StandardInputReader {
 	
-	private Converter aConverter;
+	private SentenceProcessor aConverter;
 	
 	public StandardInputReader() {
-		this.aConverter = new Converter();
+		this.aConverter = new SentenceProcessor();
 	}
 	
 	public static Scanner getScanner() {

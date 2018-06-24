@@ -11,6 +11,7 @@ import org.junit.runners.MethodSorters;
 import com.tw.math.exceptions.EmptyRomanException;
 import com.tw.math.exceptions.FourTimesRepetitionException;
 import com.tw.math.exceptions.InvalidRomanException;
+import com.tw.sentences.SentenceProcessor;
 
 import static com.tw.math.Converter.*;
 import static com.tw.utils.Constants.*;
@@ -84,7 +85,7 @@ import static com.tw.utils.Constants.*;
 @FixMethodOrder(MethodSorters.JVM)
 public class ConverterCaseTest {
 	
-	Converter aConverter;
+	SentenceProcessor aConverter;
 	
 	/**
 	 * Original Test input:
@@ -108,7 +109,7 @@ public class ConverterCaseTest {
 	 */
 	@Before
 	public void prepareConverter() {
-		this.aConverter = new Converter();
+		this.aConverter = new SentenceProcessor();
 		
 		// Original Test cases
 		aConverter.addMapping("glob is I");
@@ -151,7 +152,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testAddValuationSlashSplashSlashTegjPishPishPishGlobGlobGlobBitCoinIs1Credit() {
-		this.aConverter = new Converter();
+		this.aConverter = new SentenceProcessor();
 		aConverter.addMapping("glob is I");
 		aConverter.addMapping("prok is V");
 		aConverter.addMapping("pish is X");
@@ -664,7 +665,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testMappingGlobToI() {
-		Converter converter = new Converter();
+		SentenceProcessor converter = new SentenceProcessor();
 		converter.addMapping("glob is I");
 		char response = converter.getMapping("glob");
 		
@@ -676,7 +677,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testMappingProkToV() {
-		Converter converter = new Converter();
+		SentenceProcessor converter = new SentenceProcessor();
 		converter.addMapping("prok is V");
 		char response = converter.getMapping("prok");
 		
@@ -688,7 +689,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testMappingPishToX() {
-		Converter converter = new Converter();
+		SentenceProcessor converter = new SentenceProcessor();
 		converter.addMapping("pish is X");
 		char response = converter.getMapping("pish");
 		
@@ -700,7 +701,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testMappingTegjToL() {
-		Converter converter = new Converter();
+		SentenceProcessor converter = new SentenceProcessor();
 		converter.addMapping("tegj is L");
 		char response = converter.getMapping("tegj");
 		
@@ -715,7 +716,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testFullMapping() {
-		Converter converter = new Converter();
+		SentenceProcessor converter = new SentenceProcessor();
 		converter.addMapping("glob is I");
 		converter.addMapping("prok is V");
 		converter.addMapping("pish is X");
@@ -733,7 +734,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testIsValuationSentenceGlobGlobSilverIs34Credits() {
-		Converter converter = new Converter();
+		SentenceProcessor converter = new SentenceProcessor();
 		converter.addMapping("glob is I");
 		
 		assertTrue(converter.isValuationSentence("glob glob Silver is 34 Credits"));
@@ -749,7 +750,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testIsValuationSentenceGlobGlobSilverIs34CreditsWithFullMapping() {
-		Converter converter = new Converter();
+		SentenceProcessor converter = new SentenceProcessor();
 		converter.addMapping("glob is I");
 		converter.addMapping("prok is V");
 		converter.addMapping("pish is X");
@@ -796,7 +797,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierTermsGlobGlobSilverIs34Credits() {
-		String originalMultiplier = Converter.splitToGetOriginalMultiplierTerms("glob glob Silver is 34 Credits");
+		String originalMultiplier = SentenceProcessor.splitToGetOriginalMultiplierTerms("glob glob Silver is 34 Credits");
 		
 		assertEquals("glob glob", originalMultiplier);
 	}
@@ -806,7 +807,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierTermsGlobProkGoldIs57800Credits() {
-		String originalMultiplier = Converter.splitToGetOriginalMultiplierTerms("glob prok Gold is 57800 Credits");
+		String originalMultiplier = SentenceProcessor.splitToGetOriginalMultiplierTerms("glob prok Gold is 57800 Credits");
 		
 		assertEquals("glob prok", originalMultiplier);
 	}
@@ -816,7 +817,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetOriginalMultiplierTerms_PishPishIronIs3910Credits() {
-		String originalMultiplier = Converter.splitToGetOriginalMultiplierTerms("pish pish Iron is 3910 Credits");
+		String originalMultiplier = SentenceProcessor.splitToGetOriginalMultiplierTerms("pish pish Iron is 3910 Credits");
 		
 		assertEquals("pish pish", originalMultiplier);
 	}
@@ -958,7 +959,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetVariableFromAttributionSentence_GlobGlobSilverIs34Credits() {
-		String variable = Converter.getVariableName("glob glob Silver is 34 Credits");
+		String variable = SentenceProcessor.getVariableName("glob glob Silver is 34 Credits");
 		
 		assertEquals("Silver", variable);
 	}
@@ -972,7 +973,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetVariableFromAttributionSentence_GlobProkGoldIs57800Credits() {
-		String variable = Converter.getVariableName("glob prok Gold is 57800 Credits");
+		String variable = SentenceProcessor.getVariableName("glob prok Gold is 57800 Credits");
 		
 		assertEquals("Gold", variable);
 	}
@@ -985,7 +986,7 @@ public class ConverterCaseTest {
 	 */
 	@Test
 	public void testGetVariableFromAttributionSentence_PishPishIronIs3910Credits() {
-		String variable = Converter.getVariableName("pish pish Iron is 3910 Credits");
+		String variable = SentenceProcessor.getVariableName("pish pish Iron is 3910 Credits");
 		
 		assertEquals("Iron", variable);
 	}
@@ -1257,38 +1258,6 @@ public class ConverterCaseTest {
 		String answer = this.aConverter.processHowSentence("how much wood could a woodchuck chuck if a woodchuck could chuck wood ?");
 		
 		assertEquals("I have no idea what you are talking about", answer);
-	}
-	
-	/**
-	 * glob is I
-	 * pish is X
-	 * tegj is L
-	 * 
-	 * how much is pish tegj glob glob ?
-	 */
-	@Ignore
-	@Test
-	public void testEvaluation_PishTeajGlobGlob() {
-		String response = this.aConverter.evaluateHowMuchManySentence("how much is pish tegj glob glob ?");
-		
-		assertEquals("pish tegj glob glob is 42", response);
-	}
-	
-	/**
-	 * Test input:
-	 * 		glob is I
-	 * 		prok is V
-	 * 		pish is X
-	 * 		tegj is L
-	 * 		
-	 * 		glob glob Silver is 34 Credits
-	 * 		glob prok Gold is 57800 Credits
-	 * 		pish pish Iron is 3910 Credits
-	 */
-	@Ignore
-	@Test
-	public void testLoadVariableFromAttributionSentence() {
-		
 	}
 	
 }
