@@ -13,8 +13,7 @@ import com.tw.utils.UtilsTest;
 	ConverterTest.class,
 	UtilsTest.class,
 	SentenceProcessorTest.class
-}
-)
+})
 public class TestSuite {
 
 }

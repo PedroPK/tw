@@ -4,6 +4,7 @@ import static com.tw.utils.Constants.*;
 import static com.tw.utils.Utils.*;
 import static com.tw.math.Converter.*;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -21,109 +22,53 @@ import com.tw.math.exceptions.InvalidArabicException;
 import com.tw.math.exceptions.InvalidRomanException;
 
 /**
+ * This is the Main class of this application, and the one that has a executable Main Method
+ * 
+ * ------------------------------------------------------------------------------------------
+ * 
  * This documentation will explain the decisions that I took during this problem solving and its implementation
  * 
- * Fist thing that I thought was that I should be original and find the answers how to solve it by my self. It was very likely that I could look for
+ * 1) Fist thing that I thought was that I should be original and find the answers how to solve it by my self. It was very likely that I could find 
  * in the internet for a similar problem and its solution, tested by many people, with more elegant and simple implementations then I would do, 
- * but in my mind, you guys would want something made by me, so I did this way, organically, knowing that probably there are better ways, more elegant ways, to do the same job.
+ * but in my mind, you guys would want something made by me.
  * 
- * Having said that, the second thing that I was worried about was how to do conversions between Roman numbers to Arabic Numbers.
+ * With this in mind, I did it by my way, organically, knowing that probably there are better ways, more elegant and simple, to do the same job.
+ * This implementation evolved almost by natural selection. The solutions were improved by increasing the Test cases. Eventually, the implementation
+ * suffered refactoring, once I was confident that the Tests would approve it if the resulting methods were not only more elegant, but also functional. 
+ * 
+ * 2) Having said that, the second thing that I was worried about was how to do conversions between Roman numbers to Arabic Numbers.
  * 
  * The best way that I know how to do this is using TDD (Test Driven Development). So, I created empty methods, jumped to implement the first test, 
  * executed it, saw it fail, and jump back to implement a minimal code to make the first test pass, and started creating more elaborated tests, 
- * keeping this cycle alive, until the moment that I feel that is enough robust to start implementing another method.
+ * keeping this cycle alive, until the moment that I feel that is enough robust to start implementing another methods.
  * 
- * The third priority was how to map the Nouns (ex: glob, prok, pish, tegj, etc...) with its Roman numbers.
+ * 3) The third priority was how to map the Nouns (ex: glob, prok, pish, tegj, etc...) with its Roman numbers.
  * A subpriority was decide if its a valid mapping or not
  * 
- * The fourth priority was to process sentences that was a Variable on it, mixed with Nouns and attributing then to Arabic quantity of Credits (ex: glob glob Silver is 34 Credits)
+ * 4) The fourth priority was to process sentences that was a Variable on it, mixed with Nouns and attributing then to Arabic quantity of Credits (ex: glob glob Silver is 34 Credits)
  * 
- * Once this was done and with many Tests for many sceneries, the fifth priority was to process the How Much/Many questions, and answer then appropriately
+ * 5) Once this was done and with many Tests for many sceneries, the fifth priority was to process the How Much/Many questions, and answer then appropriately
  * Tests with JUnit also implemented to test this Question/Answers sentences, that was testing all previous implementations by chain reaction
  * 
- * Finally, the last thing that was how to use the Standard Input, capture the keyboard text and integrate it with all the rest of application
+ * 6) Finally, the last thing that was how to use the Standard Input, capture the keyboard text and integrate it with all the rest of application
  * 
- * A last effort to be done is to do a great refactoring, doing a better organization, removing unecessary code, making it a little bit better.
+ * 7) A last effort to be done is to do a great refactoring, doing a better organization, removing unnecessary code, making it a little bit better.
  * 
  * An additional explanation is that, once I decided to use Tests in almost anything implemented, there are many public methods, not based in  external utility,
  * but its the way to do Tests with JUnit, without use a more complex frameworks or complicate then with Reflection
  * 
  * @author pedro.c.f.santos
  */
-
-/**
- * You decided to give up on earth after the latest financial collapse left 99.99% of the earth's population with 0.01% of the wealth. 
- * Luckily, with the scant sum of money that is left in your account, you are able to afford to rent a spaceship, leave earth, and fly all over the galaxy to sell common metals and dirt (which apparently is worth a lot).
- * Buying and selling over the galaxy requires you to convert numbers and units, and you decided to write a program to help you.
- * The numbers used for intergalactic transactions follows similar convention to the roman numerals and you have painstakingly collected the appropriate translation between them.
- * Roman numerals are based on seven symbols:
- * 
- * Symbol		Value
- * I			1
- * V			5
- * X			10
- * L			50
- * C			100
- * D			500
- * M			1,000
- * 
- * Numbers are formed by combining symbols together and adding the values. For example, MMVI is 1000 + 1000 + 5 + 1 = 2006. 
- * Generally, symbols are placed in order of value, starting with the largest values. 
- * When smaller values precede larger values, the smaller values are subtracted from the larger values, and the result is added to the total. 
- * 
- * For example MCMXLIV = 1000 + (1000 − 100) + (50 − 10) + (5 − 1) = 1944.
- * 
- * The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
- * (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
- * 
- * "I" can be subtracted from "V" and "X" only. 
- * "X" can be subtracted from "L" and "C" only. 
- * "C" can be subtracted from "D" and "M" only. 
- * "V", "L", and "D" can never be subtracted.
- * 
- * Only one small-value symbol may be subtracted from any large-value symbol.
- * 
- * A number written in [16]Arabic numerals can be broken into digits. 
- * 
- * For example, 1903 is composed of 1, 9, 0, and 3. 
- * 
- * To write the Roman numeral, each of the non-zero digits should be treated separately. 
- * In the above example, 1,000 = M, 900 = CM, and 3 = III. 
- * 
- * Therefore, 1903 = MCMIII.
- * (Source: Wikipedia http://en.wikipedia.org/wiki/Roman_numerals)
- * 
- * Input to your program consists of lines of text detailing your notes on the conversion between intergalactic units and roman numerals.
- * You are expected to handle invalid queries appropriately.
- * 
- * Test input:
- * 		glob is I
- * 		prok is V
- * 		pish is X
- * 		tegj is L
- * 		
- * 		glob glob Silver is 34 Credits
- * 		glob prok Gold is 57800 Credits
- * 		pish pish Iron is 3910 Credits
- * 		
- * 		how much is pish tegj glob glob ?
- * 		how many Credits is glob prok Silver ?
- * 		how many Credits is glob prok Gold ?
- * 		how many Credits is glob prok Iron ?
- * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
- * 
- * Test Output:
- * 		pish tegj glob glob is 42
- * 		glob prok Silver is 68 Credits
- * 		glob prok Gold is 57800 Credits
- * 		glob prok Iron is 782 Credits
- * 		I have no idea what you are talking about
- * 
- * @author pedro.c.f.santos
- */
 public class SentenceProcessor {
 	
+	/**
+	 * This Attribute do the Noun mapping in Roman Numbers
+	 */
 	private Map<String, Character>	aUnitMap;
+	
+	/**
+	 * This Attribute do the Variable mapping in Numerical values
+	 */
 	private Map<String, Double>	aVariableMap;
 	
 	public SentenceProcessor() {
@@ -131,6 +76,15 @@ public class SentenceProcessor {
 		instanciateValuationMapping();
 	}
 	
+	/**
+	 * This method looks for the Variable by	pVariableName	in the VariableMap, and if it exists, multiply its value by the		pArabicNumber and
+	 * returns the resulting value
+	 * 
+	 * @param pVariableName		Variable name to be looked in aVariableMap
+	 * @param pArabicNumer		A numeric multiplier to be multiplied with the variable value
+	 * 
+	 * @return					The result of Variable value multiplied by the 2nd parameter
+	 */
 	private BigDecimal calculateFinalValue(StringBuffer pVariableName, int pArabicNumer) {
 		BigDecimal finalValue = new BigDecimal(pArabicNumer);
 		
@@ -142,6 +96,18 @@ public class SentenceProcessor {
 		return finalValue;
 	}
 	
+	/**
+	 * This method will take three StringBuffers. 
+	 * The 1st one is part of a Response Sentence to be shown to users.
+	 * The 2nd one is a Variable name to be looked at aVariableMap, to get its Value.
+	 * The 3rd one is a Multiplier to be multiplied by the Variable Value.
+	 * 
+	 * @param pResponse
+	 * @param pVariableName
+	 * @param pMultipliers
+	 * 
+	 * @return
+	 */
 	private StringBuffer appendNumericalValue(StringBuffer pResponse, StringBuffer pVariableName, StringBuffer pMultipliers) {
 		String romanMultipliers = convertMultipliersToRoman(pMultipliers.toString());
 		int arabicNumber = convertRomanToArabic(romanMultipliers);
@@ -155,19 +121,35 @@ public class SentenceProcessor {
 		return pResponse;
 	}
 	
+	/**
+	 * This method  will look for a Variable value in Variable Map.
+	 * If the Variable Map does not contain the specified Variable Name, it will return the Minimal value possible for a Double
+	 * 
+	 * @param		pVariableName
+	 * @return
+	 */
 	public double getVariableValue(String pVariableName) {
-		double response = Integer.MIN_VALUE;
+		double response = Double.MIN_VALUE;
 		
-		response = this.aVariableMap.get(pVariableName);
+		if ( this.aVariableMap.containsKey(pVariableName) ) {
+			response = this.aVariableMap.get(pVariableName);
+		}
 		
 		return response;
 	}
 	
+	/**
+	 * This method receives a Read Line Sentence, as a String.
+	 * If this Sentence is a kind of Valuation (has Nouns as multipliers, a Variable and a Quantity of Credits assigned to this),
+	 * 		It will process it, extract its numerical values, do the necessary calculations and store them into the Variable Map.
+	 * 
+	 * @param pReadLine
+	 */
 	public void addValuation(String pReadLine) {
 		if ( this.isValuationSentence(pReadLine) ) {
 			String romanMultiplier = this.extratMultipliersAndConvertToRoman(pReadLine);
 			int multiplier		= convertRomanToArabic(romanMultiplier);
-			String variable		= getVariableName(pReadLine);
+			String variable		= getVariableNameFromValuationSentence(pReadLine);
 			int value			= getAttributedValue(pReadLine);
 			
 			BigDecimal dividend = new BigDecimal(value);
@@ -263,6 +245,14 @@ public class SentenceProcessor {
 		return multipliers;
 	}
 	
+	/**
+	 * This method assumes that the Read Line contains a How Many kind of Sentence
+	 * Assuming that, it will extract all the multiplier Nouns, put them in a List collection of String, and return it.
+	 * 
+	 * @param		pReadLine	A sentence of How Many kind
+	 * 
+	 * @return		List collection with all multiplier Nouns
+	 */
 	private List<String> getMultipliersFromHowManySentence(String pReadLine) {
 		List<String> terms		= split(pReadLine);
 		
@@ -274,6 +264,14 @@ public class SentenceProcessor {
 		return multipliers;
 	}
 	
+	/**
+	 * This method will assume that the 	pTerms		are a List containing all terms from a How Many kind of sentence
+	 * Assuming that, it will extract all the multiplier Nouns, put them in a List collection of String, and return it.
+	 * 
+	 * @param		pTerms		A List with all Terms from a How Many kind of Sentence
+	 * 
+	 * @return		List collection with only multiplier Nouns
+	 */
 	private List<String> getMultipliersFromHowManySentence(List<String> pTerms) {
 		int finalMultipliersIndex = pTerms.size() - 3;
 		List<String> multipliers = new ArrayList<String>();
@@ -284,17 +282,16 @@ public class SentenceProcessor {
 	}
 	
 	/**
+	 * This method will receive a Sentence, and test if its a kind of How Many sentence
+	 * 
 	 * Example of Valid Sentences
-	 * 		how much is pish tegj glob glob ?
 	 * 		how many Credits is glob prok Silver ?
 	 * 		how many Credits is glob prok Gold ?
 	 * 		how many Credits is glob prok Iron ?
 	 * 
-	 * @param		pReadLine
+	 * @param		pReadLine	A How Many kind of Sentence
 	 * 
 	 * @return		boolean		Indicates if the 	pReadLine	is a Valid Sentence
-	 * 
-	 * TODO Implement this method
 	 */
 	public boolean isHowManySentenceValid(String pReadLine) {
 		boolean response = false;
@@ -326,13 +323,15 @@ public class SentenceProcessor {
 	}
 	
 	/**
+	 * This method will receive a Sentence, and test if its a kind of How Much or a How Many sentence
+	 * 
 	 * Example of Valid Sentences
 	 * 		how much is pish tegj glob glob ?
 	 * 		how many Credits is glob prok Silver ?
 	 * 		how many Credits is glob prok Gold ?
 	 * 		how many Credits is glob prok Iron ?
 	 * 
-	 * @param		pReadLine
+	 * @param		pReadLine	A How Much/Many kind of Sentence
 	 * 
 	 * @return		boolean		Indicates if the 	pReadLine	is a Valid Sentence
 	 */
@@ -351,19 +350,21 @@ public class SentenceProcessor {
 		return response;
 	}
 	
+	/**
+	 * 
+	 * @param pReadLine
+	 * @return
+	 */
 	public String extratMultipliersAndConvertToRoman(String pReadLine) {
 		String response = null;
 		
-		if ( 
-				isStringValid(pReadLine)
-				//this.isValuationSentence(pReadLine) 
-		) {
+		if (	isStringValid(pReadLine)	) {
 			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(pReadLine);
 			
 			if ( areAllOriginalMultipliersValid ) {
 				List<String> originalMultipliers= 
 					split(
-						splitToGetOriginalMultiplierTerms(pReadLine)
+						splitToGetOriginalMultiplierTermsFromValuationSentence(pReadLine)
 					);
 				StringBuffer sbMultipliers = new StringBuffer("");
 				for (String multiplier : originalMultipliers) {
@@ -443,7 +444,7 @@ public class SentenceProcessor {
 	}
 	
 	public boolean areAllOriginalMultipliersValid(String pResponse) {
-		String variableName = getVariableName(pResponse);
+		String variableName = getVariableNameFromValuationSentence(pResponse);
 		List<String> multiplierAndPredicateTerms = split(pResponse, variableName);
 		List<String> multipliers = split(multiplierAndPredicateTerms.get(0));
 		
@@ -502,7 +503,7 @@ public class SentenceProcessor {
 		String response = null;
 		
 		if ( this.isValuationSentence(pReadLine) ) {
-			response = splitToGetOriginalMultiplierTerms(pReadLine);
+			response = splitToGetOriginalMultiplierTermsFromValuationSentence(pReadLine);
 		}
 		
 		return response;
@@ -575,18 +576,18 @@ public class SentenceProcessor {
 		return multipliersSB;
 	}
 	
-	public static String splitToGetOriginalMultiplierTerms(String pReadLine) {
-		String variableTerm = getVariableName(pReadLine);
+	public static String splitToGetOriginalMultiplierTermsFromValuationSentence(String pReadLineValuationSentence) {
+		String variableTerm = getVariableNameFromValuationSentence(pReadLineValuationSentence);
 		
-		List<String> sentenceTerms = split(pReadLine, " " + variableTerm);
+		List<String> sentenceTerms = split(pReadLineValuationSentence, " " + variableTerm);
 		String response = sentenceTerms.get(0);
 		return response;
 	}
 	
-	public static String getVariableName(String pReadLine) {
-		List<String> sentenceTerms = getSentenceTerms(pReadLine);
+	public static String getVariableNameFromValuationSentence(String pReadLineValuationSentence) {
+		List<String> sentenceTerms = getSentenceTerms(pReadLineValuationSentence);
 		
-		String variableTerm	= getVariableName(sentenceTerms);
+		String variableTerm	= getVariableNameFromValuationSentenceTerms(sentenceTerms);
 		return variableTerm;
 	}
 	
@@ -594,14 +595,20 @@ public class SentenceProcessor {
 		return split(pReadLine, " ");
 	}
 	
-	private static String getVariableName(List<String> pSentenceTerms) {
-		return pSentenceTerms.get( pSentenceTerms.size() - 4 );
+	private static String getVariableNameFromValuationSentenceTerms(List<String> pValuationSentenceTerms) {
+		return pValuationSentenceTerms.get( pValuationSentenceTerms.size() - 4 );
 	}
 	
+	/**
+	 * This method gets a Scanner, that allows to receive data from the Standard Input by Console/Terminal
+	 * 
+	 * @return		Scanner
+	 */
 	public static Scanner getScanner() {
-		InputStream is = System.in;
-		InputStreamReader isr = new InputStreamReader(is);
-		Scanner scanner = new Scanner(isr);
+		InputStream is			= System.in;
+		InputStreamReader isr	= new InputStreamReader(is);
+		BufferedReader br		= new BufferedReader(isr);
+		Scanner scanner			= new Scanner(br);
 		
 		return scanner;
 	}
