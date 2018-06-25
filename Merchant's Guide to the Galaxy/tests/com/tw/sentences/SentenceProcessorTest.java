@@ -109,15 +109,15 @@ public class SentenceProcessorTest {
 		this.aSentenceProcessor = new SentenceProcessor();
 		
 		// Original Test cases
-		this.aSentenceProcessor.addMapping("glob is I");
-		this.aSentenceProcessor.addMapping("prok is V");
-		this.aSentenceProcessor.addMapping("pish is X");
-		this.aSentenceProcessor.addMapping("tegj is L");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("prok is V");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("tegj is L");
 		
 		// Extended Test cases
-		this.aSentenceProcessor.addMapping("splash is C");
-		this.aSentenceProcessor.addMapping("smash is D");
-		this.aSentenceProcessor.addMapping("slash is M");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("splash is C");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("smash is D");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("slash is M");
 		
 		// Original Test cases
 		this.aSentenceProcessor.addValuation("glob glob Silver is 34 Credits");
@@ -134,7 +134,7 @@ public class SentenceProcessorTest {
 	@Test
 	public void testMappingGlobToI() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("glob is I");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
 		char response = sentenceProcessor.getNounMultiplier_RomanNumber("glob");
 		
 		assertEquals('I', response);
@@ -146,7 +146,7 @@ public class SentenceProcessorTest {
 	@Test
 	public void testMappingProkToV() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("prok is V");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("prok is V");
 		char response = sentenceProcessor.getNounMultiplier_RomanNumber("prok");
 		
 		assertEquals('V', response);
@@ -158,7 +158,7 @@ public class SentenceProcessorTest {
 	@Test
 	public void testMappingPishToX() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("pish is X");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
 		char response = sentenceProcessor.getNounMultiplier_RomanNumber("pish");
 		
 		assertEquals('X', response);
@@ -170,7 +170,7 @@ public class SentenceProcessorTest {
 	@Test
 	public void testMappingTegjToL() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("tegj is L");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("tegj is L");
 		char response = sentenceProcessor.getNounMultiplier_RomanNumber("tegj");
 		
 		assertEquals('L', response);
@@ -185,10 +185,10 @@ public class SentenceProcessorTest {
 	@Test
 	public void testFullMapping() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("glob is I");
-		sentenceProcessor.addMapping("prok is V");
-		sentenceProcessor.addMapping("pish is X");
-		sentenceProcessor.addMapping("tegj is L");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("prok is V");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("tegj is L");
 		
 		assertEquals('I', sentenceProcessor.getNounMultiplier_RomanNumber("glob"));
 		assertEquals('V', sentenceProcessor.getNounMultiplier_RomanNumber("prok"));
@@ -203,7 +203,7 @@ public class SentenceProcessorTest {
 	@Test
 	public void testIsValuationSentenceGlobGlobSilverIs34Credits() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("glob is I");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
 		
 		assertTrue(sentenceProcessor.isValuationSentence("glob glob Silver is 34 Credits"));
 	}
@@ -221,10 +221,10 @@ public class SentenceProcessorTest {
 	@Test
 	public void testIsValuationSentence_GlobGlobSilverIs34CreditsWithFullMapping() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("glob is I");
-		sentenceProcessor.addMapping("prok is V");
-		sentenceProcessor.addMapping("pish is X");
-		sentenceProcessor.addMapping("tegj is L");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("prok is V");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("tegj is L");
 		
 		assertTrue(sentenceProcessor.isValuationSentence("glob glob Silver is 34 Credits"));
 	}
@@ -240,10 +240,10 @@ public class SentenceProcessorTest {
 	@Test
 	public void testIsValuationSentence_globProkGoldIs57800CreditsWithFullMapping() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("glob is I");
-		sentenceProcessor.addMapping("prok is V");
-		sentenceProcessor.addMapping("pish is X");
-		sentenceProcessor.addMapping("tegj is L");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("prok is V");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("tegj is L");
 		
 		assertTrue(sentenceProcessor.isValuationSentence("glob prok Gold is 57800 Credits"));
 	}
@@ -256,7 +256,7 @@ public class SentenceProcessorTest {
 	@Test
 	public void testIsValuationSentence_globProkGoldIs57800CreditsWithPartialMapping() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("glob is I");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
 		
 		assertFalse(sentenceProcessor.isValuationSentence("glob prok Gold is 57800 Credits"));
 	}
@@ -269,7 +269,7 @@ public class SentenceProcessorTest {
 	@Test
 	public void testIsValuationSentence_pishPishIronIs3910CreditsWithFullMapping() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
-		sentenceProcessor.addMapping("pish is X");
+		sentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
 		
 		assertTrue(sentenceProcessor.isValuationSentence("pish pish Iron is 3910 Credits"));
 	}
@@ -469,15 +469,15 @@ public class SentenceProcessorTest {
 		this.aSentenceProcessor = new SentenceProcessor();
 		
 		// Original Test cases
-		this.aSentenceProcessor.addMapping("glob is I");
-		this.aSentenceProcessor.addMapping("prok is V");
-		this.aSentenceProcessor.addMapping("pish is X");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("prok is V");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
 		//aSentenceProcessor.addMapping("tegj is L");
 		
 		// Extended Test cases
-		this.aSentenceProcessor.addMapping("splash is C");
-		this.aSentenceProcessor.addMapping("smash is D");
-		this.aSentenceProcessor.addMapping("slash is M");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("splash is C");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("smash is D");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("slash is M");
 		
 		// Originak Test cases
 		this.aSentenceProcessor.addValuation("glob glob Silver is 34 Credits");
@@ -735,13 +735,13 @@ public class SentenceProcessorTest {
 	@Test
 	public void testAddValuationSlashSplashSlashTegjPishPishPishGlobGlobGlobBitCoinIs1Credit() {
 		this.aSentenceProcessor = new SentenceProcessor();
-		this.aSentenceProcessor.addMapping("glob is I");
-		this.aSentenceProcessor.addMapping("prok is V");
-		this.aSentenceProcessor.addMapping("pish is X");
-		this.aSentenceProcessor.addMapping("tegj is L");
-		this.aSentenceProcessor.addMapping("splash is C");
-		this.aSentenceProcessor.addMapping("smash is D");
-		this.aSentenceProcessor.addMapping("slash is M");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("prok is V");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("tegj is L");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("splash is C");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("smash is D");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("slash is M");
 		
 		this.aSentenceProcessor.addValuation("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
 	}
@@ -756,7 +756,7 @@ public class SentenceProcessorTest {
 	 */
 	@Test
 	public void testIronValuation() {
-		this.aSentenceProcessor.addMapping("pish is X");
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("pish is X");
 		this.aSentenceProcessor.addValuation("pish pish Iron is 3910 Credits");
 		double ironValue = this.aSentenceProcessor.getVariableValue("Iron");
 		

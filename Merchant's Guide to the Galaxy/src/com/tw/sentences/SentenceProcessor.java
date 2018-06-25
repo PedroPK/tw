@@ -64,7 +64,7 @@ public class SentenceProcessor {
 	/**
 	 * This Attribute do the Noun mapping in Roman Numbers
 	 */
-	private Map<String, Character>	aUnitMap;
+	private Map<String, Character>	aNounMultiplier_toRoman_Map;
 	
 	/**
 	 * This Attribute do the Variable mapping in Numerical values
@@ -72,15 +72,15 @@ public class SentenceProcessor {
 	private Map<String, Double>	aVariableMap;
 	
 	public SentenceProcessor() {
-		instanciateUnitMapping();
+		instanciate_NounMultiplier_toRoman_Mapping();
 		instanciateValuationMapping();
 	}
 	
 	/**
 	 * This method initializes the Noun/Multipliers mapping into Roman Numbers
 	 */
-	private void instanciateUnitMapping() {
-		this.aUnitMap = new HashMap<String, Character>();
+	private void instanciate_NounMultiplier_toRoman_Mapping() {
+		this.aNounMultiplier_toRoman_Map = new HashMap<String, Character>();
 	}
 	
 	/**
@@ -93,8 +93,8 @@ public class SentenceProcessor {
 	public char getNounMultiplier_RomanNumber(String pVariable) {
 		char response = ' ';
 		
-		if ( isStringValid(pVariable) && this.aUnitMap != null) {
-			response = this.aUnitMap.get(pVariable);
+		if ( isStringValid(pVariable) && this.aNounMultiplier_toRoman_Map != null) {
+			response = this.aNounMultiplier_toRoman_Map.get(pVariable);
 		}
 		
 		return response;
@@ -394,7 +394,7 @@ public class SentenceProcessor {
 					);
 				StringBuffer sbMultipliers = new StringBuffer("");
 				for (String multiplier : originalMultipliers) {
-					Character romanMultiplier = this.aUnitMap.get(multiplier);
+					Character romanMultiplier = this.aNounMultiplier_toRoman_Map.get(multiplier);
 					sbMultipliers = sbMultipliers.append(Character.toString(romanMultiplier));
 				}
 				response = sbMultipliers.toString();
@@ -416,7 +416,7 @@ public class SentenceProcessor {
 		boolean areAllOriginalMultipliersValid = true;
 		for ( String actualMultiplier : pOriginalMultiplierTerms ) {
 			
-			if ( !this.aUnitMap.containsKey(actualMultiplier) ) {
+			if ( !this.aNounMultiplier_toRoman_Map.containsKey(actualMultiplier) ) {
 				areAllOriginalMultipliersValid = false;
 			}
 		}
@@ -488,7 +488,7 @@ public class SentenceProcessor {
 			
 			StringBuffer sbMultipliers = new StringBuffer("");
 			for (String multiplier : originalMultipliers) {
-				Character romanMultiplier = this.aUnitMap.get(multiplier);
+				Character romanMultiplier = this.aNounMultiplier_toRoman_Map.get(multiplier);
 				sbMultipliers = sbMultipliers.append(Character.toString(romanMultiplier));
 			}
 			response = sbMultipliers.toString();
@@ -513,27 +513,29 @@ public class SentenceProcessor {
 		if ( isStringValid(pReadLine) ) { 
 			List<String> sentenceTerms = split(pReadLine);
 			
-			String creditTerm	= sentenceTerms.get(sentenceTerms.size() - 1 );
-			String numericTerm	= sentenceTerms.get(sentenceTerms.size() - 2 );
-			String isVerbTerm	= sentenceTerms.get(sentenceTerms.size() - 3 );
-			
-			if (	sentenceTerms != null && sentenceTerms.size() >= 5		) {
-				if (	
-						(
-							creditTerm.equals(CREDITS)	||
-							creditTerm.equals(CREDIT)
-						)									&&
-						isNumeric(numericTerm)				&&
-						isVerbTerm.equals(IS)		
-				) {
-					//String variableTerm	= getVariableName(sentenceTerms);
-					isMappingSentence = true;
-					for ( int index = sentenceTerms.size() - 5; index >= 0; index = index - 1 ) {
-						String romanianTerm	= sentenceTerms.get( index );
-						
-						if ( !this.aUnitMap.containsKey(romanianTerm) ) {
-							isMappingSentence = false;
-							break;	// Does not have at least one of this terms, so the response should be False.
+			if (	sentenceTerms != null && sentenceTerms.size() >= 3		) {
+				String creditTerm	= sentenceTerms.get(sentenceTerms.size() - 1 );
+				String numericTerm	= sentenceTerms.get(sentenceTerms.size() - 2 );
+				String isVerbTerm	= sentenceTerms.get(sentenceTerms.size() - 3 );
+				
+				if (	sentenceTerms != null && sentenceTerms.size() >= 5		) {
+					if (	
+							(
+								creditTerm.equals(CREDITS)	||
+								creditTerm.equals(CREDIT)
+							)									&&
+							isNumeric(numericTerm)				&&
+							isVerbTerm.equals(IS)		
+					) {
+						//String variableTerm	= getVariableName(sentenceTerms);
+						isMappingSentence = true;
+						for ( int index = sentenceTerms.size() - 5; index >= 0; index = index - 1 ) {
+							String romanianTerm	= sentenceTerms.get( index );
+							
+							if ( !this.aNounMultiplier_toRoman_Map.containsKey(romanianTerm) ) {
+								isMappingSentence = false;
+								break;	// Does not have at least one of this terms, so the response should be False.
+							}
 						}
 					}
 				}
@@ -543,15 +545,20 @@ public class SentenceProcessor {
 		return isMappingSentence;
 	}
 	
-	public void addMapping(String pReadLine) {
+	/**
+	 * This method add at	aUnitMap	a mapping from a Noun/Multiplier to a Roman Number
+	 * 
+	 * @param	pReadLine	A Noun/Multiplier to Roman attribution Sentence
+	 */
+	public void addNounMultiplier_Roman_Mapping(String pReadLine) {
 		if ( isMappingSentence(pReadLine) ) {
-			if ( this.aUnitMap == null ) {
-				instanciateUnitMapping();
+			if ( this.aNounMultiplier_toRoman_Map == null ) {
+				instanciate_NounMultiplier_toRoman_Mapping();
 			}
 			
 			List<String> sentenceTerms = split(pReadLine);
 			
-			this.aUnitMap.put( 
+			this.aNounMultiplier_toRoman_Map.put( 
 				sentenceTerms.get(0),			//	Variable
 				//sentenceTerms.get(1)				is
 				sentenceTerms.get(2).charAt(0)	//	Roman Numeral
@@ -560,16 +567,21 @@ public class SentenceProcessor {
 	}
 	
 	/**
+	 * This method assumes that it will receive a Valuation Sentence
+	 * Assuming this, it will extract the Numeric quantity of Credits assigned to it
+	 * 
 	 * Example of valid sentences
 	 * 		glob glob Silver is 34 Credits
 	 * 		glob prok Gold is 57800 Credits
 	 * 		pish pish Iron is 3910 Credits
+	 * 
+	 * @param	pReadLineValuationSentence		a Valuation Sentence
 	 */
-	public int getAttributedValue(String pReadLine) {
+	public int getAttributedValue(String pReadLineValuationSentence) {
 		int value = Integer.MIN_VALUE;
 		
-		if ( isValuationSentence(pReadLine) ) {
-			List<String> terms = split(pReadLine);
+		if ( isValuationSentence(pReadLineValuationSentence) ) {
+			List<String> terms = split(pReadLineValuationSentence);
 			
 			value = Integer.parseInt(terms.get(terms.size() -2));
 		}
@@ -643,6 +655,10 @@ public class SentenceProcessor {
 		return scanner;
 	}
 	
+	/**
+	 * This method will get a Scanner, to receive data from the Standard Input, and will keep reading anything coming from users
+	 * If the user press an Empty Enter or type "Stop", the application is going to stop. 
+	 */
 	public void readlineFromScanner() {
 		Scanner scanner = getScanner();
 		
@@ -658,11 +674,13 @@ public class SentenceProcessor {
 			processInputLineRead(line);
 		}
 		
-		System.out.println("Bye! See you soon!");
+		print("Bye! See you soon!");
 		scanner.close();
 	}
 	
 	/**
+	 * This method will process the Sentences typed by the user, and give the proper response to them
+	 * 
 	 * Test input:
 	 * 		glob is I
 	 * 		prok is V
@@ -672,19 +690,23 @@ public class SentenceProcessor {
 	 * 		splash is C
 	 * 		smash is D
 	 * 		slash is M
-	 * 		
+	 * 
+	 * Test input:
 	 * 		glob glob Silver is 34 Credits
 	 * 		glob prok Gold is 57800 Credits
 	 * 		pish pish Iron is 3910 Credits
 	 * 		
+	 * Extended Test input
 	 * 		slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit
 	 * 		
+	 * Test input:
 	 * 		how much is pish tegj glob glob ?
 	 * 		how many Credits is glob prok Silver ?
 	 * 		how many Credits is glob prok Gold ?
 	 * 		how many Credits is glob prok Iron ?
 	 * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
 	 * 		
+	 * Extended Test input
 	 * 		how many Credits is pish pish pish prok BitCoin ?
 	 * 		how many Credits is pish pish pish prok Ethereum ?
 	 * 		how many Credits is Plunct Plact Zum BitCoin 
@@ -698,7 +720,10 @@ public class SentenceProcessor {
 	 * 		
 	 * 		pish pish pish prok BitCoin is 0.01765 Credits
 	 * 
-	 * @param pReadLine
+	 * @param	pReadLine	A Sentence that can be a 
+	 * 				Noun/Multiplier Mapping sentence
+	 * 				Valuation sentence
+	 * 				Question sentence
 	 */
 	public void processInputLineRead(String pReadLine) {
 		/* Here I have to receive a Sentence, and do this:
@@ -711,37 +736,58 @@ public class SentenceProcessor {
 		 */
 		try {
 			if (
-					Converter.isMappingSentence(pReadLine)				||
-					this.isValuationSentence(pReadLine)			||
+					Converter.isMappingSentence(pReadLine)			||
+					this.isValuationSentence(pReadLine)				||
 					this.isHowMuchManySentenceValid(pReadLine)
 			) {
 				if (	Converter.isMappingSentence(pReadLine)		) {
-					this.addMapping(pReadLine);
+					this.addNounMultiplier_Roman_Mapping(pReadLine);
 				} else if ( this.isValuationSentence(pReadLine)	) {
 					this.addValuation(pReadLine);
 				} else if ( this.isHowMuchManySentenceValid(pReadLine) ) {
 					String response = this.processHowSentence(pReadLine);
-					System.out.println(response);
+					print(response);
 				}
 			} else {
-				System.out.println(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
+				print(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
 			}
 		} catch ( EmptyRomanException | FourTimesRepetitionException | InvalidArabicException | InvalidRomanException  exception ) {
-			System.out.println(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
+			print(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
 		}
 	}
 	
+	/**
+	 * This method only simplifies the Printing of answers
+	 * @param pResponse		String to be printed
+	 */
+	private static void print(String pResponse) {
+		System.out.println(pResponse);
+	}
+	
+	/**
+	 * The Main Method for this class and from the application
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		System.out.println("Welcome! These is a Sentence Processor of Roman numbers into Nouns and Variables, to define theys Credit values");
-		System.out.println("There are three types of valid sentence.\n");
-		System.out.println("The 1st type is the sentences that does an asignment of a Roman Number to a Noun. \nEx: Alice is I. \n");
-		System.out.println("The 2nd type is the sentences that uses the Nouns from previous sentences, introduces a new Variable, an do another asignment of a Numerical quantity of Credits. \nEx: Alice Bob is 5 Credits.\n");
-		System.out.println("The 3rd type is the sentences that does a Question, based on the Nouns and Variables from previous sentences. \nEx: How Many Credits is Alice Alce Bob ?\n");
-		System.out.println("You can start writing sentences below.");
+		printInstructions();
 		
 		SentenceProcessor sir = new SentenceProcessor();
 		
 		sir.readlineFromScanner();
+	}
+	
+	/**
+	 * This method just print the basic instructions to the users, about how to use it.
+	 */
+	private static void printInstructions() {
+		print("Welcome! These is a Sentence Processor of Roman numbers into Nouns and Variables, to define theys Credit values");
+		print("There are three types of valid sentence.\n");
+		print("The 1st type is the sentences that does an asignment of a Roman Number to a Noun. \nEx: Alice is I. \n");
+		print("The 2nd type is the sentences that uses the Nouns from previous sentences, introduces a new Variable, an do another asignment of a Numerical quantity of Credits. \nEx: Alice Bob is 5 Credits.\n");
+		print("The 3rd type is the sentences that does a Question, based on the Nouns and Variables from previous sentences. \nEx: How Many Credits is Alice Alce Bob ?\n");
+		print("You can start writing sentences below.");
+		print("======================================");
 	}
 	
 }
