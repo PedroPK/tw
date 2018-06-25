@@ -1,9 +1,7 @@
 package com.tw.sentences;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static com.tw.utils.Constants.*;
 
 import java.util.Scanner;
 
@@ -761,6 +759,13 @@ public class SentenceProcessorTest {
 		double ironValue = this.aSentenceProcessor.getVariableValue("Iron");
 		
 		assertEquals(195.5, ironValue, 0.01);
+	}
+	
+	@Test
+	public void testProcessInputLineRead() {
+		String response = this.aSentenceProcessor.processInputLineRead("pish is XX");
+		
+		assertEquals(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT, response);
 	}
 	
 }

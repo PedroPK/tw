@@ -83,7 +83,7 @@ import com.tw.math.exceptions.InvalidRomanException;
  * 
  * @author pedroc.f.santos
  */
-//@FixMethodOrder(MethodSorters.JVM)
+@FixMethodOrder(MethodSorters.JVM)
 public class ConverterTest {
 	
 	@Test(expected=EmptyRomanException.class)

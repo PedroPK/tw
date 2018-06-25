@@ -725,7 +725,7 @@ public class SentenceProcessor {
 	 * 				Valuation sentence
 	 * 				Question sentence
 	 */
-	public void processInputLineRead(String pReadLine) {
+	public String processInputLineRead(String pReadLine) {
 		/* Here I have to receive a Sentence, and do this:
 		 * 		Define what kind of sentence it is:
 		 * 			Unit to Value attribution
@@ -734,6 +734,7 @@ public class SentenceProcessor {
 		 * 		Call the right method do process this sentence in Converter
 		 * 		If its a Question Sentence, to Print the Response sentence
 		 */
+		String response = "";
 		try {
 			if (
 					Converter.isMappingSentence(pReadLine)			||
@@ -745,15 +746,20 @@ public class SentenceProcessor {
 				} else if ( this.isValuationSentence(pReadLine)	) {
 					this.addValuation(pReadLine);
 				} else if ( this.isHowMuchManySentenceValid(pReadLine) ) {
-					String response = this.processHowSentence(pReadLine);
-					print(response);
+					response = this.processHowSentence(pReadLine);
 				}
 			} else {
-				print(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
+				response = I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT;
 			}
 		} catch ( EmptyRomanException | FourTimesRepetitionException | InvalidArabicException | InvalidRomanException  exception ) {
-			print(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT);
+			response = I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT;
 		}
+		
+		if ( isStringValid(response) ) {
+			print(response);
+		}
+		
+		return response;
 	}
 	
 	/**
