@@ -8,6 +8,11 @@ import java.util.Set;
 
 import static com.tw.utils.Constants.*;
 
+/**
+ * This class implements methods that are useful to many others in this application
+ * 
+ * @author pedro.c.f.santos
+ */
 public class Utils {
 	
 	/**
@@ -105,6 +110,12 @@ public class Utils {
 		return response;
 	}
 	
+	/**
+	 * This method compares the parameter to the Question Mark (?)
+	 * 
+	 * @param pString
+	 * @return
+	 */
 	public static boolean isEqualsQuestionMark(String pString) {
 		boolean response = false;
 		
@@ -116,6 +127,12 @@ public class Utils {
 		return response;
 	}
 	
+	/**
+	 * This method compares the parameter to the "Is" String
+	 * 
+	 * @param pString
+	 * @return
+	 */
 	public static boolean isEqualsIs(String pString) {
 		boolean response = false;
 		
@@ -126,6 +143,12 @@ public class Utils {
 		return response;
 	}
 	
+	/**
+	 * This method compares the parameter to the "Much" String
+	 * 
+	 * @param pString
+	 * @return
+	 */
 	public static boolean isEqualsMuch(String pString) {
 		boolean response = false;
 		
@@ -136,6 +159,12 @@ public class Utils {
 		return response;
 	}
 	
+	/**
+	 * This method compares the parameter to the "How" String
+	 * 
+	 * @param pString
+	 * @return
+	 */
 	public static boolean isEqualsHow(String pString) {
 		boolean response = false;
 		

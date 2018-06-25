@@ -1,4 +1,4 @@
-package com.tw.sentences;
+package com.tw.main;
 
 import static org.junit.Assert.*;
 import static com.tw.utils.Constants.*;
@@ -678,38 +678,6 @@ public class SentenceProcessorTest {
 		assertEquals("Iron", variable);
 	}
 	
-	/**
-	 * glob glob Silver is 34 Credits
-	 * /
-	@Test
-	public void testGetOriginalMultiplierGlobGlogSilverIs34Credits() {
-		String response = 
-				this.aSentenceProcessor.getSentenceOriginalMultiplier("glob glob Silver is 34 Credits");
-		
-		assertEquals("glob glob", response);
-	}*/
-	
-	/**
-	 * glob prok Gold is 57800 Credits
-	 * /
-	@Test
-	public void testGetOriginalMultiplierGlobProkGoldIs57800Credits() {
-		String response = 
-				this.aSentenceProcessor.getSentenceOriginalMultiplier("glob prok Gold is 57800 Credits");
-		
-		assertEquals("glob prok", response);
-	}*/
-	
-	/**
-	 * pish pish Iron is 3910 Credits
-	 * /
-	@Test
-	public void testGetOriginalMultiplierPishPishIronIs3910Credits() {
-		String response = 
-			this.aSentenceProcessor.getSentenceOriginalMultiplier("pish pish Iron is 3910 Credits");
-		
-		assertEquals("pish pish", response);
-	}*/
 	
 	/**
 	 * Original Test input:
@@ -762,9 +730,87 @@ public class SentenceProcessorTest {
 	}
 	
 	@Test
-	public void testProcessInputLineRead() {
+	public void testProcessInputLineRead_pishIsXX_Invalid() {
 		String response = this.aSentenceProcessor.processInputLineRead("pish is XX");
 		
+		assertEquals(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT, response);
+	}
+	
+	@Test
+	public void testProcessInputLineRead_Scenario01_Valid() {
+		String response = this.aSentenceProcessor.processInputLineRead("glob is I");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("prok is V");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("pish is X");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("tegj is L");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("glob glob Silver is 34 Credits");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("glob prok Gold is 57800 Credits");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("pish pish Iron is 3910 Credits");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("how much is pish tegj glob glob ?");
+		assertEquals("pish tegj glob glob is 42", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("how many Credits is glob prok Silver ?");
+		assertEquals("glob prok Silver is 68 Credits", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("how many Credits is glob prok Gold ?");
+		assertEquals("glob prok Gold is 57800 Credits", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("how many Credits is glob prok Iron ?");
+		assertEquals("glob prok Iron is 782 Credits", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("how much wood could a woodchuck chuck if a woodchuck could chuck wood ?");
+		assertEquals(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT, response);
+	}
+	
+	@Test
+	public void testProcessInputLineRead_Scenario02_Valid() {
+		String response = this.aSentenceProcessor.processInputLineRead("glob is I");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("prok is V");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("pish is X");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("tegj is L");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("splash is C");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("smash is D");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("slash is M");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("glob glob Silver is 34 Credits");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("glob prok Gold is 57800 Credits");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("pish pish Iron is 3910 Credits");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("slash splash slash tegj pish pish pish glob glob glob BitCoin is 1 Credit");
+		assertEquals("", response);
+		
+		response = this.aSentenceProcessor.processInputLineRead("how much wood could a woodchuck chuck if a woodchuck could chuck wood ?");
 		assertEquals(I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT, response);
 	}
 	

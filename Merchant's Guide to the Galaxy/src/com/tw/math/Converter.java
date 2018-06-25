@@ -50,7 +50,7 @@ import com.tw.math.exceptions.InvalidRomanException;
  * 
  * Therefore, 1903 = MCMIII.
  * 
- * @author pedroc.f.santos
+ * @author pedro.c.f.santos
  */
 public class Converter {
 	

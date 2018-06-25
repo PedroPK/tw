@@ -1,4 +1,4 @@
-package com.tw.sentences;
+package com.tw.main;
 
 import static com.tw.utils.Constants.*;
 import static com.tw.utils.Utils.*;
@@ -758,7 +758,6 @@ public class SentenceProcessor {
 		if ( isStringValid(response) ) {
 			print(response);
 		}
-		
 		return response;
 	}
 	
