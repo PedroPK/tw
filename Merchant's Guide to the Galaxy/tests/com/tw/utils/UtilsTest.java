@@ -6,7 +6,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class UtilsCaseTest {
+public class UtilsTest {
 	
 	@Test
 	public void testSplitNull() {

@@ -4,13 +4,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.tw.math.ConverterCaseTest;
-import com.tw.utils.UtilsCaseTest;
+import com.tw.math.ConverterTest;
+import com.tw.sentences.SentenceProcessorTest;
+import com.tw.utils.UtilsTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	ConverterCaseTest.class,
-	UtilsCaseTest.class
+	ConverterTest.class,
+	UtilsTest.class,
+	SentenceProcessorTest.class
 }
 )
 public class TestSuite {

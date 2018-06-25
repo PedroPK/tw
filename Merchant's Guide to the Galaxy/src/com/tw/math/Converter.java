@@ -13,7 +13,6 @@ import static com.tw.utils.Constants.X;
 import static com.tw.utils.Utils.equalsZero;
 import static com.tw.utils.Utils.getRomanNumerals;
 import static com.tw.utils.Utils.isStringValid;
-import static com.tw.utils.Utils.split;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -90,19 +89,6 @@ public class Converter {
 	private static BigDecimal setScale5(BigDecimal pFinalValue) {
 		pFinalValue = pFinalValue.setScale(5, RoundingMode.HALF_EVEN);
 		return pFinalValue;
-	}
-	
-	
-	
-	// TODO Test this
-	public String evaluateHowMuchManySentence(String pReadLine) {
-		String response = null;
-		
-		List<String> sentenceTerms = split(pReadLine);
-		
-		
-		
-		return response;
 	}
 	
 	/**
@@ -188,6 +174,11 @@ public class Converter {
 		return romanResponse;
 	}
 	
+	/**
+	 * This method is responsible to do all the necessary validations on the	pArabic		string, to assure that its convertible to a Roman Number
+	 * 
+	 * @param	pArabic		A String that is supposed to contain an Arabic Number that we want to convert to an Roman Number
+	 */
 	private static void validateArabitToRomanConvertion(String pArabic) {
 		if ( !isStringValid(pArabic) ) {
 			throw new InvalidArabicException();
@@ -203,20 +194,51 @@ public class Converter {
 		}
 	}
 	
-	private static int getArabicValue(String pArabic) {
-		int arabicValue = Integer.parseInt(pArabic);
-		return arabicValue;
+	/**
+	 * This method converts the		pArabic		string into an Integer, its this is possible.
+	 * Otherwise it will return the Minimum value possible for an Integer
+	 * 
+	 * @param		pArabic		A String that should contain an Integer value
+	 * 
+	 * @return		int			An Integer, with the equivalent content of the	pArabic		string
+	 */
+	public static int getArabicValue(String pArabic) {
+		int response = Integer.MIN_VALUE;
+		
+		if ( isStringValid(pArabic) ) {
+			try {
+				response = Integer.parseInt(pArabic);
+			} catch ( NumberFormatException nfe ) {
+				// The pArabic cannot be converted to an Integer
+			}
+		}
+		
+		return response;
 	}
 	
-	private static int getArabicDigit(char pArabic) {
-		int arabicValue = 
-			Integer.parseInt( 
-				Character.toString( pArabic ) 
+	/**
+	 * This method converts the		pArabic		string into an Integer, its this is possible.
+	 * Otherwise it will return the Minimum value possible for an Integer
+	 * 
+	 * @param		pArabic		A Character that should contain an Integer value
+	 * 
+	 * @return		int			An Integer, with the equivalent content of the	pArabic		character
+	 */
+	public static int getArabicDigit(char pArabic) {
+		int response = Integer.MIN_VALUE;
+		
+		try {
+			response = Integer.parseInt(
+				Character.toString(pArabic)
 			);
-		return arabicValue;
+		} catch ( NumberFormatException nfe ) {
+			// The pArabic cannot be converted to an Integer
+		}
+		
+		return response;
 	}
 	
-	private static boolean isArabicValid(String pArabic) {
+	public static boolean isArabicValid(String pArabic) {
 		boolean isValid = true;
 		try {
 			Integer.parseInt(pArabic);
