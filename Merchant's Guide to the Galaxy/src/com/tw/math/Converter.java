@@ -75,9 +75,15 @@ public class Converter {
 		return result;
 	}
 	
-	private static BigDecimal setScale5(BigDecimal pFinalValue) {
-		pFinalValue = pFinalValue.setScale(5, RoundingMode.HALF_EVEN);
-		return pFinalValue;
+	/**
+	 * This method sets the Scale to 5, avoiding the application to manipulate worthless portions of BigDecimals
+	 * 
+	 * @param		pBigDecimal		BigDecimal to be Scaled to 5
+	 * @return
+	 */
+	private static BigDecimal setScale5(BigDecimal pBigDecimal) {
+		pBigDecimal = pBigDecimal.setScale(5, RoundingMode.HALF_EVEN);
+		return pBigDecimal;
 	}
 	
 	/**
@@ -85,7 +91,7 @@ public class Converter {
 	 * 
 	 * @param		pReadLine
 	 * 
-	 * @return		boolean		Indicantes if the	pReadLine	contais a Unit to Roman Mapping Sentence
+	 * @return		boolean		Indicates if the	pReadLine	contains a Unit to Roman Mapping Sentence
 	 */
 	public static boolean isMappingSentence(String pReadLine) {
 		List<String> sentenceTerms = split(pReadLine);
@@ -129,6 +135,76 @@ public class Converter {
 		}
 		
 		return response;
+	}
+	
+	/**
+	 * This method will evaluate if the Character at Index Position is Smaller then the next one.
+	 * If this is true, the first should be subtracted from the second.
+	 * Otherwise, they should be summed
+	 * 
+	 * @param pRoman
+	 * @param pIndex
+	 * 
+	 * @return
+	 */
+	private static boolean shouldSubtractValue(String pRoman, int pIndex) {
+		boolean shouldSubtract = false;
+		
+		char actualCharacter = pRoman.charAt(pIndex);
+		
+		if ( pIndex + 1 < pRoman.length() ) {
+			char nextCharacter = pRoman.charAt(pIndex + 1);
+			
+			if ( convertRomanToArabic(Character.toString(actualCharacter)) < convertRomanToArabic(Character.toString(nextCharacter)) ) {
+				shouldSubtract = true;
+			}
+		}
+		return shouldSubtract;
+	}
+	
+	/**
+	 * This method converts a Roman character to an Integer
+	 * 
+	 * @param pActualCharacter
+	 * @return
+	 */
+	private static int getArabicValue(char pActualCharacter) {
+		int resposeValue = 0;
+		
+		if (  pActualCharacter == I  ) {
+			resposeValue = 1;
+		} else if (  pActualCharacter == V  ) {
+			resposeValue = 5;
+		} else if (  pActualCharacter == X  ) {
+			resposeValue = 10;
+		} else if (  pActualCharacter == L  ) {
+			resposeValue = 50;
+		} else if (  pActualCharacter == C  ) {
+			resposeValue = 100;
+		} else if (  pActualCharacter == D  ) {
+			resposeValue = 500;
+		} else if (  pActualCharacter == M  ) {
+			resposeValue = 1000;
+		}
+		
+		return resposeValue;
+	}
+	
+	/**
+	 * This method its goind to do or a Sum or a Subtraction of		pResponseValue		and		pToSumOrSubtractValue		, based on the boolean		pInShouldSubtract
+	 * 
+	 * @param pResponseValue
+	 * @param pInShouldSubtract
+	 * @param pToSumOrSubtractValue
+	 * @return
+	 */
+	private static int sumOrSubtract(int pResponseValue, boolean pInShouldSubtract, int pToSumOrSubtractValue) {
+		if ( !pInShouldSubtract ) {
+			pResponseValue = pResponseValue + pToSumOrSubtractValue;
+		} else {
+			pResponseValue = pResponseValue - pToSumOrSubtractValue;
+		}
+		return pResponseValue;
 	}
 	
 	/**
@@ -206,6 +282,22 @@ public class Converter {
 	}
 	
 	/**
+	 * This method is going to test if the		pArabic		string can be converted into an Integer
+	 * 
+	 * @param pArabic
+	 * @return
+	 */
+	public static boolean isArabicValid(String pArabic) {
+		boolean isValid = true;
+		try {
+			Integer.parseInt(pArabic);
+		} catch ( NumberFormatException nfe ) {
+			isValid = false;
+		}
+		return isValid;
+	}
+	
+	/**
 	 * This method converts the		pArabic		string into an Integer, its this is possible.
 	 * Otherwise it will return the Minimum value possible for an Integer
 	 * 
@@ -227,16 +319,6 @@ public class Converter {
 		return response;
 	}
 	
-	public static boolean isArabicValid(String pArabic) {
-		boolean isValid = true;
-		try {
-			Integer.parseInt(pArabic);
-		} catch ( NumberFormatException nfe ) {
-			isValid = false;
-		}
-		return isValid;
-	}
-	
 	/**
 	 * This method is responsible to do all the necessary validations in a Roman Number
 	 * 
@@ -248,13 +330,71 @@ public class Converter {
 			throw new EmptyRomanException();
 		}
 		
-		if ( has4ConsecutiveRepetitions(pRoman) ) {
+		if ( hasInvalidConsecutiveRepetitions(pRoman) ) {
 			throw new FourTimesRepetitionException();
 		}
 		
 		if ( hasInvalidInternalSubtraction(pRoman) ) {
 			throw new InvalidRomanException(pRoman);
 		}
+	}
+	
+	/**
+	 * This method implements this rules:
+	 * 
+	 * 		- The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * 		- (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 * 
+	 * @param pRoman
+	 * @return
+	 */
+	public static boolean hasInvalidConsecutiveRepetitions(String pRoman) {
+		boolean response = false;
+		
+		if ( isStringValid(pRoman) ) {
+			int repetitions = 1;
+			char lastRomanCharacterAnalised = ' ';
+			for ( int index = 0; index < pRoman.length(); index = index + 1 ) {
+				lastRomanCharacterAnalised = pRoman.charAt(index);
+				if ( index > 0 && isCharacterEqualsPrevious(pRoman, index) ) {
+					repetitions = repetitions + 1;
+					
+					if (	
+							repetitions >= 2	&&
+							(
+								lastRomanCharacterAnalised == V	||
+								lastRomanCharacterAnalised == L	||
+								lastRomanCharacterAnalised == D
+							)
+					) {
+						break;
+					}
+					
+					if ( repetitions >= 4 ) {
+						// It should break here, to avoid the case of a IIIV to be considered valid.
+						break;
+					}
+				} else {
+					repetitions = 1;
+				}
+			}
+			
+			if (
+					repetitions > 3 ||
+					(
+						repetitions >= 2	&&
+						(
+							lastRomanCharacterAnalised == V	||
+							lastRomanCharacterAnalised == L	||
+							lastRomanCharacterAnalised == D
+						)
+					)
+			) {
+				response = true;
+			}
+		}
+		
+		return response;
 	}
 	
 	/**
@@ -297,6 +437,14 @@ public class Converter {
 		return response;
 	}
 	
+	/**
+	 * This method will extrat from		pRoman		a Character from specific	pIndex		and converts this to an Integer
+	 * 
+	 * @param pRoman
+	 * @param pIndex
+	 * 
+	 * @return
+	 */
 	private static int getValue(String pRoman, int pIndex) {
 		char actualCharacter = pRoman.charAt(pIndex);
 		int actualValue = convertRomanToArabic(Character.toString(actualCharacter));
@@ -304,54 +452,16 @@ public class Converter {
 	}
 	
 	/**
-	 * This method will evaluate if the Character at Index Position is Smaller then the next one.
-	 * If this is true, the first should be subtracted from the second.
-	 * Otherwise, they should be summed
+	 * This method are goind to receive an Arabic digit and its Multiplier (that indicates in which digit its used to be place. Ex: unity, tens, hundreds, thousands, etc)
+	 * and converts it to a Roman character
 	 * 
-	 * @param pRoman
-	 * @param pIndex
+	 * @param pArabicDigit
+	 * @param pMultiplier
 	 * 
 	 * @return
 	 */
-	private static boolean shouldSubtractValue(String pRoman, int pIndex) {
-		boolean shouldSubtract = false;
-		
-		char actualCharacter = pRoman.charAt(pIndex);
-		
-		if ( pIndex + 1 < pRoman.length() ) {
-			char nextCharacter = pRoman.charAt(pIndex + 1);
-			
-			if ( convertRomanToArabic(Character.toString(actualCharacter)) < convertRomanToArabic(Character.toString(nextCharacter)) ) {
-				shouldSubtract = true;
-			}
-		}
-		return shouldSubtract;
-	}
-	
-	private static int getArabicValue(char pActualCharacter) {
-		int resposeValue = 0;
-		
-		if (  pActualCharacter == I  ) {
-			resposeValue = 1;
-		} else if (  pActualCharacter == V  ) {
-			resposeValue = 5;
-		} else if (  pActualCharacter == X  ) {
-			resposeValue = 10;
-		} else if (  pActualCharacter == L  ) {
-			resposeValue = 50;
-		} else if (  pActualCharacter == C  ) {
-			resposeValue = 100;
-		} else if (  pActualCharacter == D  ) {
-			resposeValue = 500;
-		} else if (  pActualCharacter == M  ) {
-			resposeValue = 1000;
-		}
-		
-		return resposeValue;
-	}
-	
 	public static StringBuffer getRomanValue(int pArabicDigit, int pMultiplier) {
-		StringBuffer stringBuffer = new StringBuffer("");
+		StringBuffer romanNumberSB = new StringBuffer("");
 		
 		char lessSignificant = ' ';
 		char meanSignificant = ' ';
@@ -375,78 +485,54 @@ public class Converter {
 				}
 			}
 		}
-		stringBuffer = mapArabitToRoman(pArabicDigit, stringBuffer, lessSignificant, meanSignificant, moreSignificant);
+		romanNumberSB = mapArabitToRoman(pArabicDigit, romanNumberSB, lessSignificant, meanSignificant, moreSignificant);
 		
-		String response = stringBuffer.toString();
+		String response = romanNumberSB.toString();
 		response = response.toString();
 		
-		return stringBuffer;
+		return romanNumberSB;
 	}
 	
+	/**
+	 * This method does an intricate process, to convert Arabic Numbers in Roman numbers, taking in consideration an Arabic, and already know Roman peaces of information, based on external know multipliers
+	 * 
+	 * @param pArabicDigit
+	 * @param pRomanNumberSB
+	 * @param pLessSignificant
+	 * @param pMeanSignificant
+	 * @param pMoreSignificant
+	 * 
+	 * @return
+	 */
 	private static StringBuffer mapArabitToRoman(
 		int				pArabicDigit, 
-		StringBuffer	pStringBuffer, 
+		StringBuffer	pRomanNumberSB, 
 		char			pLessSignificant,
 		char			pMeanSignificant,
 		char			pMoreSignificant
 	) {
 		if (  pArabicDigit >= 1 && pArabicDigit < 4 ) {
 			for ( int index = 0; index < pArabicDigit; index = index + 1 ) {
-				pStringBuffer = pStringBuffer.append( Character.toString(pLessSignificant) );
+				pRomanNumberSB = pRomanNumberSB.append( Character.toString(pLessSignificant) );
 			}
 		} else if (  pArabicDigit >= 4 && pArabicDigit < 9  ) {
 			if ( pArabicDigit == 4 ) {
-				pStringBuffer = pStringBuffer.append( Character.toString(pLessSignificant) );
+				pRomanNumberSB = pRomanNumberSB.append( Character.toString(pLessSignificant) );
 			}
 			
-			pStringBuffer = pStringBuffer.append( Character.toString(pMeanSignificant) );
+			pRomanNumberSB = pRomanNumberSB.append( Character.toString(pMeanSignificant) );
 			
 			for ( int index = 6; index <= pArabicDigit; index = index + 1 ) {
-				pStringBuffer = pStringBuffer.append( Character.toString(pLessSignificant) );
+				pRomanNumberSB = pRomanNumberSB.append( Character.toString(pLessSignificant) );
 			}
 		} else if (  pArabicDigit == 9  ) {
 			if ( pArabicDigit == 9 ) {
-				pStringBuffer = pStringBuffer.append( Character.toString(pLessSignificant) );
+				pRomanNumberSB = pRomanNumberSB.append( Character.toString(pLessSignificant) );
 			}
 			
-			pStringBuffer = pStringBuffer.append( Character.toString(pMoreSignificant) );
+			pRomanNumberSB = pRomanNumberSB.append( Character.toString(pMoreSignificant) );
 		}
-		return pStringBuffer;
-	}
-	
-	private static int sumOrSubtract(int pResponseValue, boolean inShouldSubtract, int pToSumOrSubtractValue) {
-		if ( !inShouldSubtract ) {
-			pResponseValue = pResponseValue + pToSumOrSubtractValue;
-		} else {
-			pResponseValue = pResponseValue - pToSumOrSubtractValue;
-		}
-		return pResponseValue;
-	}
-	
-	public static boolean has4ConsecutiveRepetitions(String pRoman) {
-		boolean response = false;
-		
-		if ( isStringValid(pRoman) ) {
-			int repetitions = 1;
-			for ( int index = 0; index < pRoman.length(); index = index + 1 ) {
-				if ( index > 0 && isCharacterEqualsPrevious(pRoman, index) ) {
-					repetitions = repetitions + 1;
-					
-					if ( repetitions >= 4 ) {
-						// It should break here, to avoid the case of a IIIV to be considered valid.
-						break;
-					}
-				} else {
-					repetitions = 1;
-				}
-			}
-			
-			if ( repetitions > 3 ) {
-				response = true;
-			}
-		}
-		
-		return response;
+		return pRomanNumberSB;
 	}
 	
 	private static boolean isCharacterEqualsPrevious(String pRoman, int pIndex) {

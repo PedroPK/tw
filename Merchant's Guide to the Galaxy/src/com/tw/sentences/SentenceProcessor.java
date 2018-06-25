@@ -765,19 +765,6 @@ public class SentenceProcessor {
 	}
 	
 	/**
-	 * The Main Method for this class and from the application
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		printInstructions();
-		
-		SentenceProcessor sir = new SentenceProcessor();
-		
-		sir.readlineFromScanner();
-	}
-	
-	/**
 	 * This method just print the basic instructions to the users, about how to use it.
 	 */
 	private static void printInstructions() {
@@ -790,4 +777,16 @@ public class SentenceProcessor {
 		print("======================================");
 	}
 	
+	/**
+	 * The Main Method for this class and from the application
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		printInstructions();
+		
+		SentenceProcessor sir = new SentenceProcessor();
+		
+		sir.readlineFromScanner();
+	}
 }

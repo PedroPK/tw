@@ -1,10 +1,6 @@
 package com.tw.math;
 
-import static com.tw.math.Converter.convertArabicToRoman;
-import static com.tw.math.Converter.convertRomanToArabic;
-import static com.tw.math.Converter.getArabicDigit;
-import static com.tw.math.Converter.has4ConsecutiveRepetitions;
-import static com.tw.utils.Constants.I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT;
+import static com.tw.math.Converter.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -12,9 +8,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.Scanner;
 
-import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -89,7 +83,7 @@ import com.tw.math.exceptions.InvalidRomanException;
  * 
  * @author pedroc.f.santos
  */
-@FixMethodOrder(MethodSorters.JVM)
+//@FixMethodOrder(MethodSorters.JVM)
 public class ConverterTest {
 	
 	@Test(expected=EmptyRomanException.class)
@@ -194,37 +188,321 @@ public class ConverterTest {
 		assertEquals(1944, response);
 	}
 	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
 	@Test
 	public void testRepetitionValid_I() {
-		boolean response = has4ConsecutiveRepetitions("I");
+		boolean response = hasInvalidConsecutiveRepetitions("I");
 		
 		assertFalse(response);
 	}
 	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
 	@Test
 	public void testRepetitionValid_II() {
-		boolean response = has4ConsecutiveRepetitions("II");
+		boolean response = hasInvalidConsecutiveRepetitions("II");
 		
 		assertFalse(response);
 	}
 	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
 	@Test
 	public void testRepetitionValid_III() {
-		boolean response = has4ConsecutiveRepetitions("III");
+		boolean response = hasInvalidConsecutiveRepetitions("III");
 		
 		assertFalse(response);
 	}
 	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
 	@Test
 	public void testRepetitionValid_IIII() {
-		boolean response = has4ConsecutiveRepetitions("IIII");
+		boolean response = hasInvalidConsecutiveRepetitions("IIII");
 		
 		assertTrue(response);
 	}
 	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_X() {
+		boolean response = hasInvalidConsecutiveRepetitions("X");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_XX() {
+		boolean response = hasInvalidConsecutiveRepetitions("XX");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_XXX() {
+		boolean response = hasInvalidConsecutiveRepetitions("XXX");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_XXXX() {
+		boolean response = hasInvalidConsecutiveRepetitions("XXXX");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_C() {
+		boolean response = hasInvalidConsecutiveRepetitions("C");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_CC() {
+		boolean response = hasInvalidConsecutiveRepetitions("CC");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_CCC() {
+		boolean response = hasInvalidConsecutiveRepetitions("CCC");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_CCCC() {
+		boolean response = hasInvalidConsecutiveRepetitions("CCCC");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_M() {
+		boolean response = hasInvalidConsecutiveRepetitions("M");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_MM() {
+		boolean response = hasInvalidConsecutiveRepetitions("MM");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_MMM() {
+		boolean response = hasInvalidConsecutiveRepetitions("MMM");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_MMMM() {
+		boolean response = hasInvalidConsecutiveRepetitions("MMMM");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
 	@Test
 	public void testRepetitionValid_IIIIV() {
-		boolean response = has4ConsecutiveRepetitions("IIIIV");
+		boolean response = hasInvalidConsecutiveRepetitions("IIIIV");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_V() {
+		boolean response = hasInvalidConsecutiveRepetitions("V");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_VV() {
+		boolean response = hasInvalidConsecutiveRepetitions("VV");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_VVV() {
+		boolean response = hasInvalidConsecutiveRepetitions("VVV");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_VVVV() {
+		boolean response = hasInvalidConsecutiveRepetitions("VVVV");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_L() {
+		boolean response = hasInvalidConsecutiveRepetitions("L");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_LL() {
+		boolean response = hasInvalidConsecutiveRepetitions("LL");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_LLL() {
+		boolean response = hasInvalidConsecutiveRepetitions("LLL");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_LLLL() {
+		boolean response = hasInvalidConsecutiveRepetitions("LLLL");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_D() {
+		boolean response = hasInvalidConsecutiveRepetitions("D");
+		
+		assertFalse(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_DD() {
+		boolean response = hasInvalidConsecutiveRepetitions("DD");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_DDD() {
+		boolean response = hasInvalidConsecutiveRepetitions("DDD");
+		
+		assertTrue(response);
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
+	@Test
+	public void testRepetitionValid_DDDD() {
+		boolean response = hasInvalidConsecutiveRepetitions("DDDD");
 		
 		assertTrue(response);
 	}
