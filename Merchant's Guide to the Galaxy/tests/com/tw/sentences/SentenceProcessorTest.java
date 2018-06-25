@@ -135,7 +135,7 @@ public class SentenceProcessorTest {
 	public void testMappingGlobToI() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
 		sentenceProcessor.addMapping("glob is I");
-		char response = sentenceProcessor.getMapping("glob");
+		char response = sentenceProcessor.getNounMultiplier_RomanNumber("glob");
 		
 		assertEquals('I', response);
 	}
@@ -147,7 +147,7 @@ public class SentenceProcessorTest {
 	public void testMappingProkToV() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
 		sentenceProcessor.addMapping("prok is V");
-		char response = sentenceProcessor.getMapping("prok");
+		char response = sentenceProcessor.getNounMultiplier_RomanNumber("prok");
 		
 		assertEquals('V', response);
 	}
@@ -159,7 +159,7 @@ public class SentenceProcessorTest {
 	public void testMappingPishToX() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
 		sentenceProcessor.addMapping("pish is X");
-		char response = sentenceProcessor.getMapping("pish");
+		char response = sentenceProcessor.getNounMultiplier_RomanNumber("pish");
 		
 		assertEquals('X', response);
 	}
@@ -171,7 +171,7 @@ public class SentenceProcessorTest {
 	public void testMappingTegjToL() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
 		sentenceProcessor.addMapping("tegj is L");
-		char response = sentenceProcessor.getMapping("tegj");
+		char response = sentenceProcessor.getNounMultiplier_RomanNumber("tegj");
 		
 		assertEquals('L', response);
 	}
@@ -190,10 +190,10 @@ public class SentenceProcessorTest {
 		sentenceProcessor.addMapping("pish is X");
 		sentenceProcessor.addMapping("tegj is L");
 		
-		assertEquals('I', sentenceProcessor.getMapping("glob"));
-		assertEquals('V', sentenceProcessor.getMapping("prok"));
-		assertEquals('X', sentenceProcessor.getMapping("pish"));
-		assertEquals('L', sentenceProcessor.getMapping("tegj"));
+		assertEquals('I', sentenceProcessor.getNounMultiplier_RomanNumber("glob"));
+		assertEquals('V', sentenceProcessor.getNounMultiplier_RomanNumber("prok"));
+		assertEquals('X', sentenceProcessor.getNounMultiplier_RomanNumber("pish"));
+		assertEquals('L', sentenceProcessor.getNounMultiplier_RomanNumber("tegj"));
 	}
 	
 	/**
@@ -215,9 +215,11 @@ public class SentenceProcessorTest {
 	 * tegj is L
 	 * 
 	 * glob glob Silver is 34 Credits
+	 * glob prok Gold is 57800 Credits
+	 * pish pish Iron is 3910 Credits
 	 */
 	@Test
-	public void testIsValuationSentenceGlobGlobSilverIs34CreditsWithFullMapping() {
+	public void testIsValuationSentence_GlobGlobSilverIs34CreditsWithFullMapping() {
 		SentenceProcessor sentenceProcessor = new SentenceProcessor();
 		sentenceProcessor.addMapping("glob is I");
 		sentenceProcessor.addMapping("prok is V");
@@ -225,6 +227,61 @@ public class SentenceProcessorTest {
 		sentenceProcessor.addMapping("tegj is L");
 		
 		assertTrue(sentenceProcessor.isValuationSentence("glob glob Silver is 34 Credits"));
+	}
+	
+	/**
+	 * glob is I
+	 * prok is V
+	 * pish is X
+	 * tegj is L
+	 * 
+	 * glob prok Gold is 57800 Credits
+	 */
+	@Test
+	public void testIsValuationSentence_globProkGoldIs57800CreditsWithFullMapping() {
+		SentenceProcessor sentenceProcessor = new SentenceProcessor();
+		sentenceProcessor.addMapping("glob is I");
+		sentenceProcessor.addMapping("prok is V");
+		sentenceProcessor.addMapping("pish is X");
+		sentenceProcessor.addMapping("tegj is L");
+		
+		assertTrue(sentenceProcessor.isValuationSentence("glob prok Gold is 57800 Credits"));
+	}
+	
+	/**
+	 * glob is I
+	 * 
+	 * glob prok Gold is 57800 Credits
+	 */
+	@Test
+	public void testIsValuationSentence_globProkGoldIs57800CreditsWithPartialMapping() {
+		SentenceProcessor sentenceProcessor = new SentenceProcessor();
+		sentenceProcessor.addMapping("glob is I");
+		
+		assertFalse(sentenceProcessor.isValuationSentence("glob prok Gold is 57800 Credits"));
+	}
+	
+	/**
+	 * pish is X
+	 * 
+	 * pish pish Iron is 3910 Credits
+	 */
+	@Test
+	public void testIsValuationSentence_pishPishIronIs3910CreditsWithFullMapping() {
+		SentenceProcessor sentenceProcessor = new SentenceProcessor();
+		sentenceProcessor.addMapping("pish is X");
+		
+		assertTrue(sentenceProcessor.isValuationSentence("pish pish Iron is 3910 Credits"));
+	}
+	
+	/**
+	 * pish pish Iron is 3910 Credits
+	 */
+	@Test
+	public void testIsValuationSentence_pishPishIronIs3910CreditsWithNoMapping() {
+		SentenceProcessor sentenceProcessor = new SentenceProcessor();
+		
+		assertFalse(sentenceProcessor.isValuationSentence("pish pish Iron is 3910 Credits"));
 	}
 	
 	/**
@@ -459,7 +516,7 @@ public class SentenceProcessorTest {
 	 */
 	@Test
 	public void testAreAllOriginalMultipliersValid_GlobProkGoldIs57800Credits() {
-		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValid("glob prok Gold is 57800 Credits");
+		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValidFromValuationSentence("glob prok Gold is 57800 Credits");
 		
 		assertTrue(response);
 	}
@@ -469,7 +526,7 @@ public class SentenceProcessorTest {
 	 */
 	@Test
 	public void testAreAllOriginalMultipliersValid_GlobGlobSilverIs34Credits() {
-		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValid("glob glob Silver is 34 Credits");
+		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValidFromValuationSentence("glob glob Silver is 34 Credits");
 		
 		assertTrue(response);
 	}
@@ -479,7 +536,7 @@ public class SentenceProcessorTest {
 	 */
 	@Test
 	public void testAreAllOriginalMultipliersValid_PishPishIronIs3910Credits() {
-		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValid("pish pish Iron is 3910 Credits");
+		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValidFromValuationSentence("pish pish Iron is 3910 Credits");
 		
 		assertTrue(response);
 	}
@@ -489,7 +546,7 @@ public class SentenceProcessorTest {
 	 */
 	@Test
 	public void testAreAllOriginalMultipliersValid_PishTishIronIs3910Credits() {
-		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValid("pish tish Iron is 3910 Credits");
+		boolean response = this.aSentenceProcessor.areAllOriginalMultipliersValidFromValuationSentence("pish tish Iron is 3910 Credits");
 		
 		assertFalse(response);
 	}
@@ -625,36 +682,36 @@ public class SentenceProcessorTest {
 	
 	/**
 	 * glob glob Silver is 34 Credits
-	 */
+	 * /
 	@Test
 	public void testGetOriginalMultiplierGlobGlogSilverIs34Credits() {
 		String response = 
 				this.aSentenceProcessor.getSentenceOriginalMultiplier("glob glob Silver is 34 Credits");
 		
 		assertEquals("glob glob", response);
-	}
+	}*/
 	
 	/**
 	 * glob prok Gold is 57800 Credits
-	 */
+	 * /
 	@Test
 	public void testGetOriginalMultiplierGlobProkGoldIs57800Credits() {
 		String response = 
 				this.aSentenceProcessor.getSentenceOriginalMultiplier("glob prok Gold is 57800 Credits");
 		
 		assertEquals("glob prok", response);
-	}
+	}*/
 	
 	/**
 	 * pish pish Iron is 3910 Credits
-	 */
+	 * /
 	@Test
 	public void testGetOriginalMultiplierPishPishIronIs3910Credits() {
 		String response = 
 			this.aSentenceProcessor.getSentenceOriginalMultiplier("pish pish Iron is 3910 Credits");
 		
 		assertEquals("pish pish", response);
-	}
+	}*/
 	
 	/**
 	 * Original Test input:

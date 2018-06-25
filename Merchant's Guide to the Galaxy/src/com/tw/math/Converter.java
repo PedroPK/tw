@@ -1,18 +1,7 @@
 package com.tw.math;
 
-import static com.tw.sentences.SentenceProcessor.getSentenceTerms;
-import static com.tw.utils.Constants.C;
-import static com.tw.utils.Constants.D;
-import static com.tw.utils.Constants.I;
-import static com.tw.utils.Constants.IS;
-import static com.tw.utils.Constants.L;
-import static com.tw.utils.Constants.M;
-import static com.tw.utils.Constants.ONE_BIG_DECIMAL;
-import static com.tw.utils.Constants.V;
-import static com.tw.utils.Constants.X;
-import static com.tw.utils.Utils.equalsZero;
-import static com.tw.utils.Utils.getRomanNumerals;
-import static com.tw.utils.Utils.isStringValid;
+import static com.tw.utils.Constants.*;
+import static com.tw.utils.Utils.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -99,7 +88,7 @@ public class Converter {
 	 * @return		boolean		Indicantes if the	pReadLine	contais a Unit to Roman Mapping Sentence
 	 */
 	public static boolean isMappingSentence(String pReadLine) {
-		List<String> sentenceTerms = getSentenceTerms(pReadLine);
+		List<String> sentenceTerms = split(pReadLine);
 		
 		Set<Character> romanValues = getRomanNumerals();
 		

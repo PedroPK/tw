@@ -77,6 +77,30 @@ public class SentenceProcessor {
 	}
 	
 	/**
+	 * This method initializes the Noun/Multipliers mapping into Roman Numbers
+	 */
+	private void instanciateUnitMapping() {
+		this.aUnitMap = new HashMap<String, Character>();
+	}
+	
+	/**
+	 * This method initializes the Variable mapping into Real Numbers
+	 */
+	private void instanciateValuationMapping() {
+		this.aVariableMap = new HashMap<String, Double>();
+	}
+	
+	public char getNounMultiplier_RomanNumber(String pVariable) {
+		char response = ' ';
+		
+		if ( isStringValid(pVariable) && this.aUnitMap != null) {
+			response = this.aUnitMap.get(pVariable);
+		}
+		
+		return response;
+	}
+	
+	/**
 	 * This method looks for the Variable by	pVariableName	in the VariableMap, and if it exists, multiply its value by the		pArabicNumber and
 	 * returns the resulting value
 	 * 
@@ -351,20 +375,22 @@ public class SentenceProcessor {
 	}
 	
 	/**
+	 * This method assumes that it will receive a Valuation Sentence
+	 * It will extract from it the Noun/Multipliers, and then convert them to a Roman Number
 	 * 
-	 * @param pReadLine
-	 * @return
+	 * @param		pReadLineValuationSentence		A Valuation Sentence
+	 * @return		String							A Roman Number
 	 */
-	public String extratMultipliersAndConvertToRoman(String pReadLine) {
+	public String extratMultipliersAndConvertToRoman(String pReadLineValuationSentence) {
 		String response = null;
 		
-		if (	isStringValid(pReadLine)	) {
-			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValid(pReadLine);
+		if (	isStringValid(pReadLineValuationSentence)	) {
+			boolean areAllOriginalMultipliersValid = areAllOriginalMultipliersValidFromValuationSentence(pReadLineValuationSentence);
 			
 			if ( areAllOriginalMultipliersValid ) {
 				List<String> originalMultipliers= 
 					split(
-						splitToGetOriginalMultiplierTermsFromValuationSentence(pReadLine)
+						splitToGetOriginalMultiplierTermsFromValuationSentence(pReadLineValuationSentence)
 					);
 				StringBuffer sbMultipliers = new StringBuffer("");
 				for (String multiplier : originalMultipliers) {
@@ -380,6 +406,12 @@ public class SentenceProcessor {
 		return response;
 	}
 	
+	/**
+	 * This method will test if all the terms in the List it receives are all Nouns/Multiplier
+	 * 
+	 * @param		pOriginalMultiplierTerms		List with Terms
+	 * @return		boolean							Answer about if all terms are Nouns/Multipliers
+	 */
 	private boolean areAllOriginalMultipliersValid(List<String> pOriginalMultiplierTerms) {
 		boolean areAllOriginalMultipliersValid = true;
 		for ( String actualMultiplier : pOriginalMultiplierTerms ) {
@@ -392,15 +424,31 @@ public class SentenceProcessor {
 	}
 	
 	/**
+	 * This method assumes that it will receive a Valuation Sentence
+	 * Assuming that, it will test if all Nouns/Multipliers are Valid
+	 * 
+	 * @param		pReadLineValuationSentence		a Valuation Sentence
+	 * @return		boolean							Answer if all Nouns/Multipliers are valid
+	 */
+	public boolean areAllOriginalMultipliersValidFromValuationSentence(String pReadLineValuationSentence) {
+		String variableName = getVariableNameFromValuationSentence(pReadLineValuationSentence);
+		List<String> multiplierAndPredicateTerms = split(pReadLineValuationSentence, variableName);
+		List<String> multipliers = split(multiplierAndPredicateTerms.get(0));
+		
+		boolean areAllOriginalMultipliersValid = 
+			areAllOriginalMultipliersValid(multipliers);
+		return areAllOriginalMultipliersValid;
+	}
+	
+	/**
+	 * This method will test if the		pReadLine		is a How Much kind of sentence
+	 * 
 	 * Example of Valid Sentences
 	 * 		how much is pish tegj glob glob ?
-	 * 		how many Credits is glob prok Silver ?
-	 * 		how many Credits is glob prok Gold ?
-	 * 		how many Credits is glob prok Iron ?
 	 * 
-	 * @param		pReadLine
+	 * @param		pReadLine	Sentence to be tested to be or not a How Much
 	 * 
-	 * @return		boolean		Indicates if the 	pReadLine	is a Valid Sentence
+	 * @return		boolean		Indicates if the 	pReadLine	is a Valid How Much sentence
 	 */
 	public boolean isHowMuchSentenceValid(String pReadLine) {
 		boolean response = false;
@@ -423,7 +471,13 @@ public class SentenceProcessor {
 		return response;
 	}
 	
-	// TODO New Method
+	/**
+	 * This method assumes that its receiving a string with Nouns/Multipliers
+	 * Assuming this, it will convert it to Roman Numbers
+	 * 
+	 * @param		pMultipliers	String containing only Nouns/Multipliers
+	 * @return		String			A Roman Number
+	 */
 	public String convertMultipliersToRoman(String pMultipliers) {
 		String response = null;
 		
@@ -443,16 +497,6 @@ public class SentenceProcessor {
 		return response;
 	}
 	
-	public boolean areAllOriginalMultipliersValid(String pResponse) {
-		String variableName = getVariableNameFromValuationSentence(pResponse);
-		List<String> multiplierAndPredicateTerms = split(pResponse, variableName);
-		List<String> multipliers = split(multiplierAndPredicateTerms.get(0));
-		
-		boolean areAllOriginalMultipliersValid = 
-			areAllOriginalMultipliersValid(multipliers);
-		return areAllOriginalMultipliersValid;
-	}
-	
 	/**
 	 * Example sentences:
 	 * 		glob glob Silver is 34 Credits
@@ -467,7 +511,7 @@ public class SentenceProcessor {
 		boolean isMappingSentence = false;
 		
 		if ( isStringValid(pReadLine) ) { 
-			List<String> sentenceTerms = getSentenceTerms(pReadLine);
+			List<String> sentenceTerms = split(pReadLine);
 			
 			String creditTerm	= sentenceTerms.get(sentenceTerms.size() - 1 );
 			String numericTerm	= sentenceTerms.get(sentenceTerms.size() - 2 );
@@ -499,23 +543,13 @@ public class SentenceProcessor {
 		return isMappingSentence;
 	}
 	
-	public String getSentenceOriginalMultiplier(String pReadLine) {
-		String response = null;
-		
-		if ( this.isValuationSentence(pReadLine) ) {
-			response = splitToGetOriginalMultiplierTermsFromValuationSentence(pReadLine);
-		}
-		
-		return response;
-	}
-	
 	public void addMapping(String pReadLine) {
 		if ( isMappingSentence(pReadLine) ) {
 			if ( this.aUnitMap == null ) {
 				instanciateUnitMapping();
 			}
 			
-			List<String> sentenceTerms = getSentenceTerms(pReadLine);
+			List<String> sentenceTerms = split(pReadLine);
 			
 			this.aUnitMap.put( 
 				sentenceTerms.get(0),			//	Variable
@@ -523,24 +557,6 @@ public class SentenceProcessor {
 				sentenceTerms.get(2).charAt(0)	//	Roman Numeral
 			);
 		}
-	}
-	
-	private void instanciateUnitMapping() {
-		this.aUnitMap = new HashMap<String, Character>();
-	}
-	
-	private void instanciateValuationMapping() {
-		this.aVariableMap = new HashMap<String, Double>();
-	}
-	
-	public char getMapping(String pVariable) {
-		char response = ' ';
-		
-		if ( isStringValid(pVariable) && this.aUnitMap != null) {
-			response = this.aUnitMap.get(pVariable);
-		}
-		
-		return response;
 	}
 	
 	/**
@@ -576,6 +592,12 @@ public class SentenceProcessor {
 		return multipliersSB;
 	}
 	
+	/**
+	 * This method assumes that it will receive a Valuation Sentence, and its going to extract from it 
+	 * 
+	 * @param		pReadLineValuationSentence		a Valuation Sentence
+	 * @return		String							A String containing all the Multiplier Nouns
+	 */
 	public static String splitToGetOriginalMultiplierTermsFromValuationSentence(String pReadLineValuationSentence) {
 		String variableTerm = getVariableNameFromValuationSentence(pReadLineValuationSentence);
 		
@@ -584,17 +606,25 @@ public class SentenceProcessor {
 		return response;
 	}
 	
+	/**
+	 * This method assumed that it will receive a Valuation Sentence, and will extract from it the Variable Name
+	 * 
+	 * @param		pReadLineValuationSentence		a Valuation Sentence
+	 * @return		String							the Variable Name
+	 */
 	public static String getVariableNameFromValuationSentence(String pReadLineValuationSentence) {
-		List<String> sentenceTerms = getSentenceTerms(pReadLineValuationSentence);
+		List<String> sentenceTerms = split(pReadLineValuationSentence);
 		
 		String variableTerm	= getVariableNameFromValuationSentenceTerms(sentenceTerms);
 		return variableTerm;
 	}
 	
-	public static List<String> getSentenceTerms(String pReadLine) {
-		return split(pReadLine, " ");
-	}
-	
+	/**
+	 * This method assumes that it will receive a List with all Terms from a Valuation Sentence, and extract from them the Variable name
+	 * 
+	 * @param		pValuationSentenceTerms		a List with all Terms from a Valuation Sentence
+	 * @return		String						The Variable Name
+	 */
 	private static String getVariableNameFromValuationSentenceTerms(List<String> pValuationSentenceTerms) {
 		return pValuationSentenceTerms.get( pValuationSentenceTerms.size() - 4 );
 	}
