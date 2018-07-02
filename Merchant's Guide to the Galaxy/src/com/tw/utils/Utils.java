@@ -181,7 +181,7 @@ public class Utils {
 	 * @param pFirstBigDecimal
 	 * @param pSecondBigDecimal
 	 * 
-	 * @return	boolean		Indicates if the both BigDecimals are equals
+	 * @return	boolean		Indicates if the both BigDecimals are equals 
 	 */
 	public static boolean isEquals(BigDecimal pFirstBigDecimal, BigDecimal pSecondBigDecimal) {
 		boolean response = false;

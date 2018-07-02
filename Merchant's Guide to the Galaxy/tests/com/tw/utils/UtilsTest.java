@@ -80,8 +80,64 @@ public class UtilsTest {
 	}
 	
 	@Test
-	public void testIsEqualsBigDecimals() {
+	public void testIsEqualsBigDecimalsNullNull() {
 		boolean result = Utils.isEquals(null, null);
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testIsEqualsBigDecimalsZeroNull() {
+		boolean result = Utils.isEquals(BigDecimal.ZERO, null);
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testIsEqualsBigDecimalsNullZero() {
+		boolean result = Utils.isEquals(null, BigDecimal.ZERO);
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testIsEqualsBigDecimalsZeroZero() {
+		boolean result = Utils.isEquals(BigDecimal.ZERO, BigDecimal.ZERO);
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testIsEqualsBigDecimalsZeroNewZero() {
+		boolean result = Utils.isEquals(BigDecimal.ZERO, new BigDecimal(0));
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testIsEqualsBigDecimalsZeroNewZeroPointZeroSixTimes() {
+		boolean result = Utils.isEquals(BigDecimal.ZERO, new BigDecimal(0.000000));
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testIsEqualsBigDecimalsZeroNewZeroPointZeroSixTimesString() {
+		boolean result = Utils.isEquals(BigDecimal.ZERO, new BigDecimal("0.000000"));
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testIsEqualsBigDecimalsZeroNewZeroPointZeroSixTimesOneString() {
+		boolean result = Utils.isEquals(BigDecimal.ZERO, new BigDecimal("0.0000001"));
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testIsEqualsBigDecimalsZeroOne() {
+		boolean result = Utils.isEquals(BigDecimal.ZERO, BigDecimal.ONE);
 		
 		assertFalse(result);
 	}

@@ -1,6 +1,6 @@
 package com.tw.math;
 
-import static org.junit.Assert.assertEquals;
+import static com.tw.utils.Utils.isEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -13,8 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized;
-
-import com.tw.utils.Utils;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -104,7 +102,7 @@ public class ConverterProcessDecimalValuesTests {
 		BigDecimal ten = new BigDecimal(10);
 		
 		assertTrue(
-			Utils.isEquals(integerBigDecimal, ten)
+			isEquals(integerBigDecimal, ten)
 		);
 	}
 	
@@ -115,7 +113,7 @@ public class ConverterProcessDecimalValuesTests {
 		assertNotNull(integerBigDecimal);
 		
 		assertFalse(
-			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+			isEquals(integerBigDecimal, new BigDecimal(10))
 		);
 	}
 	
@@ -126,7 +124,7 @@ public class ConverterProcessDecimalValuesTests {
 		assertNotNull(integerBigDecimal);
 		
 		assertFalse(
-			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+			isEquals(integerBigDecimal, new BigDecimal(10))
 		);
 	}
 	
@@ -137,7 +135,7 @@ public class ConverterProcessDecimalValuesTests {
 		assertNotNull(integerBigDecimal);
 		
 		assertFalse(
-			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+			isEquals(integerBigDecimal, new BigDecimal(10))
 		);
 	}
 	
@@ -148,7 +146,7 @@ public class ConverterProcessDecimalValuesTests {
 		assertNotNull(integerBigDecimal);
 		
 		assertFalse(
-			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+			isEquals(integerBigDecimal, new BigDecimal(10))
 		);
 	}
 	
@@ -159,7 +157,7 @@ public class ConverterProcessDecimalValuesTests {
 		assertNotNull(integerBigDecimal);
 		
 		assertFalse(
-			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+			isEquals(integerBigDecimal, new BigDecimal(10))
 		);
 	}
 	
@@ -170,7 +168,7 @@ public class ConverterProcessDecimalValuesTests {
 		assertNotNull(integerBigDecimal);
 		
 		assertTrue(
-			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+			isEquals(integerBigDecimal, new BigDecimal(10))
 		);
 	}
 	
