@@ -78,4 +78,11 @@ public class UtilsTest {
 		
 		assertFalse(result);
 	}
+	
+	@Test
+	public void testIsEqualsBigDecimals() {
+		boolean result = Utils.isEquals(null, null);
+		
+		assertFalse(result);
+	}
 }

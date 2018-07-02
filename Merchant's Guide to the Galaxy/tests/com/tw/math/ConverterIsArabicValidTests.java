@@ -1,7 +1,6 @@
 package com.tw.math;
 
-import static com.tw.math.Converter.hasInvalidConsecutiveRepetitions;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -81,58 +80,28 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @FixMethodOrder(MethodSorters.JVM)
 @RunWith(Parameterized.class)
-public class ConverterInvalidTests {
+public class ConverterIsArabicValidTests {
 	
-	private String	aRoman;
-	private boolean	aIsInvalid;
+	private String		aArabicNumber;
+	private boolean		aIsValid;
 	
-	public ConverterInvalidTests(String pRoman, boolean pIsInvalid) {
-		this.aRoman = pRoman;
-		this.aIsInvalid = pIsInvalid;
+	public ConverterIsArabicValidTests(String pArabicNumber, boolean pIsValid) {
+		this.aArabicNumber	= pArabicNumber;
+		this.aIsValid		= pIsValid;
 	}
 	
 	@Parameters
 	public static Collection<Object[]> generateData() {
 		return Arrays.asList(new Object[][] {
-				{"I",		false},
-				{"II",		false},
-				{"III",		false},
-				{"IIII",	true},
-				{"V",		false},
-				{"VV",		true},
-				{"VVV",		true},
-				{"VVVV",	true},
-				{"X",		false},
-				{"XX",		false},
-				{"XXX",		false},
-				{"XXXX",	true},
-				{"L",		false},
-				{"LL",		true},
-				{"LLL",		true},
-				{"LLLL",	true},
-				{"C",		false},
-				{"CC",		false},
-				{"CCC",		false},
-				{"CCCC",	true},
-				{"D",		false},
-				{"DD",		true},
-				{"DDD",		true},
-				{"DDDD",	true},
-				{"M",		false},
-				{"MM",		false},
-				{"MMM",		false},
-				{"MMMM",	true},
-				{"IIIIV",	true}
+			{null, false},
+			{"", false},
+			{" ", false}
 		});
 	}
 	
-	/**
-	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
-	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
-	 */
 	@Test
-	public void testValidRepetitionsOnRomanNumbers() {
-		assertEquals(hasInvalidConsecutiveRepetitions(this.aRoman), this.aIsInvalid);
+	public void testIsArabicValid() {
+		assertEquals(this.aIsValid, Converter.isArabicValid(this.aArabicNumber));
 	}
 	
 }

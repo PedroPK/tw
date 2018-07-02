@@ -1,17 +1,20 @@
 package com.tw.math;
 
-import static com.tw.math.Converter.hasInvalidConsecutiveRepetitions;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.math.BigDecimal;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+
+import com.tw.utils.Utils;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -81,58 +84,94 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @FixMethodOrder(MethodSorters.JVM)
 @RunWith(Parameterized.class)
-public class ConverterInvalidTests {
+public class ConverterProcessDecimalValuesTests {
 	
-	private String	aRoman;
-	private boolean	aIsInvalid;
+	//private
 	
-	public ConverterInvalidTests(String pRoman, boolean pIsInvalid) {
-		this.aRoman = pRoman;
-		this.aIsInvalid = pIsInvalid;
-	}
-	
-	@Parameters
-	public static Collection<Object[]> generateData() {
-		return Arrays.asList(new Object[][] {
-				{"I",		false},
-				{"II",		false},
-				{"III",		false},
-				{"IIII",	true},
-				{"V",		false},
-				{"VV",		true},
-				{"VVV",		true},
-				{"VVVV",	true},
-				{"X",		false},
-				{"XX",		false},
-				{"XXX",		false},
-				{"XXXX",	true},
-				{"L",		false},
-				{"LL",		true},
-				{"LLL",		true},
-				{"LLLL",	true},
-				{"C",		false},
-				{"CC",		false},
-				{"CCC",		false},
-				{"CCCC",	true},
-				{"D",		false},
-				{"DD",		true},
-				{"DDD",		true},
-				{"DDDD",	true},
-				{"M",		false},
-				{"MM",		false},
-				{"MMM",		false},
-				{"MMMM",	true},
-				{"IIIIV",	true}
-		});
-	}
-	
-	/**
-	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
-	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
-	 */
 	@Test
-	public void testValidRepetitionsOnRomanNumbers() {
-		assertEquals(hasInvalidConsecutiveRepetitions(this.aRoman), this.aIsInvalid);
+	public void testProcessDecimalValuesFromNull() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(null);
+		
+		assertNull(integerBigDecimal);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.0"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		BigDecimal ten = new BigDecimal(10);
+		
+		assertTrue(
+			Utils.isEquals(integerBigDecimal, ten)
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point1String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.1"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point01String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.01"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point0001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.0001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point00001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.00001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point000001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.000001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertTrue(
+			integerBigDecimal.compareTo(new BigDecimal(10)) == 0
+		);
 	}
 	
 }

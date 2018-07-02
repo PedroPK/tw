@@ -1,8 +1,12 @@
 package com.tw.math;
 
-import static com.tw.math.Converter.hasInvalidConsecutiveRepetitions;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -81,58 +85,31 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @FixMethodOrder(MethodSorters.JVM)
 @RunWith(Parameterized.class)
-public class ConverterInvalidTests {
+public class ConverterIsMappingSentenceTest {
 	
-	private String	aRoman;
-	private boolean	aIsInvalid;
+	private String	aSentence;
+	private boolean	aIsMappingSentence;
 	
-	public ConverterInvalidTests(String pRoman, boolean pIsInvalid) {
-		this.aRoman = pRoman;
-		this.aIsInvalid = pIsInvalid;
+	public ConverterIsMappingSentenceTest(String pSentence, boolean pIsMappingSentence) {
+		this.aSentence			= pSentence;
+		this.aIsMappingSentence	= pIsMappingSentence;
 	}
 	
 	@Parameters
-	public static Collection<Object[]> generateData() {
-		return Arrays.asList(new Object[][] {
-				{"I",		false},
-				{"II",		false},
-				{"III",		false},
-				{"IIII",	true},
-				{"V",		false},
-				{"VV",		true},
-				{"VVV",		true},
-				{"VVVV",	true},
-				{"X",		false},
-				{"XX",		false},
-				{"XXX",		false},
-				{"XXXX",	true},
-				{"L",		false},
-				{"LL",		true},
-				{"LLL",		true},
-				{"LLLL",	true},
-				{"C",		false},
-				{"CC",		false},
-				{"CCC",		false},
-				{"CCCC",	true},
-				{"D",		false},
-				{"DD",		true},
-				{"DDD",		true},
-				{"DDDD",	true},
-				{"M",		false},
-				{"MM",		false},
-				{"MMM",		false},
-				{"MMMM",	true},
-				{"IIIIV",	true}
+	public static Collection<Object[]> getParameters() {
+		return Arrays.asList(new Object[][]{
+			{"glob is I",	true},
+			{"glob is A",	false},
+			{"glob is V",	true},
+			{"glob are X",	false},
+			{"glob is X",	true},
+			{"strubs is C",	true}
 		});
 	}
 	
-	/**
-	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
-	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
-	 */
 	@Test
-	public void testValidRepetitionsOnRomanNumbers() {
-		assertEquals(hasInvalidConsecutiveRepetitions(this.aRoman), this.aIsInvalid);
+	public void testIsMappingSentence() {
+		assertEquals(this.aIsMappingSentence, Converter.isMappingSentence(this.aSentence));
 	}
 	
 }
