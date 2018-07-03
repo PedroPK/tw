@@ -55,7 +55,7 @@ import com.tw.math.exceptions.InvalidRomanException;
 public class Converter {
 	
 	/**
-	 * This method will remove the Decimal values from the		pFinalValue		if its a Integer only BigDecimal
+	 * This method will remove the excess of Decimal digits from the		pFinalValue		if it has more then 5 decimal digits
 	 * 
 	 * @param pFinalValue
 	 * 
@@ -84,33 +84,6 @@ public class Converter {
 	private static BigDecimal setScale5(BigDecimal pBigDecimal) {
 		pBigDecimal = pBigDecimal.setScale(5, RoundingMode.HALF_EVEN);
 		return pBigDecimal;
-	}
-	
-	/**
-	 * This method indicates if the parameter String contains a Unit to Roman Mapping Sentence
-	 * 
-	 * @param		pReadLine
-	 * 
-	 * @return		boolean		Indicates if the	pReadLine	contains a Unit to Roman Mapping Sentence
-	 */
-	public static boolean isMappingSentence(String pReadLine) {
-		List<String> sentenceTerms = split(pReadLine);
-		
-		Set<Character> romanValues = getRomanNumerals();
-		
-		boolean isMappingSentence = false;
-		if (	sentenceTerms != null && sentenceTerms.size() == 3		&&
-				
-				sentenceTerms.get(0).length() >= 0						&&
-				
-				sentenceTerms.get(1).equals(IS)						&&
-				
-				sentenceTerms.get(2).length() == 1 &&
-				romanValues.contains( sentenceTerms.get(2).charAt(0) )
-		) {
-			isMappingSentence = true;
-		}
-		return isMappingSentence;
 	}
 	
 	/**

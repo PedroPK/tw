@@ -193,4 +193,21 @@ public class Utils {
 		return response;
 	}
 	
+	/**
+	 * This method compares the BigDecimal with Zero
+	 * 
+	 * @param pBigDecimal
+	 * 
+	 * @return	boolean		Indicates if the BigDecimal is equals to Zero
+	 */
+	public static boolean isEqualsZero(BigDecimal pBigDecimal) {
+		boolean response = false;
+		
+		if ( pBigDecimal != null ) {
+			response = pBigDecimal.compareTo(BigDecimal.ZERO) == 0;
+		}
+		
+		return response;
+	}
+	
 }

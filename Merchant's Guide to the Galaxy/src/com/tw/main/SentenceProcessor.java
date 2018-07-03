@@ -1,8 +1,15 @@
 package com.tw.main;
 
-import static com.tw.utils.Constants.*;
+import static com.tw.math.Converter.convertRomanToArabic;
+import static com.tw.math.Converter.processDecimalValues;
+import static com.tw.utils.Constants.CREDIT;
+import static com.tw.utils.Constants.CREDITS;
+import static com.tw.utils.Constants.HOW;
+import static com.tw.utils.Constants.IS;
+import static com.tw.utils.Constants.I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT;
+import static com.tw.utils.Constants.MANY;
+import static com.tw.utils.Constants.QUESTION_MARK;
 import static com.tw.utils.Utils.*;
-import static com.tw.math.Converter.*;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -14,8 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
-import com.tw.math.Converter;
 import com.tw.math.exceptions.EmptyRomanException;
 import com.tw.math.exceptions.FourTimesRepetitionException;
 import com.tw.math.exceptions.InvalidArabicException;
@@ -132,31 +139,6 @@ public class SentenceProcessor {
 	 * @param pResponse
 	 * @param pVariableName
 	 * @param pMultipliers
-	 * 
-	 * @return
-	 */
-	private StringBuffer appendNumericalValue(StringBuffer pResponse, StringBuffer pVariableName, StringBuffer pMultipliers) {
-		String romanMultipliers = convertMultipliersToRoman(pMultipliers.toString());
-		int arabicNumber = convertRomanToArabic(romanMultipliers);
-		
-		// Do the Math
-		BigDecimal finalValue = calculateFinalValue(pVariableName, arabicNumber);
-		
-		finalValue = processDecimalValues(finalValue);
-		
-		pResponse = pResponse.append(" ").append(finalValue);
-		return pResponse;
-	}
-	
-	/**
-	 * This method will take three StringBuffers. 
-	 * The 1st one is part of a Response Sentence to be shown to users.
-	 * The 2nd one is a Variable name to be looked at aVariableMap, to get its Value.
-	 * The 3rd one is a Multiplier to be multiplied by the Variable Value.
-	 * 
-	 * @param pResponse
-	 * @param pVariableName
-	 * @param pMultipliers
 	 * @param pSecondaryVariableName
 	 * 
 	 * @return
@@ -170,15 +152,26 @@ public class SentenceProcessor {
 		String romanMultipliers = convertMultipliersToRoman(pMultipliers.toString());
 		int arabicNumber = convertRomanToArabic(romanMultipliers);
 		
+		BigDecimal finalValue = calculateFinalValue(pVariableName, arabicNumber);
 		
-		BigDecimal arabicNumberSecondVariable = new BigDecimal(this.aVariableMap.get(pSecondaryVariableName.toString()));
+		if ( pSecondaryVariableName != null && isStringValid(pSecondaryVariableName.toString()) ) {
+			// TODO Implement some Test Methods for this clause, to test NullPointer
+			BigDecimal arabicNumberSecondVariable = new BigDecimal(this.aVariableMap.get(pSecondaryVariableName.toString()));
+			
+			if ( !isEqualsZero(arabicNumberSecondVariable) ) {
+				/* Do the Math
+				 * 
+				 * TODO Implement some Test Methods for this clause, avoiding a Division by Zero
+				 */
+				finalValue = finalValue.divide(arabicNumberSecondVariable);
+			}
+		}
 		
-		// Do the Math
-		BigDecimal finalValue = calculateFinalValue(pVariableName, arabicNumber).divide(arabicNumberSecondVariable);
-		
+		// Remove the excess of Decimal Digitis
 		finalValue = processDecimalValues(finalValue);
 		
 		pResponse = pResponse.append(" ").append(finalValue);
+		
 		return pResponse;
 	}
 	
@@ -241,7 +234,8 @@ public class SentenceProcessor {
 			StringBuffer variable = new StringBuffer();
 			StringBuffer credits = new StringBuffer();
 			
-			boolean isDoubleVariableSentence = false;
+			StringBuffer secondaryVariable = null;
+			
 			List<String> terms = split(pReadLine);
 			
 			List<String> multipliersList = new ArrayList<String>();
@@ -252,32 +246,25 @@ public class SentenceProcessor {
 				
 				variable = variable.append(terms.get( terms.size() -2 )).append(" ");
 				
+				// TODO Refact this IF ELSE clause
 				if ( !pReadLine.contains(CREDITS) ) {
-					isDoubleVariableSentence = true;
-					credits = new StringBuffer(" "+ terms.get(2));
+					secondaryVariable = new StringBuffer(terms.get(2));
+					credits = new StringBuffer(" ").append(secondaryVariable);
 				} else {
 					credits = new StringBuffer(" "+ CREDITS);
 				}
 			}
 			
 			// Repeating the Multipliers
-			StringBuffer multipliersSB = getMultipliers(multipliersList);
+			StringBuffer multipliers = getMultipliers(multipliersList);
 			
-			// Append Multipliers to the Response sentence
-			response = response.append(multipliersSB);
+			response = prepareResponse(response, variable, multipliers);
 			
-			// Append Variable name, if its a How Many sentence
-			response = response.append(variable);
-			
-			// Put the IS verb
-			response = response.append(IS);
-			
-			// Append the Numerical Value;
-			if ( !isDoubleVariableSentence ) {
-				response = appendNumericalValue(response, variable, multipliersSB);
-			} else {
-				response = appendNumericalValue( response, variable, multipliersSB, new StringBuffer(terms.get(2)) );
-			}
+			/* Append the Numerical Value;
+			 * 
+			 * TODO Refact this IF ELSE this clauses
+			 */
+			response = appendNumericalValue( response, variable, multipliers, secondaryVariable );
 			
 			// Append Credits, if its a How Many sentence
 			response = response.append(credits);
@@ -286,6 +273,18 @@ public class SentenceProcessor {
 		}
 		
 		return response.toString();
+	}
+
+	private StringBuffer prepareResponse(StringBuffer pResponse, StringBuffer pVariable, StringBuffer pMultipliers) {
+		// Append Multipliers to the Response sentence
+		pResponse = pResponse.append(pMultipliers);
+		
+		// Append Variable name, if its a How Many sentence
+		pResponse = pResponse.append(pVariable);
+		
+		// Put the IS verb
+		pResponse = pResponse.append(IS);
+		return pResponse;
 	}
 	
 	/**
@@ -560,6 +559,33 @@ public class SentenceProcessor {
 	}
 	
 	/**
+	 * This method indicates if the parameter String contains a Unit to Roman Mapping Sentence
+	 * 
+	 * @param		pReadLine
+	 * 
+	 * @return		boolean		Indicates if the	pReadLine	contains a Unit to Roman Mapping Sentence
+	 */
+	public static boolean isMappingSentence(String pReadLine) {
+		List<String> sentenceTerms = split(pReadLine);
+		
+		Set<Character> romanValues = getRomanNumerals();
+		
+		boolean isMappingSentence = false;
+		if (	sentenceTerms != null && sentenceTerms.size() == 3		&&
+				
+				sentenceTerms.get(0).length() >= 0						&&
+				
+				sentenceTerms.get(1).equals(IS)						&&
+				
+				sentenceTerms.get(2).length() == 1 &&
+				romanValues.contains( sentenceTerms.get(2).charAt(0) )
+		) {
+			isMappingSentence = true;
+		}
+		return isMappingSentence;
+	}
+	
+	/**
 	 * Example sentences:
 	 * 		glob glob Silver is 34 Credits
 	 * 		glob prok Gold is 57800 Credits
@@ -798,18 +824,12 @@ public class SentenceProcessor {
 		 */
 		String response = "";
 		try {
-			if (
-					Converter.isMappingSentence(pReadLine)			||
-					this.isValuationSentence(pReadLine)				||
-					this.isHowMuchManySentenceValid(pReadLine)
-			) {
-				if (	Converter.isMappingSentence(pReadLine)		) {
-					this.addNounMultiplier_Roman_Mapping(pReadLine);
-				} else if ( this.isValuationSentence(pReadLine)	) {
-					this.addValuation(pReadLine);
-				} else if ( this.isHowMuchManySentenceValid(pReadLine) ) {
-					response = this.processHowSentence(pReadLine);
-				}
+			if (	isMappingSentence(pReadLine)		) {
+				this.addNounMultiplier_Roman_Mapping(pReadLine);
+			} else if ( this.isValuationSentence(pReadLine)	) {
+				this.addValuation(pReadLine);
+			} else if ( this.isHowMuchManySentenceValid(pReadLine) ) {
+				response = this.processHowSentence(pReadLine);
 			} else {
 				response = I_HAVE_NO_IDEA_WHAT_YOU_ARE_TALKING_ABOUT;
 			}

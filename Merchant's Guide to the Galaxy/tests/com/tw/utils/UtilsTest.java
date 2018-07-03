@@ -141,4 +141,11 @@ public class UtilsTest {
 		
 		assertFalse(result);
 	}
+	
+	@Test
+	public void testIsEqualsZeroBigDecimalZero() {
+		boolean result = Utils.isEqualsZero(BigDecimal.ZERO);
+		
+		assertTrue(result);
+	}
 }

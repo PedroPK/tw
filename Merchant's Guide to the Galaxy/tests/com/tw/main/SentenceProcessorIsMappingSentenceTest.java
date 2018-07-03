@@ -1,4 +1,4 @@
-package com.tw.math;
+package com.tw.main;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import com.tw.main.SentenceProcessor;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -80,12 +82,12 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @FixMethodOrder(MethodSorters.JVM)
 @RunWith(Parameterized.class)
-public class ConverterIsMappingSentenceTest {
+public class SentenceProcessorIsMappingSentenceTest {
 	
 	private String	aSentence;
 	private boolean	aIsMappingSentence;
 	
-	public ConverterIsMappingSentenceTest(String pSentence, boolean pIsMappingSentence) {
+	public SentenceProcessorIsMappingSentenceTest(String pSentence, boolean pIsMappingSentence) {
 		this.aSentence			= pSentence;
 		this.aIsMappingSentence	= pIsMappingSentence;
 	}
@@ -104,7 +106,7 @@ public class ConverterIsMappingSentenceTest {
 	
 	@Test
 	public void testIsMappingSentence() {
-		assertEquals(this.aIsMappingSentence, Converter.isMappingSentence(this.aSentence));
+		assertEquals(this.aIsMappingSentence, SentenceProcessor.isMappingSentence(this.aSentence));
 	}
 	
 }
