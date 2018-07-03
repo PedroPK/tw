@@ -69,6 +69,9 @@ import org.junit.Test;
  * 		how many Credits is glob prok Iron ?
  * 		how much wood could a woodchuck chuck if a woodchuck could chuck wood ?
  * 
+ * Extended Input:
+ * 		how many Silver is glob Gold ?
+ * 
  * Test Output:
  * 		pish tegj glob glob is 42
  * 		glob prok Silver is 68 Credits
@@ -81,6 +84,17 @@ import org.junit.Test;
 public class SentenceProcessorTest {
 	
 	private SentenceProcessor aSentenceProcessor;
+	
+	@Test
+	public void testHowManySilverIsGlobGold() {
+		this.aSentenceProcessor.addNounMultiplier_Roman_Mapping("glob is I");
+		this.aSentenceProcessor.addValuation("glob Silver is 5 Credits");
+		this.aSentenceProcessor.addValuation("glob Gold is 10 Credits");
+		
+		String answer = this.aSentenceProcessor.processHowSentence("how many Silver is glob Gold ?");
+		
+		assertEquals("glob Gold is 2 Silver", answer);
+	}
 	
 	/**
 	 * Original Test input:

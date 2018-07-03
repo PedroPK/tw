@@ -117,6 +117,7 @@ public class SentenceProcessor {
 			double variableValue = this.aVariableMap.get(variableName);
 			finalValue = finalValue.multiply(new BigDecimal(variableValue));
 		}
+		
 		return finalValue;
 	}
 	
@@ -138,6 +139,40 @@ public class SentenceProcessor {
 		
 		// Do the Math
 		BigDecimal finalValue = calculateFinalValue(pVariableName, arabicNumber);
+		
+		finalValue = processDecimalValues(finalValue);
+		
+		pResponse = pResponse.append(" ").append(finalValue);
+		return pResponse;
+	}
+	
+	/**
+	 * This method will take three StringBuffers. 
+	 * The 1st one is part of a Response Sentence to be shown to users.
+	 * The 2nd one is a Variable name to be looked at aVariableMap, to get its Value.
+	 * The 3rd one is a Multiplier to be multiplied by the Variable Value.
+	 * 
+	 * @param pResponse
+	 * @param pVariableName
+	 * @param pMultipliers
+	 * @param pSecondaryVariableName
+	 * 
+	 * @return
+	 */
+	private StringBuffer appendNumericalValue(
+		StringBuffer pResponse, 
+		StringBuffer pVariableName, 
+		StringBuffer pMultipliers,
+		StringBuffer pSecondaryVariableName		// TODO Refactor with the Method Overloaded above
+	) {
+		String romanMultipliers = convertMultipliersToRoman(pMultipliers.toString());
+		int arabicNumber = convertRomanToArabic(romanMultipliers);
+		
+		
+		BigDecimal arabicNumberSecondVariable = new BigDecimal(this.aVariableMap.get(pSecondaryVariableName.toString()));
+		
+		// Do the Math
+		BigDecimal finalValue = calculateFinalValue(pVariableName, arabicNumber).divide(arabicNumberSecondVariable);
 		
 		finalValue = processDecimalValues(finalValue);
 		
@@ -188,6 +223,12 @@ public class SentenceProcessor {
 	/**
 	 * Main method, that reads a How Much/Many sentence, process it, and gives a response;
 	 * 
+	 * Normal input example:
+	 * 		how many Credits is glob prok Iron ?
+	 * 
+	 * Extended input example:
+	 * 		how many Silver is glob Gold ?
+	 * 
 	 * @param pReadLine
 	 * @return
 	 */
@@ -198,16 +239,23 @@ public class SentenceProcessor {
 			StringBuffer variable = new StringBuffer();
 			StringBuffer credits = new StringBuffer();
 			
+			boolean isDoubleVariableSentence = false;
+			List<String> terms = split(pReadLine);
+			
 			List<String> multipliersList = new ArrayList<String>();
 			if ( isHowMuchSentenceValid(pReadLine) ) {
 				multipliersList = getMultipliersFromHowMuchSentence(pReadLine);
 			} else if ( isHowManySentenceValid(pReadLine) ) {
 				multipliersList = getMultipliersFromHowManySentence(pReadLine);
 				
-				List<String> terms = split(pReadLine);
 				variable = variable.append(terms.get( terms.size() -2 )).append(" ");
 				
-				credits = new StringBuffer(" Credits");
+				if ( !pReadLine.contains(CREDITS) ) {
+					isDoubleVariableSentence = true;
+					credits = new StringBuffer(" "+ terms.get(2));
+				} else {
+					credits = new StringBuffer(" "+ CREDITS);
+				}
 			}
 			
 			// Repeating the Multipliers
@@ -223,7 +271,11 @@ public class SentenceProcessor {
 			response = response.append(IS);
 			
 			// Append the Numerical Value;
-			response = appendNumericalValue(response, variable, multipliersSB);
+			if ( !isDoubleVariableSentence ) {
+				response = appendNumericalValue(response, variable, multipliersSB);
+			} else {
+				response = appendNumericalValue( response, variable, multipliersSB, new StringBuffer(terms.get(2)) );
+			}
 			
 			// Append Credits, if its a How Many sentence
 			response = response.append(credits);
@@ -313,6 +365,9 @@ public class SentenceProcessor {
 	 * 		how many Credits is glob prok Gold ?
 	 * 		how many Credits is glob prok Iron ?
 	 * 
+	 * Extended Input example
+	 * 		how many Silver is glob Gold ?
+	 * 
 	 * @param		pReadLine	A How Many kind of Sentence
 	 * 
 	 * @return		boolean		Indicates if the 	pReadLine	is a Valid Sentence
@@ -323,7 +378,12 @@ public class SentenceProcessor {
 		List<String> terms = split(pReadLine);
 		if (	terms.get(0).equalsIgnoreCase(HOW)								&&
 				terms.get(1).equalsIgnoreCase(MANY)								&&
-				terms.get(2).equalsIgnoreCase(CREDITS)							&&
+				(
+					terms.get(2).equalsIgnoreCase(CREDITS)		||
+					
+					// In the case of Sentences like "how many Silver is glob Gold ?"
+					this.aVariableMap.containsKey(terms.get(2))		
+				)							&&
 				terms.get(3).equalsIgnoreCase(IS)								&&
 				terms.get(terms.size() - 1).equalsIgnoreCase(QUESTION_MARK)
 		) {
@@ -770,7 +830,7 @@ public class SentenceProcessor {
 	}
 	
 	/**
-	 * This method just print the basic instructions to the users, about how to use it.
+	 * This method just prints the basic instructions to the users, about how to use it.
 	 */
 	private static void printInstructions() {
 		print("Welcome! These is a Sentence Processor of Roman numbers into Nouns and Variables, to define theys Credit values");
