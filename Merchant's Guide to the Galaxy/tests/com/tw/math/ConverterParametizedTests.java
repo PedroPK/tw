@@ -1,10 +1,17 @@
 package com.tw.math;
 
+import static com.tw.math.Converter.*;
 import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -73,13 +80,39 @@ import org.junit.runners.MethodSorters;
  * @author pedroc.f.santos
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class ConverterTest {
+@RunWith(Parameterized.class)
+public class ConverterParametizedTests {
+	
+	private int aArabic;
+	private String aRoman;
+	
+	public ConverterParametizedTests(int pArabic, String pRoman) {
+		this.aArabic = pArabic;
+		this.aRoman = pRoman;
+	}
+	
+	@Parameters
+	public static Collection<Object[]> data() {
+		return Arrays.asList(new Object[][] {
+			{1, "I"},
+			{2, "II"},
+			{3, "III"},
+			{4, "IV"},
+			{5, "V"},
+			{10, "X"},
+			{50, "L"},
+			{100, "C"},
+			{500, "D"},
+			{1000, "M"},
+			{1001, "MI"},
+			{2006, "MMVI"},		// Numbers are formed by combining symbols together and adding the values. For example, MMVI is 1000 + 1000 + 5 + 1 = 2006.
+			{1944, "MCMXLIV"}		// For example MCMXLIV = 1000 + (1000 − 100) + (50 − 10) + (5 − 1) = 1944.
+		});
+	}
 	
 	@Test
-	public void testGetArabicDigit() {
-		int response = Converter.getArabicDigit(' ');
-		
-		assertEquals(Integer.MIN_VALUE, response);
+	public void testUsingParameters() {
+		assertEquals(this.aArabic, convertRomanToArabic(this.aRoman));
 	}
 	
 }

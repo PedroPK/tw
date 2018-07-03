@@ -1,10 +1,17 @@
 package com.tw.math;
 
+import static com.tw.math.Converter.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import com.tw.math.exceptions.EmptyRomanException;
+import com.tw.math.exceptions.FourTimesRepetitionException;
+import com.tw.math.exceptions.InvalidRomanException;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -73,13 +80,50 @@ import org.junit.runners.MethodSorters;
  * @author pedroc.f.santos
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class ConverterTest {
+public class ConverterExceptionTests {
 	
-	@Test
-	public void testGetArabicDigit() {
-		int response = Converter.getArabicDigit(' ');
+	@Test(expected=EmptyRomanException.class)
+	public void testNullConvertionRomanToArabic() {
+		int response = convertRomanToArabic(null);
 		
-		assertEquals(Integer.MIN_VALUE, response);
+		assertEquals(0, response);
+	}
+	
+	@Test(expected=EmptyRomanException.class)
+	public void testEmptyConvertionRomanToArabic() {
+		int response = convertRomanToArabic("");
+		
+		assertEquals(0, response);
+	}
+	
+	@Test(expected=FourTimesRepetitionException.class)
+	public void test_IIII_ConvertionRomanToArabic() {
+		convertRomanToArabic( "IIII" );
+	}
+	
+	/**
+	 * I is Smaller the M, and shouldn't be a valid Roman Number 
+	 */
+	@Test(expected=InvalidRomanException.class)
+	public void testInvalid_IM() {
+		convertRomanToArabic("IM");
+	}
+	
+	
+	
+	/**
+	 * "I" can be subtracted from "V" and "X" only. 
+	 */
+	@Test(expected=InvalidRomanException.class)
+	public void testInvalid_MIM() {
+		convertRomanToArabic("MIM");
+	}
+	
+	@Test(expected=InvalidRomanException.class)
+	public void testInvalidRoman_0() {
+		String response = convertArabicToRoman("0");
+		
+		assertNotNull(response);
 	}
 	
 }

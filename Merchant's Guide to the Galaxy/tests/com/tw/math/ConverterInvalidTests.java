@@ -1,10 +1,17 @@
 package com.tw.math;
 
-import static org.junit.Assert.assertEquals;
+import static com.tw.math.Converter.hasInvalidConsecutiveRepetitions;
+import static org.junit.Assert.*;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -73,13 +80,59 @@ import org.junit.runners.MethodSorters;
  * @author pedroc.f.santos
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class ConverterTest {
+@RunWith(Parameterized.class)
+public class ConverterInvalidTests {
 	
+	private String	aRoman;
+	private boolean	aIsInvalid;
+	
+	public ConverterInvalidTests(String pRoman, boolean pIsInvalid) {
+		this.aRoman = pRoman;
+		this.aIsInvalid = pIsInvalid;
+	}
+	
+	@Parameters
+	public static Collection<Object[]> generateData() {
+		return Arrays.asList(new Object[][] {
+				{"I",		false},
+				{"II",		false},
+				{"III",		false},
+				{"IIII",	true},
+				{"V",		false},
+				{"VV",		true},
+				{"VVV",		true},
+				{"VVVV",	true},
+				{"X",		false},
+				{"XX",		false},
+				{"XXX",		false},
+				{"XXXX",	true},
+				{"L",		false},
+				{"LL",		true},
+				{"LLL",		true},
+				{"LLLL",	true},
+				{"C",		false},
+				{"CC",		false},
+				{"CCC",		false},
+				{"CCCC",	true},
+				{"D",		false},
+				{"DD",		true},
+				{"DDD",		true},
+				{"DDDD",	true},
+				{"M",		false},
+				{"MM",		false},
+				{"MMM",		false},
+				{"MMMM",	true},
+				{"IIIIV",	true}
+		});
+	}
+	
+	/**
+	 * - The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. 
+	 * - (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.) "D", "L", and "V" can never be repeated.
+	 */
 	@Test
-	public void testGetArabicDigit() {
-		int response = Converter.getArabicDigit(' ');
-		
-		assertEquals(Integer.MIN_VALUE, response);
+	public void testValidRepetitionsOnRomanNumbers() {
+		assertEquals(hasInvalidConsecutiveRepetitions(this.aRoman), this.aIsInvalid);
 	}
 	
 }

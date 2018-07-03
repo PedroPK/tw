@@ -2,9 +2,15 @@ package com.tw.math;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -73,13 +79,29 @@ import org.junit.runners.MethodSorters;
  * @author pedroc.f.santos
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class ConverterTest {
+@RunWith(Parameterized.class)
+public class ConverterIsArabicValidTests {
+	
+	private String		aArabicNumber;
+	private boolean		aIsValid;
+	
+	public ConverterIsArabicValidTests(String pArabicNumber, boolean pIsValid) {
+		this.aArabicNumber	= pArabicNumber;
+		this.aIsValid		= pIsValid;
+	}
+	
+	@Parameters
+	public static Collection<Object[]> generateData() {
+		return Arrays.asList(new Object[][] {
+			{null, false},
+			{"", false},
+			{" ", false}
+		});
+	}
 	
 	@Test
-	public void testGetArabicDigit() {
-		int response = Converter.getArabicDigit(' ');
-		
-		assertEquals(Integer.MIN_VALUE, response);
+	public void testIsArabicValid() {
+		assertEquals(this.aIsValid, Converter.isArabicValid(this.aArabicNumber));
 	}
 	
 }

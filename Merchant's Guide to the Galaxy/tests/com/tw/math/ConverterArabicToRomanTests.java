@@ -1,10 +1,17 @@
 package com.tw.math;
 
+import static com.tw.math.Converter.*;
 import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -73,13 +80,65 @@ import org.junit.runners.MethodSorters;
  * @author pedroc.f.santos
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class ConverterTest {
+@RunWith(Parameterized.class)
+public class ConverterArabicToRomanTests {
+	
+	private String	aArabic;
+	private String	aRoman;
+	
+	public ConverterArabicToRomanTests(String pArabic, String pRoman) {
+		this.aArabic = pArabic;
+		this.aRoman = pRoman;
+	}
+	
+	@Parameters
+	public static Collection<Object[]> generateTestData() {
+		return Arrays.asList(new Object[][] {
+			{"1", "I"},
+			{"2", "II"},
+			{"3", "III"},
+			{"4", "IV"},
+			{"5", "V"},
+			{"6", "VI"},
+			{"7", "VII"},
+			{"8", "VIII"},
+			{"9", "IX"},
+			{"10", "X"},
+			{"11", "XI"},
+			{"12", "XII"},
+			{"13", "XIII"},
+			{"14", "XIV"},
+			{"15", "XV"},
+			{"16", "XVI"},
+			{"17", "XVII"},
+			{"18", "XVIII"},
+			{"19", "XIX"},
+			{"20", "XX"},
+			{"21", "XXI"},
+			{"25", "XXV"},
+			{"30", "XXX"},
+			{"35", "XXXV"},
+			{"40", "XL"},
+			{"50", "L"},
+			{"75", "LXXV"},
+			{"100", "C"},
+			{"200", "CC"},
+			{"300", "CCC"},
+			{"400", "CD"},
+			{"450", "CDL"},
+			{"475", "CDLXXV"},
+			{"498", "CDXCVIII"},
+			{"500", "D"},
+			{"1000", "M"},
+			{"1903", "MCMIII"},
+			{"1983", "MCMLXXXIII"},
+			{"1", "I"},
+		});
+	}
 	
 	@Test
-	public void testGetArabicDigit() {
-		int response = Converter.getArabicDigit(' ');
-		
-		assertEquals(Integer.MIN_VALUE, response);
+	public void testConvertionArabicToRoman() {
+		assertEquals(this.aRoman, convertArabicToRoman(this.aArabic));
 	}
 	
 }

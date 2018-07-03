@@ -1,10 +1,18 @@
 package com.tw.math;
 
-import static org.junit.Assert.assertEquals;
+import static com.tw.utils.Utils.isEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.junit.runners.Parameterized;
 
 /**
  * Roman numerals are based on seven symbols:
@@ -73,13 +81,95 @@ import org.junit.runners.MethodSorters;
  * @author pedroc.f.santos
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class ConverterTest {
+@RunWith(Parameterized.class)
+public class ConverterProcessDecimalValuesTests {
+	
+	//private
 	
 	@Test
-	public void testGetArabicDigit() {
-		int response = Converter.getArabicDigit(' ');
+	public void testProcessDecimalValuesFromNull() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(null);
 		
-		assertEquals(Integer.MIN_VALUE, response);
+		assertNull(integerBigDecimal);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.0"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		BigDecimal ten = new BigDecimal(10);
+		
+		assertTrue(
+			isEquals(integerBigDecimal, ten)
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point1String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.1"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			isEquals(integerBigDecimal, new BigDecimal(10))
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point01String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.01"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			isEquals(integerBigDecimal, new BigDecimal(10))
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			isEquals(integerBigDecimal, new BigDecimal(10))
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point0001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.0001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			isEquals(integerBigDecimal, new BigDecimal(10))
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point00001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.00001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertFalse(
+			isEquals(integerBigDecimal, new BigDecimal(10))
+		);
+	}
+	
+	@Test
+	public void testProcessDecimalValuesFrom10Point000001String() {
+		BigDecimal integerBigDecimal = Converter.processDecimalValues(new BigDecimal("10.000001"));
+		
+		assertNotNull(integerBigDecimal);
+		
+		assertTrue(
+			isEquals(integerBigDecimal, new BigDecimal(10))
+		);
 	}
 	
 }

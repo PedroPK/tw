@@ -175,4 +175,22 @@ public class Utils {
 		return response;
 	}
 	
+	/**
+	 * This method will compare the two BigDecimals, if they are not null
+	 * 
+	 * @param pFirstBigDecimal
+	 * @param pSecondBigDecimal
+	 * 
+	 * @return	boolean		Indicates if the both BigDecimals are equals 
+	 */
+	public static boolean isEquals(BigDecimal pFirstBigDecimal, BigDecimal pSecondBigDecimal) {
+		boolean response = false;
+		
+		if ( pFirstBigDecimal != null && pSecondBigDecimal != null ) {
+			response = pFirstBigDecimal.compareTo(pSecondBigDecimal) == 0;
+		}
+		
+		return response;
+	}
+	
 }

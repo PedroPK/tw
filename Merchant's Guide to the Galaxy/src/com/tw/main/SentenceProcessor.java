@@ -28,19 +28,21 @@ import com.tw.math.exceptions.InvalidRomanException;
  * 
  * This documentation will explain the decisions that I took during this problem solving and its implementation
  * 
+ * 0) The main and executable class is the SentenceProcessor.java
+ * 
  * 1) Fist thing that I thought was that I should be original and find the answers how to solve it by my self. It was very likely that I could find 
- * in the internet for a similar problem and its solution, tested by many people, with more elegant and simple implementations then I would do, 
+ * in the internet for a similar problem and its solution, tested by many people, with more elegant and simple implementations that I would do, 
  * but in my mind, you guys would want something made by me.
  * 
- * With this in mind, I did it by my way, organically, knowing that probably there are better ways, more elegant and simple, to do the same job.
+ * 1.1) With this in mind, I did it by my way, organically, knowing that probably there are better ways, more elegant and simple, to do the same job.
  * This implementation evolved almost by natural selection. The solutions were improved by increasing the Test cases. Eventually, the implementation
- * suffered refactoring, once I was confident that the Tests would approve it if the resulting methods were not only more elegant, but also functional. 
+ * receied a refactoring session, once I was confident that the Tests would show its flaws in case the resulting methods were not only more elegant, but also functional. 
  * 
- * 2) Having said that, the second thing that I was worried about was how to do conversions between Roman numbers to Arabic Numbers.
+ * 2) Having said that, the second thing that I was worried about was the rules by them selves, how to do conversions between Roman numbers to Arabic Numbers.
  * 
- * The best way that I know how to do this is using TDD (Test Driven Development). So, I created empty methods, jumped to implement the first test, 
+ * 2.1) The best way that I know how to do this is using TDD (Test Driven Development). So, I created an empty method, jumped to implement the first test, 
  * executed it, saw it fail, and jump back to implement a minimal code to make the first test pass, and started creating more elaborated tests, 
- * keeping this cycle alive, until the moment that I feel that is enough robust to start implementing another methods.
+ * keeping this cycle alive, until the moment that I felt that is enough robust to start implementing another methods.
  * 
  * 3) The third priority was how to map the Nouns (ex: glob, prok, pish, tegj, etc...) with its Roman numbers.
  * A subpriority was decide if its a valid mapping or not
@@ -48,14 +50,14 @@ import com.tw.math.exceptions.InvalidRomanException;
  * 4) The fourth priority was to process sentences that was a Variable on it, mixed with Nouns and attributing then to Arabic quantity of Credits (ex: glob glob Silver is 34 Credits)
  * 
  * 5) Once this was done and with many Tests for many sceneries, the fifth priority was to process the How Much/Many questions, and answer then appropriately
- * Tests with JUnit also implemented to test this Question/Answers sentences, that was testing all previous implementations by chain reaction
+ * 5.1) Tests with JUnit also implemented to verify this Question/Answers sentences, that was testing all previous implementations by chain reaction
  * 
  * 6) Finally, the last thing that was how to use the Standard Input, capture the keyboard text and integrate it with all the rest of application
  * 
  * 7) A last effort to be done is to do a great refactoring, doing a better organization, removing unnecessary code, making it a little bit better.
  * 
- * An additional explanation is that, once I decided to use Tests in almost anything implemented, there are many public methods, not based in  external utility,
- * but its the way to do Tests with JUnit, without use a more complex frameworks or complicate then with Reflection
+ * 8) An additional explanation is that, once I decided to use Tests in almost anything implemented, there are many public methods, not based in  external utility,
+ * but its the way to do Tests with JUnit, without use a more complex frameworks or complicate then using Reflection
  * 
  * @author pedro.c.f.santos
  */
